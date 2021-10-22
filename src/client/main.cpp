@@ -11,15 +11,15 @@ void testSFML() {
 
 // Fin test SFML
 
-#include <state.h>
+//#include <state.h>
 
 using namespace std;
-using namespace state;
+//using namespace state;
 
 int main(int argc,char* argv[])
 {
-    Exemple exemple;
-    exemple.setX(53);
+//    Exemple exemple;
+//    exemple.setX(53);
 
     cout << "It works !" << endl;
 
