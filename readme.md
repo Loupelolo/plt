@@ -7,7 +7,7 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-# ENSEA PLT Project 2021-2022: ?
+# ENSEA PLT Project 2021-2022: Les Dee & Di
 
 <p align="center">
  
@@ -49,10 +49,10 @@ The [*PLT*] **P**rojet **L**ogiciel **T**ransversal (Transversal Software Projec
 
 ## Presentation
 
-* Genre : ?
-* Players : ? to N players
+* Genre : RPG (Role Play Game)
+* Players : 1 to 6 players
 
-*Game presentation here ...*
+This game is based on the tabletop role-playing game Dungeons and Dragons. The players need to work together in order to achieve their quest.
 
 *Object of the game here ...*
 
@@ -212,8 +212,8 @@ Distributed under the *license* License. See [LICENSE](license-url) for more inf
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[contributors-shield]: https://img.shields.io/github/contributors/[username]/[reponame].svg?style=flat-square
-[contributors-url]: https://github.com/[username]/[reponame]/graphs/contributors
+[contributors-shield]: https://img.shields.io/github/contributors/Loupelolo/plt.svg?style=flat-square
+[contributors-url]: https://github.com/Loupelolo/plt/graphs/contributors
 
 [forks-shield]: https://img.shields.io/github/forks/[username]/[reponame].svg?style=flat-square
 [forks-url]: https://github.com/[username]/[reponame]/network/members
