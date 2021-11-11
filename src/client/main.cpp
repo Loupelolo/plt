@@ -1,7 +1,5 @@
 #include <iostream>
 
-// ilan test commit master
-
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 
