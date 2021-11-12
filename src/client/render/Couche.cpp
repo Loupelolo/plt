@@ -3,7 +3,15 @@
 namespace render {
 
 Couche::Couche(){
+   m_police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
+}
 
+Couche::Couche(int posX, int posY, int hauteur, int largeur){
+   m_police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
+   this->m_posX = posX;
+   this->m_posY = posY;
+   this->m_hauteur = hauteur;
+   this->m_largeur = largeur;
 }
 
 Couche::~Couche(){
@@ -11,30 +19,30 @@ Couche::~Couche(){
 }
 
 void Couche::setPos (int x, int y) {
-   posX = x;
-   posY = y;
+   m_posX = x;
+   m_posY = y;
 }
 
 int Couche::getPosX () {
-   return posX;
+   return m_posX;
 }
 
 int Couche::getPosY () {
-   return posY;
+   return m_posY;
 }
 
 
 void Couche::setDimensions (int hauteur, int largeur) {
-   this->hauteur = hauteur;
-   this->largeur = largeur;
+   this->m_hauteur = hauteur;
+   this->m_largeur = largeur;
 }
 
 int Couche::getHauteur () {
-   return hauteur;
+   return m_hauteur;
 }
 
 int Couche::getLargeur () {
-   return largeur;
+   return m_largeur;
 }
 
 void Couche::draw(sf::RenderTarget& target, sf::RenderStates states) const {
