@@ -2,19 +2,31 @@
 
 namespace render {
 
+CoucheMenu::CoucheMenu(){
 
-void draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    // on applique la transformation de l'entité -- on la combine avec celle qui a été passée par l'appelant
-        states.transform *= getTransform(); // getTransform() est définie par sf::Transformable
-
-        // on applique la texture
-        //states.texture = &m_texture;
-
-        // on peut aussi surcharger states.shader ou states.blendMode si nécessaire
-
-        // on dessine le tableau de vertex
-        target.draw(m_vertices, states);
 }
 
+CoucheMenu::~CoucheMenu(){
+
+}
+
+bool CoucheMenu::load(){
+
+    m_vertices.setPrimitiveType(sf::Triangles);
+    m_vertices.resize(3 * 4);
+
+    sf::Vertex* triangle = &m_vertices[0];
+    // on définit la position des sommets du triangle
+    triangle[0].position = sf::Vector2f(10, 10);
+    triangle[1].position = sf::Vector2f(100, 10);
+    triangle[2].position = sf::Vector2f(100, 100);
+
+    // on définit la couleur des sommets du triangle
+    triangle[0].color = sf::Color::Red;
+    triangle[1].color = sf::Color::Blue;
+    triangle[2].color = sf::Color::Green;
+
+    return true;
+}
 
 }
