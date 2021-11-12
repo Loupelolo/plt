@@ -38,8 +38,8 @@ bool Scene::afficherFenetre(std::vector<CoucheMenu> menus){
 
         for(unsigned int i=0; i<menus.size();i++ ){
             m_window.draw(menus[i]);
+            m_window.draw(menus[i].getTitre());
         }
-        m_window.draw(menus[0].ecrire(menus[0].getText()[0],20));
         m_window.display();
     }
     return 0;

@@ -18,14 +18,38 @@ CoucheMenu::~CoucheMenu(){
 
 }
 
-void CoucheMenu::setText(std::vector<std::string> texts){
+void CoucheMenu::setTexts(std::vector<sf::Text> texts){
     m_texts = texts;
 }
 
-std::vector<std::string> CoucheMenu::getText(){
+std::vector<sf::Text> CoucheMenu::getTexts(){
     return m_texts;
 }
 
+void CoucheMenu::setTitre(std::string texte, int tailleFont){
+
+    m_titre.setPosition(m_posX+15, m_posY+15);
+
+    // choix de la police à utiliser
+    m_titre.setFont(m_police); // font est un sf::Font
+
+    // choix de la chaîne de caractères à afficher
+    m_titre.setString(texte);
+
+    // choix de la taille des caractères
+    m_titre.setCharacterSize(tailleFont); // exprimée en pixels, pas en points !
+
+    // choix de la couleur du texte
+    m_titre.setFillColor(sf::Color::Black);
+
+    // choix du style du texte
+    //text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+
+}
+
+sf::Text CoucheMenu::getTitre(){
+    return m_titre;
+}
 
 bool CoucheMenu::load(sf::Color couleur){
 
@@ -48,29 +72,8 @@ bool CoucheMenu::load(sf::Color couleur){
     return true;
 }
 
-sf::Text CoucheMenu::ecrire(std::string texte, int tailleFont){
-    sf::Text text;
 
-    text.setPosition(m_posX+15, m_posY+15);
 
-    // choix de la police à utiliser
-    text.setFont(m_police); // font est un sf::Font
 
-    // choix de la chaîne de caractères à afficher
-    text.setString(texte);
-
-    // choix de la taille des caractères
-    text.setCharacterSize(tailleFont); // exprimée en pixels, pas en points !
-
-    // choix de la couleur du texte
-    text.setFillColor(sf::Color::Black);
-
-    // choix du style du texte
-    //text.setStyle(sf::Text::Bold | sf::Text::Underlined);
-
-    // puis, dans la boucle de dessin, entre window.clear() et window.display()
-    return text;
-
-}
 
 }
