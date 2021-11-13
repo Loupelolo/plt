@@ -35,11 +35,14 @@ namespace render{
     }
 
 
-bool CoucheTerrain::load(const std::string& tileset, sf::Vector2u tileSize, state::State state, int indice, unsigned int width, unsigned int height)
+bool CoucheTerrain::load(const std::string& tileset, sf::Vector2u tileSize, state::State state, int indice)
     {
         std::vector<state::Decor> tiles1;
         std::vector<state::Entite> tiles2;
         unsigned int taille;
+
+        int decalX = m_posX + 12 + tileSize.x*(18-m_largeur)/2;
+
         if(indice==0) {
             tiles1 = state.getDecors();
             taille = tiles1.size();
@@ -54,7 +57,7 @@ bool CoucheTerrain::load(const std::string& tileset, sf::Vector2u tileSize, stat
 
         // on redimensionne le tableau de vertex pour qu'il puisse contenir tout le niveau
         m_vertices.setPrimitiveType(sf::Quads);
-        m_vertices.resize(width * height * 4);
+        m_vertices.resize(taille * 4);
 
         int tv = 0;
 
@@ -75,10 +78,10 @@ bool CoucheTerrain::load(const std::string& tileset, sf::Vector2u tileSize, stat
             }
             
 
-            quad[0].position = sf::Vector2f(posX * tileSize.x +m_posX, posY * tileSize.y+m_posY);
-            quad[1].position = sf::Vector2f((posX + 1) * tileSize.x+m_posX, posY * tileSize.y+m_posY);
-            quad[2].position = sf::Vector2f((posX + 1) * tileSize.x+m_posX, (posY + 1) * tileSize.y+m_posY);
-            quad[3].position = sf::Vector2f(posX * tileSize.x+m_posX, (posY + 1) * tileSize.y+m_posY);
+            quad[0].position = sf::Vector2f(posX * tileSize.x +decalX, posY * tileSize.y+m_posY);
+            quad[1].position = sf::Vector2f((posX + 1) * tileSize.x+decalX, posY * tileSize.y+m_posY);
+            quad[2].position = sf::Vector2f((posX + 1) * tileSize.x+decalX, (posY + 1) * tileSize.y+m_posY);
+            quad[3].position = sf::Vector2f(posX * tileSize.x+decalX, (posY + 1) * tileSize.y+m_posY);
             // on définit ses quatre coordonnées de texture
 
             if(indice==1) tileSize =sf::Vector2u(tileSize.x/2, tileSize.y/2);

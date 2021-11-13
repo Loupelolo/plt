@@ -20,9 +20,11 @@ using namespace render;
 int main(int argc,char* argv[])
 {
     State state;
+
+    // Informations modifiables pour changer l'état
     Entite entite1("Diana");
-    entite1.setPositionX(0);
-    entite1.setPositionY(0);
+    entite1.setPositionX(4);
+    entite1.setPositionY(2);
     entite1.setPV(100);
     entite1.setPM(50);
     entite1.setType(0);
@@ -37,19 +39,27 @@ int main(int argc,char* argv[])
     entite2.setPM(3);
     entite1.setType(1);
 
-    std::vector<int> map =
+    Entite entite3("Elisabeth");
+    entite3.setPositionX(7);
+    entite3.setPositionY(0);
+    entite3.setPV(300);
+    entite3.setPM(500);
+    entite3.setType(2);
+
+    std::vector<int> map = //maximum 18 de largeur et 9 de hauteur
         {
-            0, 2, 5, 5,
-            0, 0, 4, 4,
-            1, 0, 3, 3,
-            1, 3, 3, 3,
+            5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5,
+            4, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 4,
+            4, 1, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 4,
+            4, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
         };
-
-    state.setTerrain(map);
-    state.setEntites({entite1,entite2});
-    state.setOrdreTour({entite1,entite2});
+    int nbLargeur = 13;
     state.setDe(6);
+    state.setEntites({entite1,entite2,entite3});
+    state.setOrdreTour({entite1,entite2,entite3});
 
+    //informations non-modifiables
+    state.setTerrain(map, nbLargeur);
 
     int largeurColonne1 = 150;
     int largeurColonne2 = 600;
@@ -74,7 +84,9 @@ int main(int argc,char* argv[])
     menuDes.setTitre({"Des :"},15);
 
     CoucheTerrain decor(largeurColonne1, 0);
+    decor.setDimensions(map.size()/nbLargeur, nbLargeur);
     CoucheTerrain perso(largeurColonne1, 0);
+    perso.setDimensions(map.size()/nbLargeur, nbLargeur);
 
     std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};
 

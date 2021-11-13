@@ -66,13 +66,13 @@ namespace state {
         m_de = de;
     }
 
-    void State::setTerrain (std::vector<int> map){
+    void State::setTerrain (std::vector<int> map, int largeur){
         std::vector<Decor> decor;
         m_terrain.resize(map.size());
         for(unsigned int i=0; i<map.size();i++){
             m_terrain[i].setType(map[i]);
-            m_terrain[i].setPositionX(i%4);
-            m_terrain[i].setPositionY(i/4);
+            m_terrain[i].setPositionX(i%largeur);
+            m_terrain[i].setPositionY(i/largeur);
         }
     }
 }

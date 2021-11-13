@@ -22,8 +22,8 @@ bool Scene::afficherFenetre(std::vector<CoucheMenu> menus, std::vector<CoucheTer
         return -1;
     }
 
-    terrains[0].load("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state, 0, 4, 4);
-    terrains[1].load("./res/roguelikecreatures.png", sf::Vector2u(32, 32), m_state, 1, 4, 4);
+    terrains[0].load("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state, 0);
+    terrains[1].load("./res/roguelikecreatures.png", sf::Vector2u(32, 32), m_state, 1);
 
 
     while (m_window.isOpen())
@@ -39,6 +39,9 @@ bool Scene::afficherFenetre(std::vector<CoucheMenu> menus, std::vector<CoucheTer
         // on dessine le niveau
         m_window.clear();
 
+        m_window.draw(terrains[0]);
+        m_window.draw(terrains[1]);
+
         for(unsigned int i=0; i<menus.size();i++ ){
             m_window.draw(menus[i]);
             m_window.draw(menus[i].getTitre());
@@ -47,8 +50,6 @@ bool Scene::afficherFenetre(std::vector<CoucheMenu> menus, std::vector<CoucheTer
                 m_window.draw(nouveau[j]);
             }
         }
-        m_window.draw(terrains[0]);
-        m_window.draw(terrains[1]);
         m_window.display();
     }
     return 0;
