@@ -135,9 +135,60 @@ Conteneurs d’élément :  les classes State et ElementTab permettent de conten
 \section{Rendu: Stratégie et Conception}
 
 \subsection{Stratégie de rendu d'un état}
+Pour obtenir un rendu d'état convenable et simple à implémenter nous avons décider de fonctionner par couche. Nous utilisons la bibliothèque SFML pour permettre un affichage efficace et facile à gérer. Nous avons donc un groupe de couche de menus (1 à 5, qui affichent les informations nécessaires au joueur) et un groupe de couche de terrain (6, qui affiche l'état du jeu) en lui-même. L'affichage se présentera ainsi de cette manière :
 
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[scale=0.7, angle=0]{images/plan.png}
+    \caption{Plan de l'affichage}
+    \label{fig:plan}
+\end{figure}
+
+\begin{itemize}
+    \item Case 1 : affichera le nom et l'ordre des entités en jeu (héros comme ennemis) et à terme pourrait aussi afficher le personnage en lui-même.
+    \item Case 2 : affichera des informations de base (PV, PM, etc.) du personnage en train de jouer
+    \item Case 3 : nous permettra d'afficher les actions disponibles (attaquer, se déplacer...) et à terme nous pourrons afficher sur le terrain la portée de l'action sélectionnée. 
+    \item Case 4 : nous permet d'afficher les informations sur la case sélectionnée, si elle est vide le menu sera vide mais si un personnage est sur cette case cela affichera les informations de celui-ci. A terme nous pourrions rajouter les informations sur un objet déposé ou n'afficher les informations que si le monstre a déjà été affronté etc.
+    \item Case 5 : nous permettra d'afficher le résultat du dé après la réalisation d'une action
+    \item Case 6 : nous permettra d'afficher le terrain en lui-même et les personnages.
+\end{itemize}
+
+Il sera nécessaire de gérer le nombre d'éléments maximum affichage (pour les actions ou le terrain par exemple) pour éviter qu'une case ne dépasse sur une autre ou des conflits entre les menus et les sélections du joueur.
+
+De plus il nous faudra gérer plusieurs mode différents : le mode de jeu que nous avons défini ici, le mode menu, le mode nouvelle partie, etc.
+
+Pour l'exemple, nous générons un état avec trois entités (Diana, Charles et Elisabeth) avec chacun une position et quelques statistiques, ainsi que des actions supplémentaires et voilà un rendu provisoire de ce à quoi le menu jeu pourra ressembler dans ce cas :
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width =.8\paperwidth, angle=0]{images/rendu.png}
+    \caption{Rendu de l'affichage}
+    \label{fig:rendu}
+\end{figure}
+\newpage
 
 \subsection{Conception logiciel}
+
+Pour la conception logiciel, nous avons décidé de fonctionner par couche, avec deux types de couches : les couches menus, qui afficherons majoritairement du texte avec un agencement précis, et les couches de terrain qui se chargerons d'afficher l'état du jeu donc le terrain en lui-même, les personnages et la portée de l'action sélectionnée. Nous avons donc deux classes qui héritent d'une classe couche globale qui nous permet de gérer plus facilement leur affichage.
+
+L'organisation et l'affichage est géré par un objet Scene, qui va répertorier à la fois l'état de jeu, l'état du joueur, pour permettre l'affichage dans les couches. Ainsi les couches en elle-même n'ont aucune information sur l'état de jeu et se contente d'afficher les informations issues de la scène. Pour permettre l'affiche, nous utilisons les classe sf::Transformable et sf::Drawable comme interface pour les couches.
+
+Par manque de temps, nous avons du modifier le state (figure \ref{fig:newState} pour permettre une exploitation plus simple des différents éléments de l'état, notamment en y limitant l'utilisation de la classe ElementTab.
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width =.8\paperwidth, angle=0]{images/render.png}
+    \caption{Diagramme de classe de render}
+    \label{fig:render}
+\end{figure}
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width =.8\paperwidth, angle=0]{images/state.png}
+    \caption{Version du diagramme de classe de state utilisé pour l'affichage}
+    \label{fig:newState}
+\end{figure}
+
+
 
 %\begin{landscape}
 %\begin{figure}[p]
