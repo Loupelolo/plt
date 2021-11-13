@@ -17,14 +17,6 @@ namespace state {
         //declenche l'action de la case
     }
 
-    int Decor::getType (){
-        return m_type;
-    }
-
-    void Decor::setType (int type){
-        m_type = type;
-    }
-
     int Decor::getTexture (){
         return m_texture;
     }

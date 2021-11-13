@@ -5,6 +5,10 @@ namespace state {
 
     }
 
+    ActionSupp::ActionSupp (std::string nom) {
+        m_nom = nom;
+    }
+
     ActionSupp::~ActionSupp () {
         
     }

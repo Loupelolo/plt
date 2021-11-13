@@ -61,8 +61,12 @@ namespace state {
         m_PV = PV;
     }
 
-    int Entite::getPM (int PM){
+    int Entite::getPM (){
         return m_PM;
+    }
+
+    void Entite::setPM (int PM){
+        m_PM = PM;
     }
 
     std::vector<Equipement> Entite::getEquipement (){

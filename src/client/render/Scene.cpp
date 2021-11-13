@@ -15,13 +15,16 @@ Scene::~Scene(){
 }
 
 
-bool Scene::afficherFenetre(std::vector<CoucheMenu> menus){
-    std::vector<sf::Color> couleur = {sf::Color::Red, sf::Color::Blue, sf::Color::Green, sf::Color::Red, sf::Color::Blue};
+bool Scene::afficherFenetre(std::vector<CoucheMenu> menus, std::vector<CoucheTerrain> terrains){
     
     for(unsigned int i=0; i<menus.size();i++ ){
-        if (!menus[i].load(couleur[i]))
+        if (!menus[i].load())
         return -1;
     }
+
+    terrains[0].load("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state, 0, 4, 4);
+    terrains[1].load("./res/roguelikecreatures.png", sf::Vector2u(32, 32), m_state, 1, 4, 4);
+
 
     while (m_window.isOpen())
     {
@@ -39,7 +42,13 @@ bool Scene::afficherFenetre(std::vector<CoucheMenu> menus){
         for(unsigned int i=0; i<menus.size();i++ ){
             m_window.draw(menus[i]);
             m_window.draw(menus[i].getTitre());
+            std::vector<sf::Text> nouveau = menus[i].update(m_state,m_caseActuelle);
+            for(unsigned int j =0; j<nouveau.size(); j++ ){
+                m_window.draw(nouveau[j]);
+            }
         }
+        m_window.draw(terrains[0]);
+        m_window.draw(terrains[1]);
         m_window.display();
     }
     return 0;
@@ -49,13 +58,13 @@ bool Scene::afficherFenetre(std::vector<CoucheMenu> menus){
 
 // Setters and Getters
 
-/* void Scene::setState (state::State state) {
+ void Scene::setState (state::State state) {
    m_state = state;
 }
 
 state::State Scene::getState () {
-   return state;
-} */
+   return m_state;
+} 
 
 void Scene::setActionSelectionnee (int actionSelectionnee) {
    m_actionSelectionnee = actionSelectionnee;
@@ -79,6 +88,14 @@ int Scene::getSceneID(){
 
 void Scene::setSceneID(int sceneID){
     m_sceneID = sceneID;
+}
+
+sf::Vector2f Scene::getCaseActuelle(){
+    return m_caseActuelle;
+}
+
+void Scene::setCaseActuelle(sf::Vector2f caseActuelle){
+    m_caseActuelle = caseActuelle;
 }
 
 

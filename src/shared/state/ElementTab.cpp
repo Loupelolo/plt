@@ -2,7 +2,8 @@
 
 namespace state {
     ElementTab::ElementTab () {
-
+        m_hauteur =4;
+        m_largeur =4;
     }
 
     ElementTab::~ElementTab () {
@@ -37,4 +38,15 @@ namespace state {
     void ElementTab::setLargeur (unsigned int largeur){
         m_largeur = largeur;
     }
+
+    /* void ElementTab::setDecors (std::vector<int> map, int texture , int environnement ){
+        std::vector<Decor> decor;
+        decor.resize(map.size());
+        for(unsigned int i=0; i<map.size();i++){
+            decor[i].setType(map[i]);
+            decor[i].setTexture(texture);
+            decor[i].setEnvironnement(environnement);
+        }
+    } */
+
 }

@@ -24,4 +24,12 @@ namespace state {
     void Element::setPositionY (int positionY){
         m_positionY = positionY;
     }
+
+    int Element::getType (){
+        return m_type;
+    }
+
+    void Element::setType (int type){
+        m_type = type;
+    }
 }
