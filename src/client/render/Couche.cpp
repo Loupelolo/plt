@@ -2,6 +2,8 @@
 
 namespace render {
 
+// Constructeur & destructeur
+
 Couche::Couche(){
    m_police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
 }
@@ -18,10 +20,9 @@ Couche::~Couche(){
 
 }
 
-void Couche::setPos (int x, int y) {
-   m_posX = x;
-   m_posY = y;
-}
+
+
+// Setters & Getters
 
 int Couche::getPosX () {
    return m_posX;
@@ -31,10 +32,9 @@ int Couche::getPosY () {
    return m_posY;
 }
 
-
-void Couche::setDimensions (int hauteur, int largeur) {
-   this->m_hauteur = hauteur;
-   this->m_largeur = largeur;
+void Couche::setPos (int x, int y) {
+   m_posX = x;
+   m_posY = y;
 }
 
 int Couche::getHauteur () {
@@ -45,17 +45,28 @@ int Couche::getLargeur () {
    return m_largeur;
 }
 
-void Couche::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    // on applique la transformation de l'entité -- on la combine avec celle qui a été passée par l'appelant
-        states.transform *= getTransform(); // getTransform() est définie par sf::Transformable
-
-        // on applique la texture
-        states.texture = &m_texture;
-
-        // on peut aussi surcharger states.shader ou states.blendMode si nécessaire
-
-        // on dessine le tableau de vertex
-        target.draw(m_vertices, states);
+void Couche::setDimensions (int hauteur, int largeur) {
+   this->m_hauteur = hauteur;
+   this->m_largeur = largeur;
 }
+
+
+
+// Méthodes
+
+void Couche::draw(sf::RenderTarget& target, sf::RenderStates states) const { //méthode virtuel de Drawable à redéfinir
+   // on applique la transformation de l'entité -- on la combine avec celle qui a été passée par l'appelant
+   states.transform *= getTransform(); // getTransform() est définie par sf::Transformable
+
+   // on applique la texture
+   states.texture = &m_texture;
+
+   // on peut aussi surcharger states.shader ou states.blendMode si nécessaire
+
+   // on dessine le tableau de vertex
+   target.draw(m_vertices, states);
+}
+
+
 
 }

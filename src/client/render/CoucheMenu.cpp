@@ -3,6 +3,8 @@
 
 namespace render {
 
+// Constructeur & destructeur
+
 CoucheMenu::CoucheMenu(){
     m_texture.loadFromFile("./res/parchemin.png");
 }
@@ -20,12 +22,20 @@ CoucheMenu::~CoucheMenu(){
 
 }
 
-void CoucheMenu::setTexts(std::vector<sf::Text> texts){
-    m_texts = texts;
+
+
+// Setters & Getters
+
+int CoucheMenu::getType () {
+   return m_type;
 }
 
-std::vector<sf::Text> CoucheMenu::getTexts(){
-    return m_texts;
+void CoucheMenu::setType (int type) {
+   m_type = type;
+}
+
+sf::Text CoucheMenu::getTitre(){
+    return m_titre;
 }
 
 void CoucheMenu::setTitre(std::string texte, int tailleFont){
@@ -49,17 +59,17 @@ void CoucheMenu::setTitre(std::string texte, int tailleFont){
 
 }
 
-sf::Text CoucheMenu::getTitre(){
-    return m_titre;
+std::vector<sf::Text> CoucheMenu::getTexts(){
+    return m_texts;
 }
 
-void CoucheMenu::setType (int type) {
-   m_type = type;
+void CoucheMenu::setTexts(std::vector<sf::Text> texts){
+    m_texts = texts;
 }
 
-int CoucheMenu::getType () {
-   return m_type;
-}
+
+
+// Méthodes
 
 bool CoucheMenu::load(){
 
@@ -85,9 +95,9 @@ bool CoucheMenu::load(){
 std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseActuelle){
     std::vector<sf::Text> texts;
     std::vector<std::string> str;
-    std::vector<state::Entite> ordreEntite = state.getOrdreTour();
+    std::vector<state::Entite*> ordreEntite = state.getOrdreTour();
     std::vector<state::Entite> entites = state.getEntites();
-    state::Entite persoActuel = state.getOrdreTour()[0];
+    state::Entite persoActuel = *state.getOrdreTour()[0];
     std::vector<state::ActionSupp> autresActions = persoActuel.getAutresActions();
 
     switch (m_type)
@@ -100,7 +110,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseAc
             for(int i = 0; i<max; i++){
                 texts[i].setPosition(m_posX + 20,m_posY+40+i*15); 
                 texts[i].setFont(m_police); 
-                texts[i].setString(std::to_string(i)+"- " + ordreEntite[i].getNom());
+                texts[i].setString(std::to_string(i)+"- " + (*ordreEntite[i]).getNom());
                 texts[i].setCharacterSize(15); 
                 texts[i].setFillColor(sf::Color::Black);
             } 
@@ -167,6 +177,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseAc
 
     return texts;
 }
+
 
 
 

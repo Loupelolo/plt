@@ -1,35 +1,45 @@
 #include "Equipement.h"
 
 namespace state {
-    Equipement::Equipement () {
 
-    }
+// Constructeur & destructeur
 
-    Equipement::~Equipement () {
-        
-    }
+Equipement::Equipement () {
 
-    std::string Equipement::getNom (){
-        return m_nom;
-    }
+}
 
-    void Equipement::setNom (std::string nom){
-        m_nom = nom;
-    }
+Equipement::~Equipement () {
+    
+}
 
-    int Equipement::getStatutInflige (){
-        return m_statutInflige;
-    }
 
-    void Equipement::setStatutInflige (int statutInflige){
-        m_statutInflige = statutInflige;
-    }
 
-    std::vector<int> Equipement::getBonusStat (){
-        return m_bonusStat;
-    }
+// Setters & Getters
 
-    void Equipement::setBonusStat (std::vector<int> bonusStat){
-        m_bonusStat = bonusStat;
-    }
+std::string Equipement::getNom (){
+    return m_nom;
+}
+
+void Equipement::setNom (std::string nom){
+    m_nom = nom;
+}
+
+int Equipement::getStatutInflige (){
+    return m_statutInflige;
+}
+
+void Equipement::setStatutInflige (int statutInflige){
+    m_statutInflige = statutInflige;
+}
+
+std::vector<int> Equipement::getBonusStat (){
+    return m_bonusStat;
+}
+
+void Equipement::setBonusStat (std::vector<int> bonusStat){
+    m_bonusStat = bonusStat;
+}
+
+
+
 }

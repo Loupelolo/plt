@@ -1,15 +1,22 @@
 #include "ActionSuppDef.h"
 
 namespace state {
-    ActionSuppDef::ActionSuppDef () {
 
-    }
+// Constructeur & destructeur
 
-    ActionSuppDef::~ActionSuppDef () {
+ActionSuppDef::ActionSuppDef () {
 
-    }
+}
 
-    void defense (Entite cible){
-        //soin d'une cible
-    }
+ActionSuppDef::~ActionSuppDef () {
+
+}
+
+
+
+// Méthodes
+
+void defense (Entite cible){
+    //soin d'une cible
+}
 }

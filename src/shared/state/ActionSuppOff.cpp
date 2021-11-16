@@ -1,23 +1,37 @@
 #include "ActionSuppOff.h"
 
 namespace state {
-    ActionSuppOff::ActionSuppOff () {
 
-    }
+// Constructeur & destructeur
 
-    ActionSuppOff::~ActionSuppOff () {
+ActionSuppOff::ActionSuppOff () {
 
-    }
+}
 
-    void ActionSuppOff::attaque (Entite cible){
-        //attaque avec l'arme offensive
-    }
+ActionSuppOff::~ActionSuppOff () {
 
-    std::vector<bool> ActionSuppOff::getStatuts (){
-        return m_statuts;
-    }
+}
 
-    void ActionSuppOff::setStatuts (std::vector<bool> statuts){
-        m_statuts = statuts;
-    }
+
+
+// Setters & Getters
+
+std::vector<bool> ActionSuppOff::getStatuts (){
+    return m_statuts;
+}
+
+void ActionSuppOff::setStatuts (std::vector<bool> statuts){
+    m_statuts = statuts;
+}
+
+
+
+// Méthodes
+
+void ActionSuppOff::attaque (Entite cible){
+    //attaque avec l'arme offensive
+}
+
+
+
 }
