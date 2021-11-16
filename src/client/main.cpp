@@ -22,6 +22,7 @@ int main(int argc,char* argv[])
     State state;
 
     // Informations modifiables pour changer l'état
+    //création des personnages
     Entite entite1("Diana");
     entite1.setPositionX(4);
     entite1.setPositionY(2);
@@ -46,6 +47,7 @@ int main(int argc,char* argv[])
     entite3.setPM(500);
     entite3.setType(2);
 
+    //création de la map
     std::vector<int> map = //maximum 18 de largeur et 9 de hauteur
         {
             5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5,
@@ -54,13 +56,17 @@ int main(int argc,char* argv[])
             4, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
         };
     int nbLargeur = 13;
+
+    //implémentation dans le state
     state.setDe(6);
     state.setEntites({entite1,entite2,entite3});
-    state.setOrdreTour({entite1,entite2,entite3});
+    state.setOrdreTour({&entite1,&entite2,&entite3});
 
     //informations non-modifiables
-    state.setTerrain(map, nbLargeur);
+    Decor decor(map);
+    state.setDecor(decor);
 
+    //définition de l'affichage des menus
     int largeurColonne1 = 150;
     int largeurColonne2 = 600;
     int largeurColonne3 = 150;
@@ -70,7 +76,6 @@ int main(int argc,char* argv[])
     int hauteurLigne2 = 150;
     int hauteurFenetre = hauteurLigne1+hauteurLigne2;
 
-    cout << "It works !" << endl;
 
     CoucheMenu menuOrdre(0,0,0,hauteurLigne1,largeurColonne1);
     menuOrdre.setTitre({"Ordre :"},15);
@@ -83,17 +88,21 @@ int main(int argc,char* argv[])
     CoucheMenu menuDes(4,largeurColonne1+largeurColonne2,hauteurLigne1,hauteurLigne2,largeurColonne3);
     menuDes.setTitre({"Des :"},15);
 
-    CoucheTerrain decor(largeurColonne1, 0);
-    decor.setDimensions(map.size()/nbLargeur, nbLargeur);
-    CoucheTerrain perso(largeurColonne1, 0);
-    perso.setDimensions(map.size()/nbLargeur, nbLargeur);
+    //définition de l'affichage du terrain
+    CoucheTerrain coucheDecor(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
+    CoucheTerrain couchePerso(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
 
     std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};
 
+    //définition de l'affichage
     Scene scene(hauteurFenetre,largeurFenetre);
     scene.setState(state);
     scene.setCaseActuelle(sf::Vector2f(2,1));
-    scene.afficherFenetre(menus,{decor,perso});
+
+    cout << "It works !" << endl;
+
+    //Affichage
+    scene.afficherFenetre(menus,{coucheDecor,couchePerso});
 
     return 0;
 }

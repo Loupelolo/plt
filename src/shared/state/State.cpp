@@ -1,78 +1,80 @@
 #include "State.h"
+#include "Decor.h"
 #include <iostream>
 
 namespace state {
-    State::State () {
 
-    }
+// Constructeur & destructeur
 
-    State::~State () {
+State::State () {
 
-    }
+}
 
-    void State::nouveauTour (){
-        //initialisation d'un nouveau tour
-    }
+State::~State () {
 
-    void State::joueurSuivant (){
-        //passage au personnage suivant
-    }
+}
 
-    int State::getNbTour (){
-        return m_nbTour;
-    }
 
-    void State::setNbTour (int nbTour){
-        m_nbTour = nbTour;
-    }
 
-    std::vector<Decor> State::getDecors (){
-        return m_terrain;
-    }
+// Setters & Getters
 
-    void State::setDecors (std::vector<Decor> decors){
-        m_terrain = decors;
-    }
+int State::getNbTour (){
+    return m_nbTour;
+}
 
-    std::vector<Entite> State::getEntites (){
-        return m_entites;
-    }
+void State::setNbTour (int nbTour){
+    m_nbTour = nbTour;
+}
 
-    void State::setEntites (std::vector<Entite> entites){
-        m_entites = entites;
-    }
+int State::getIndiceTour (){
+    return m_indiceTour;
+}
 
-    std::vector<Entite> State::getOrdreTour (){
-        return m_ordreTour;
-    }
+void State::setIndiceTour (int indiceTour){
+    m_indiceTour = indiceTour;
+}
 
-    void State::setOrdreTour (std::vector<Entite> ordreTour){
-        m_ordreTour = ordreTour;
-    }
+Decor State::getDecor (){
+    return m_decor;
+}
 
-    int State::getIndiceTour (){
-        return m_indiceTour;
-    }
+void State::setDecor (Decor decors){
+    m_decor = decors;
+}
 
-    void State::setIndiceTour (int indiceTour){
-        m_indiceTour = indiceTour;
-    }
+std::vector<Entite> State::getEntites (){
+    return m_entites;
+}
 
-    int State::getDe (){
-        return m_de;
-    }
+void State::setEntites (std::vector<Entite> entites){
+    m_entites = entites;
+}
 
-    void State::setDe (int de){
-        m_de = de;
-    }
+std::vector<Entite*> State::getOrdreTour (){
+    return m_ordreTour;
+}
 
-    void State::setTerrain (std::vector<int> map, int largeur){
-        std::vector<Decor> decor;
-        m_terrain.resize(map.size());
-        for(unsigned int i=0; i<map.size();i++){
-            m_terrain[i].setType(map[i]);
-            m_terrain[i].setPositionX(i%largeur);
-            m_terrain[i].setPositionY(i/largeur);
-        }
-    }
+void State::setOrdreTour (std::vector<Entite*> ordreTour){
+    m_ordreTour = ordreTour;
+}
+
+int State::getDe (){
+    return m_de;
+}
+
+void State::setDe (int de){
+    m_de = de;
+}
+
+
+
+// Méthodes
+
+void State::nouveauTour (){
+    //initialisation d'un nouveau tour
+}
+
+void State::joueurSuivant (){
+    //passage au personnage suivant
+}
 }
