@@ -69,11 +69,13 @@ Le but du joueur est de réaliser la quête définie en début de partie. Pour c
 \section{Description et conception des états}
 
 \subsection{Description des états}
-Un état de jeu est constitué d'un tableau d'éléments représentant la grille du jeu (donc les murs, le sol...) et un autre tableau avec les personnages (appelé entité, qui peuvent à la fois être des héros ou des ennemis). On note aussi dans l'état de jeu le nombre de tour déjà joué, ainsi que l'ordre de jeu des entités et l'entité dont c'est le tour.
+Un état de jeu est constitué d'un décor (tableaux d'éléments représentant la grille du jeu donc les murs, le sol...) et un autre tableau avec les personnages (appelé entité, qui peuvent à la fois être des héros ou des ennemis). On note aussi dans l'état de jeu le nombre de tour déjà joué, ainsi que l'ordre de jeu des entités et le résultat de dé de l'action effectuée.
 
 \subsubsection{Éléments fixes}
-La grille du plateau de jeu est constitué d'un tableau d'éléments de la classe "Décor". Un décor peut avoir un seul type parmi les suivants :
 
+Le décor est constitué d'une carte de case ayant chacun un type particulier, dans la liste suivante ainsi qu'une météo et une lumière.
+
+Voilà les types de case possibles :
 \begin{itemize}
     \item None : état passif, la case "n'existe pas" pour le joueur
     \item Mur : élément infranchissable et un obstacle visuel (on ne peut ni voir ni tirer au travers par exemple)
@@ -85,10 +87,6 @@ La grille du plateau de jeu est constitué d'un tableau d'éléments de la class
 \end{itemize}
 
 Ces éléments de décor ont donc besoin d'une méthode leur permettant de passer de leur état de "cases spéciales" (trésor, piège...) à un état de case normale tout en effectuant l'action qui leur est associé (donner un équipement pour un trésor ou infliger des dégâts pour un piège).
-
-Chaque case est associé à un objet de la classe environnement qui définit à la fois la luminosité ambiante et la météo (neige, pluie, orage...).
-
-Un autre argument nous permet de choisir la texture parmi une liste de textures prédéfinie nous permettant de faire varier les décors (forêt, intérieur du donjon...).
 
 
 \subsubsection{Entités}
@@ -110,15 +108,19 @@ Du côté des différences entre ennemis et héros, les héros ont, en plus de c
 
 \subsection{Conception Logiciel}
 
-Le diagramme des classes pour les états est présenté en Figure 5, dont nous pouvons mettre en évidence les groupes de classes suivants :
+Le diagramme des classes pour les états est présenté en Figure \ref{fig:diaClasseEtat}, dont nous pouvons mettre en évidence les groupes de classes suivants :
 
-Classes élément : les classes Entité, Décor, Héros, Ennemi et Équipement représentent les différentes catégories et types d'élément. Les éléments peuvent êtres séparés en trois catégories. Les éléments mobiles (Héros et Ennemi), les éléments fixes (Décor) et les éléments invisibles (équipement). Ces derniers dépendent forcément d'une Entité et ne peuvent pas exister par eux même.  
+Décor : La grille du plateau de jeu est constitué d'un tableau d'éléments de la classe "Décor". Un décor est constitué d'une dimension (nombre de cases en hauteur et en largeur) de tableau d'entier définissant la carte et donc le type de chaque case, un définissant la météo (neige, pluie, orage...) de chaque case et un définissant la lumière de chaque case.
 
-Conteneurs d’élément :  les classes State et ElementTab permettent de contenir des ensembles d’éléments. ElementTab est un tableau en deux dimension d’éléments, par exemple pour contenir la grille des éléments du niveau. Il peut également être considéré comme un tableau à une dimension dans le cas où la hauteur (height) est égale à 1 (utile pour la liste des personnages). Enfin, la classe State est le conteneur principal, à partir duquel on peut accéder à toutes les données de l’état.
+Définition d'une entité : Une entité est soit de type Héros (jouable), soit de type Ennemi (non-jouable). La classe Entité est donc abstraite. Chaque entité peut avoir une liste d'équipements et d'actions supplémentaires qui améliore leur statistique et ajoute des acitons possibles.
+
+Conteneur d’élément :  La classe State est le conteneur principal, à partir duquel on peut accéder à toutes les données de l’état.
+
+Sur la figure \ref{fig:diaClasseEtat}, nous avons donc en gris la classe qui contient toutes les informations, en rouge la classe qui défini le décor, en bleu les personnages en eux-mêmes et en jaune les objets et bonus pouvant être possédé par le joueur.
 
 \begin{figure}[hbt!]
     \centering
-    \includegraphics[scale=0.8, angle=0]{images/State_dia.png}
+    \includegraphics[width =.75\paperwidth, angle=0]{images/state.png}
     \caption{Diagramme des classes d'état}
     \label{fig:diaClasseEtat}
 \end{figure}
@@ -146,10 +148,10 @@ Pour obtenir un rendu d'état convenable et simple à implémenter nous avons d�
 
 \begin{itemize}
     \item Case 1 : affichera le nom et l'ordre des entités en jeu (héros comme ennemis) et à terme pourrait aussi afficher le personnage en lui-même.
-    \item Case 2 : affichera des informations de base (PV, PM, etc.) du personnage en train de jouer
+    \item Case 2 : affichera des informations de base (PV, PM, etc.) du personnage en train de jouer.
     \item Case 3 : nous permettra d'afficher les actions disponibles (attaquer, se déplacer...) et à terme nous pourrons afficher sur le terrain la portée de l'action sélectionnée. 
     \item Case 4 : nous permet d'afficher les informations sur la case sélectionnée, si elle est vide le menu sera vide mais si un personnage est sur cette case cela affichera les informations de celui-ci. A terme nous pourrions rajouter les informations sur un objet déposé ou n'afficher les informations que si le monstre a déjà été affronté etc.
-    \item Case 5 : nous permettra d'afficher le résultat du dé après la réalisation d'une action
+    \item Case 5 : nous permettra d'afficher le résultat du dé après la réalisation d'une action.
     \item Case 6 : nous permettra d'afficher le terrain en lui-même et les personnages.
 \end{itemize}
 
@@ -170,22 +172,13 @@ Pour l'exemple, nous générons un état avec trois entités (Diana, Charles et 
 
 Pour la conception logiciel, nous avons décidé de fonctionner par couche, avec deux types de couches : les couches menus, qui afficherons majoritairement du texte avec un agencement précis, et les couches de terrain qui se chargerons d'afficher l'état du jeu donc le terrain en lui-même, les personnages et la portée de l'action sélectionnée. Nous avons donc deux classes qui héritent d'une classe couche globale qui nous permet de gérer plus facilement leur affichage.
 
-L'organisation et l'affichage est géré par un objet Scene, qui va répertorier à la fois l'état de jeu, l'état du joueur, pour permettre l'affichage dans les couches. Ainsi les couches en elle-même n'ont aucune information sur l'état de jeu et se contente d'afficher les informations issues de la scène. Pour permettre l'affiche, nous utilisons les classe sf::Transformable et sf::Drawable comme interface pour les couches.
-
-Par manque de temps, nous avons du modifier le state (figure \ref{fig:newState} pour permettre une exploitation plus simple des différents éléments de l'état, notamment en y limitant l'utilisation de la classe ElementTab.
+L'organisation et l'affichage est géré par un objet Scene, qui va répertorier à la fois l'état de jeu, l'état du joueur, pour permettre l'affichage dans les couches. Ainsi les couches en elles-mêmes n'ont aucune information sur l'état de jeu et se contente d'afficher les informations issues de la scène. Pour permettre l'affiche, nous utilisons les classe sf::Transformable et sf::Drawable comme interface pour les couches.
 
 \begin{figure}[hbt!]
     \centering
     \includegraphics[width =.8\paperwidth, angle=0]{images/render.png}
     \caption{Diagramme de classe de render}
     \label{fig:render}
-\end{figure}
-
-\begin{figure}[hbt!]
-    \centering
-    \includegraphics[width =.8\paperwidth, angle=0]{images/state.png}
-    \caption{Version du diagramme de classe de state utilisé pour l'affichage}
-    \label{fig:newState}
 \end{figure}
 
 

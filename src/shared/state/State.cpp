@@ -26,14 +26,6 @@ void State::setNbTour (int nbTour){
     m_nbTour = nbTour;
 }
 
-int State::getIndiceTour (){
-    return m_indiceTour;
-}
-
-void State::setIndiceTour (int indiceTour){
-    m_indiceTour = indiceTour;
-}
-
 Decor State::getDecor (){
     return m_decor;
 }
