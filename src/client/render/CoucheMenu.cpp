@@ -9,13 +9,13 @@ CoucheMenu::CoucheMenu(){
     m_texture.loadFromFile("./res/parchemin.png");
 }
 
-CoucheMenu::CoucheMenu(int type,int posX, int posY, int hauteur, int largeur){
+CoucheMenu::CoucheMenu(int type, int posX, int posY, int hauteur, int largeur){
    m_texture.loadFromFile("./res/parchemin.png");
    m_type = type;
-   this->m_posX = posX;
-   this->m_posY = posY;
-   this->m_hauteur = hauteur;
-   this->m_largeur = largeur;
+   m_posX = posX;
+   m_posY = posY;
+   m_hauteur = hauteur;
+   m_largeur = largeur;
 }
 
 CoucheMenu::~CoucheMenu(){
