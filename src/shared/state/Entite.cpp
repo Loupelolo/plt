@@ -1,5 +1,7 @@
 #include "Entite.h"
 
+//ordre des stats : attaque, defense, esquive, coupCritique, PVMax, PMMax, portée, initiative, deplacement
+
 namespace state {
 
 // Constructeur & destructeur
@@ -10,6 +12,7 @@ Entite::Entite () {
 
 Entite::Entite (std::string nom) {
     m_nom = nom;
+    m_statutsSubis = {false, false, false, false, false};
 }
 
 Entite::~Entite () {
@@ -112,7 +115,7 @@ bool Entite::getStatutSubi (int index){
     return m_statutsSubis[index];
 }
 
-std::vector<bool> Entite::getStatusSubis (){
+std::vector<bool> Entite::getStatutsSubis (){
     return m_statutsSubis;
 }
 

@@ -10,10 +10,10 @@ Couche::Couche(){
 
 Couche::Couche(int posX, int posY, int hauteur, int largeur){
    m_police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
-   this->m_posX = posX;
-   this->m_posY = posY;
-   this->m_hauteur = hauteur;
-   this->m_largeur = largeur;
+   m_posX = posX;
+   m_posY = posY;
+   m_hauteur = hauteur;
+   m_largeur = largeur;
 }
 
 Couche::~Couche(){
@@ -46,8 +46,8 @@ int Couche::getLargeur () {
 }
 
 void Couche::setDimensions (int hauteur, int largeur) {
-   this->m_hauteur = hauteur;
-   this->m_largeur = largeur;
+   m_hauteur = hauteur;
+   m_largeur = largeur;
 }
 
 

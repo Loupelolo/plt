@@ -24,11 +24,11 @@ void Equipement::setNom (std::string nom){
     m_nom = nom;
 }
 
-int Equipement::getStatutInflige (){
+Statut Equipement::getStatutInflige (){
     return m_statutInflige;
 }
 
-void Equipement::setStatutInflige (int statutInflige){
+void Equipement::setStatutInflige (Statut statutInflige){
     m_statutInflige = statutInflige;
 }
 
