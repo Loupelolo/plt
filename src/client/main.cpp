@@ -23,7 +23,7 @@ int main(int argc,char* argv[])
 
     // Informations modifiables pour changer l'état
     //création des personnages
-    Entite entite1("Diana");
+    Heros entite1("Diana", MAGE);
     entite1.setPositionX(4);
     entite1.setPositionY(2);
     entite1.setPV(100);
@@ -32,6 +32,8 @@ int main(int argc,char* argv[])
     ActionSupp action1("Boule de feu");
     ActionSupp action2("Soin");
     entite1.setAutresActions({action1, action2});
+
+    cout<<entite1.getClasse() <<endl;
 
     Entite entite2("Charles");
     entite2.setPositionX(2);
@@ -48,13 +50,13 @@ int main(int argc,char* argv[])
     entite3.setType(2);
 
     //création de la map
-    std::vector<int> map = //maximum 18 de largeur et 9 de hauteur
-        {
-            5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5,
-            4, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 4,
-            4, 1, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 4,
-            4, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-        };
+    std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
+        {{
+            MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
+            MUR , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , MUR ,
+            MUR , EAU , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , MUR ,
+            MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
+        }};
     int nbLargeur = 13;
 
     //implémentation dans le state

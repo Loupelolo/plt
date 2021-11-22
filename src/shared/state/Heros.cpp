@@ -8,7 +8,7 @@ Heros::Heros () {
 
 }
 
-Heros::Heros (std::string nom, std::string classe){
+Heros::Heros (std::string nom, Classe classe){
     m_nom = nom;
     m_classe = classe;
 }
@@ -21,11 +21,11 @@ Heros::~Heros () {
 
 // Setters & Getters
 
-std::string Heros::getClasse (){
+Classe Heros::getClasse (){
     return m_classe;
 }
 
-void Heros::setClasse (std::string classe){
+void Heros::setClasse (Classe classe){
     m_classe = classe;
 }
 
