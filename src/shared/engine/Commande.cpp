@@ -10,7 +10,7 @@ namespace engine {
     
     }
 
-    int Commande::getCommandeTypeId(){
+    CommandeTypeId Commande::getCommandeTypeId(){
         return m_commandeTypeId;
     }
 
