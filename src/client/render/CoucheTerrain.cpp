@@ -51,7 +51,7 @@ void CoucheTerrain::setCasesAccessibles (std::vector<std::vector<int>> casesAcce
 
 bool CoucheTerrain::loadDecor(const std::string& tileset, sf::Vector2u tileSize, state::Decor decor){
     int decalX = m_posX + 12 + m_tailleTuile*(18-m_largeur)/2; //décallage vertical pour centrer
-    std::vector<int> map = decor.getMap();
+    std::vector<state::TypeTerrain> map = decor.getMap();
 
     // on charge la texture du tileset
     if (!m_texture.loadFromFile(tileset))

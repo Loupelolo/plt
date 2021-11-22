@@ -58,13 +58,14 @@ int main(int argc,char* argv[])
         entite3.setType(2);
 
         //création de la map
-        std::vector<int> map = //maximum 18 de largeur et 9 de hauteur
-            {
-                5, 5, 5, 5, 5, 5, 5, 3, 5, 5, 5, 5, 5,
-                4, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 4,
-                4, 1, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 4,
-                4, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-            };
+        //création de la map
+        std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
+          {
+            MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
+            PORT, SOL , SOL , SOL , SOL , SOL , SOL , SOL , OBST, SOL , SOL , SOL , SECR,
+            MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
+            MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
+          };
         int nbLargeur = 13;
 
         //implémentation dans le state
@@ -117,6 +118,5 @@ int main(int argc,char* argv[])
     {
         cout << "Veuillez entrer une commande" << endl << "Commandes disponibles : hello, state, render" << endl;
     }
-
     return 0;
 }
