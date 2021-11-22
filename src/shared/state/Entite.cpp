@@ -112,7 +112,7 @@ bool Entite::getStatutSubi (int index){
     return m_statutsSubis[index];
 }
 
-std::vector<bool> Entite::getStatusSubis (){
+std::vector<bool> Entite::getStatutsSubis (){
     return m_statutsSubis;
 }
 
