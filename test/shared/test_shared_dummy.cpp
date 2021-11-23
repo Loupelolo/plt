@@ -66,9 +66,9 @@ BOOST_AUTO_TEST_CASE(TestStateDecor)
 {
   {
     //Test du constructeur Decor(std::vector<int> map)
-    std::vector<int> mapTest{0, 1, 2};
+    std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
     Decor decorTest(mapTest);
-    std::vector<int> testedMap = decorTest.getMap();
+    std::vector<TypeTerrain> testedMap = decorTest.getMap();
     for (unsigned int i = 0; i < 3; i++) 
     {
       BOOST_CHECK_EQUAL(testedMap[i], i);
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(TestStateEquipement)
   {
     //Test de setStatutInflige et getStatutInflige
     Equipement equipementTest;
-    equipementTest.setStatutInflige(9);
+    equipementTest.setStatutInflige(CONFUS);
     int testedStatutInflige = equipementTest.getStatutInflige();
     BOOST_CHECK_EQUAL(testedStatutInflige, 9);
   }
@@ -285,17 +285,17 @@ BOOST_AUTO_TEST_CASE(TestStateHeros)
 {
   {
     //Test du constructeur Heros (std::string nom, std::string classe)
-    Heros herosTest("testNom", "testClasse");
+    Heros herosTest("testNom", MAGE);
     BOOST_CHECK_EQUAL(herosTest.getNom(), "testNom");
-    BOOST_CHECK_EQUAL(herosTest.getClasse(), "testClasse");
+    BOOST_CHECK_EQUAL(herosTest.getClasse(), MAGE);
   }
 
   {
     //Test de setClasse et getClasse
     Heros herosTest;
-    herosTest.setClasse("testClasse");
-    std::string testedClasse = herosTest.getClasse();
-    BOOST_CHECK_EQUAL(testedClasse, "testClasse");
+    herosTest.setClasse(MAGE);
+    Classe testedClasse = herosTest.getClasse();
+    BOOST_CHECK_EQUAL(testedClasse, MAGE);
   }
 }
 
@@ -307,14 +307,6 @@ BOOST_AUTO_TEST_CASE(TestStateState)
     stateTest.setNbTour(9);
     int testedNbTour = stateTest.getNbTour();
     BOOST_CHECK_EQUAL(testedNbTour, 9);
-  }
-
-  {
-    //Test de setIndiceTour et getIndiceTour
-    State stateTest;
-    stateTest.setIndiceTour(9);
-    int testedIndiceTour = stateTest.getIndiceTour();
-    BOOST_CHECK_EQUAL(testedIndiceTour, 9);
   }
 
   {

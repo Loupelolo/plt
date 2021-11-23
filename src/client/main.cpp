@@ -17,6 +17,8 @@ using namespace std;
 using namespace state;
 using namespace render;
 
+
+
 int main(int argc,char* argv[])
 {
     if(strcmp(argv[1],"hello")==0)
@@ -43,6 +45,9 @@ int main(int argc,char* argv[])
         ActionSupp action2("Soin");
         entite1.setAutresActions({action1, action2});
 
+        Entite test = entite1;
+        cout<<"Actions Supp : "<<(test.getAutresActions()[0]).getNom()<<endl;
+
         Entite entite2("Charles");
         entite2.setPositionX(2);
         entite2.setPositionY(1);
@@ -58,7 +63,6 @@ int main(int argc,char* argv[])
         entite3.setType(2);
 
         //création de la map
-        //création de la map
         std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
           {
             MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
@@ -68,14 +72,16 @@ int main(int argc,char* argv[])
           };
         int nbLargeur = 13;
 
+        //informations non-modifiables
+        Decor decor(nbLargeur, 4, map);
+        decor.action(6,2, &entite1);
+        
+        cout<<entite1.getPV()<<endl;
         //implémentation dans le state
+        state.setDecor(decor);
         state.setDe(6);
         state.setEntites({entite1,entite2,entite3});
         state.setOrdreTour({&entite1,&entite2,&entite3});
-
-        //informations non-modifiables
-        Decor decor(map);
-        state.setDecor(decor);
 
         //définition de l'affichage des menus
         int largeurColonne1 = 150;
@@ -112,6 +118,7 @@ int main(int argc,char* argv[])
 
         //Affichage
         scene.afficherFenetre(menus,{coucheDecor,couchePerso});
+
 
     }
     else
