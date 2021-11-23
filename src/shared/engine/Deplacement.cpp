@@ -2,8 +2,12 @@
 
 namespace engine {
 
+    Deplacement::Deplacement() {
+       
+    }
+
     Deplacement::Deplacement(state::Entite perso, int cibleX, int cibleY) {
-        perso.deplacement(cibleX-perso.getPositionX(), cibleY-perso.getPositionY());
+        //perso.deplacement(cibleX-perso.getPositionX(), cibleY-perso.getPositionY());
     }
 
     Deplacement::~Deplacement() {
@@ -21,6 +25,16 @@ namespace engine {
             }
         }
         return false;
+    }
+
+    bool Deplacement::handleCollision (std::vector<state::Entite> listeEntites, int cibleX, int cibleY){
+        int length = listeEntites.size();
+        for (int i = 0; i < length ; i++){
+            if (listeEntites[i].getPositionX() == cibleX && listeEntites[i].getPositionY() == cibleY){
+                return false;
+            }
+        }
+        return true;
     }
 
     bool Deplacement::execute (Engine* engine){
