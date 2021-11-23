@@ -1,0 +1,29 @@
+\lstset{literate=
+{é}{{\'e}}1
+{è}{{\`e}}1
+{ê}{{\^e}}1
+{à}{{\`a}}1
+{â}{{\^a}}1
+}
+\lstset{language=C++,
+                basicstyle=\footnotesize,
+                keywordstyle=\footnotesize\color{blue},
+                otherkeywords={override,nullptr}
+}
+\definecolor{orange}{rgb}{0.8,0.4,0.0}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\lstdefinelanguage{JSON}
+{
+  basicstyle=\normalsize,
+  columns=fullflexible,
+  showstringspaces=false,
+  commentstyle=\color{gray}\upshape,
+  morestring=[b]",
+  morestring=[s]{>}{<},
+  morecomment=[s]{<?}{?>},
+  stringstyle=\color{orange},
+  identifierstyle=\color{darkblue},
+  keywordstyle=\color{blue},
+  morekeywords={string,number,array,object}% list your attributes here
+}
