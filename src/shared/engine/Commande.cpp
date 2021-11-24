@@ -19,6 +19,8 @@ namespace engine {
     }
 
     Json::Value Commande::serialize(){
-        
+        Json::Value value;
+        value["test"] = "test";
+        return value;
     }
 }

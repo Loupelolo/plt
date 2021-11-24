@@ -51,7 +51,7 @@ int main(int argc,char* argv[])
             4, 1, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 4,
             4, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
         };
-    //int nbLargeur = 13;
+    int nbLargeur = 13;
 
     //implémentation dans le state
     state.setDe(6);
@@ -70,20 +70,30 @@ int main(int argc,char* argv[])
 
     cout << entite1.getStat(8) << endl;
 
-    Engine engine;
+    Engine engine(state);
 
-    engine.setState(state);
+    //engine.setState(state);
 
     //state::Entite persoActuel = *state.getOrdreTour()[0];    
 
-    Attaque dep1;
+    CommandeDeplacement dep1(3,1);
 
-    if (dep1.handleDeplacement(*state.getOrdreTour()[0], map, 5,8) && dep1.handleCollision(state.getEntites(),5,8)){
-         cout << "je peux y aller" << endl;
-     }
-     else{
-         cout << "je peux pas y aller" << endl;
-     }
+    if (dep1.handleDeplacement(*state.getOrdreTour()[0], map, nbLargeur) && dep1.handleCollision(state.getEntites())){
+       cout << "je peux y aller" << endl;
+       if(dep1.execute(&engine)){
+           cout << "fonctionne " << endl;
+       }
+    }
+    else{
+        cout << "je peux pas y aller" << endl;
+    }
+
+    cout << entite1.getPositionX() << endl << entite1.getPositionY() << endl;
+
+    state::Entite persoActuel = *engine.getState().getOrdreTour()[0];  
+
+    cout << persoActuel.getPositionX() << endl;
+    
    
     return 0;
 }

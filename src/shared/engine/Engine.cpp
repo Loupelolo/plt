@@ -7,6 +7,10 @@ namespace engine {
         
     }
 
+    Engine::Engine (state::State& currentState) {
+        m_currentState = currentState;
+    }
+
     Engine::~Engine () {
         
     }
