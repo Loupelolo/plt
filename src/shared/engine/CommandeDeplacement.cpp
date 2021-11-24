@@ -43,6 +43,8 @@ namespace engine {
         state::State& st = engine->getState();
         state::Entite perso = *st.getOrdreTour()[0];
         perso.deplacement(m_x,m_y);
+        *st.getOrdreTour()[0] = perso;
+        engine->setState(st);
         return true;
     }
 

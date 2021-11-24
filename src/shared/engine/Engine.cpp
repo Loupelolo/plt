@@ -1,4 +1,7 @@
-#include "Engine.h"
+#include <engine.h>
+#include <state.h>
+#include <typeinfo>
+#include <iostream>
 
 namespace engine {
 
@@ -36,8 +39,10 @@ namespace engine {
         m_record = record;
     }
 
-    void Engine::addCommande (std::unique_ptr<Commande> cmd){
-        
+    void Engine::addCommande (Commande& cmd){
+        if(typeid(cmd) == typeid(Deplacement)){
+            std::cout<<"ok"<<std::endl;
+        }
     }
 
 }

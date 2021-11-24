@@ -90,10 +90,8 @@ int main(int argc,char* argv[])
 
     cout << entite1.getPositionX() << endl << entite1.getPositionY() << endl;
 
-    state::Entite persoActuel = *engine.getState().getOrdreTour()[0];  
+    engine.addCommande(dep1);
 
-    cout << persoActuel.getPositionX() << endl;
-    
    
     return 0;
 }
