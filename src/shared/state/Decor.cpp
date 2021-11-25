@@ -7,7 +7,7 @@ namespace state {
 Decor::Decor () {
 }
 
-Decor::Decor (std::vector<TypeTerrain> map) {
+Decor::Decor (std::vector<int> map) {
     m_map = map;
 }
 
@@ -35,11 +35,11 @@ void Decor::setLargeur(int largeur){
     m_largeur = largeur;
 }
 
-std::vector<TypeTerrain> Decor::getMap(){
+std::vector<int> Decor::getMap(){
     return m_map;
 }
 
-void Decor::setMap(std::vector<TypeTerrain> map){
+void Decor::setMap(std::vector<int> map){
     m_map = map;
 }
 

@@ -1,13 +1,15 @@
 #include <engine.h>
 #include <state.h>
+#include <iostream>
 
 namespace engine {
 
     CommandeDeplacement::CommandeDeplacement() {
-        
+        m_commandeTypeId = Deplacement;
     }
 
     CommandeDeplacement::CommandeDeplacement(int x, int y) {
+        m_commandeTypeId = Deplacement;
         m_x=x;
         m_y=y;
     }
@@ -16,7 +18,7 @@ namespace engine {
         
     }
 
-    bool CommandeDeplacement::handleDeplacement (state::Entite perso, std::vector<int> map,int largeur){
+    bool CommandeDeplacement::handleDeplacement (state::Entite perso, std::vector<int> map, int largeur){
         int mouvement = perso.getStat(8);
         int posX = perso.getPositionX();
         int posY = perso.getPositionY();

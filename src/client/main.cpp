@@ -70,6 +70,12 @@ int main(int argc,char* argv[])
 
     cout << entite1.getStat(8) << endl;
 
+    Decor dcr(map);
+
+    dcr.setLargeur(nbLargeur);
+     
+    state.setDecor(dcr);
+
     Engine engine(state);
 
     //engine.setState(state);
@@ -78,20 +84,22 @@ int main(int argc,char* argv[])
 
     CommandeDeplacement dep1(3,1);
 
-    if (dep1.handleDeplacement(*state.getOrdreTour()[0], map, nbLargeur) && dep1.handleCollision(state.getEntites())){
-       cout << "je peux y aller" << endl;
-       if(dep1.execute(&engine)){
-           cout << "fonctionne " << endl;
-       }
-    }
-    else{
-        cout << "je peux pas y aller" << endl;
-    }
+    // if (dep1.handleDeplacement(*state.getOrdreTour()[0], map, nbLargeur) && dep1.handleCollision(state.getEntites())){
+    //    cout << "je peux y aller" << endl;
+    //    if(dep1.execute(&engine)){
+    //        cout << "fonctionne " << endl;
+    //    }
+    // }
+    // else{
+    //     cout << "je peux pas y aller" << endl;
+    // }
 
     cout << entite1.getPositionX() << endl << entite1.getPositionY() << endl;
 
+
     engine.addCommande(dep1);
 
+    cout << entite1.getPositionX() << endl << entite1.getPositionY() << endl;
    
     return 0;
 }
