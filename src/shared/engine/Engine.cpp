@@ -1,10 +1,16 @@
-#include "Engine.h"
+#include <engine.h>
+#include <state.h>
+#include <iostream>
 
 namespace engine {
 
 
     Engine::Engine () {
+        
+    }
 
+    Engine::Engine (state::State& currentState) {
+        m_currentState = currentState;
     }
 
     Engine::~Engine () {
@@ -32,8 +38,12 @@ namespace engine {
         m_record = record;
     }
 
-    void Engine::addCommande (std::unique_ptr<Commande> cmd){
-        
+    void Engine::addCommande (Commande& cmd){
+        if(cmd.getCommandeTypeId() == Deplacement){
+            if (cmd.handleDeplacement(*m_currentState.getOrdreTour()[0], m_currentState.getDecor().getMap(), m_currentState.getDecor().getLargeur()) && cmd.handleCollision(m_currentState.getEntites())){
+                cmd.execute(this);
+            }
+        }
     }
 
 }
