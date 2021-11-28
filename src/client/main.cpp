@@ -1,6 +1,9 @@
 #include <iostream>
 #include <cstring>
 
+#include <state.h>
+#include <render.h>
+
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 
@@ -10,8 +13,7 @@ void testSFML() {
 
 // Fin test SFML
 
-#include <state.h>
-#include <render.h>
+
 
 using namespace std;
 using namespace state;
@@ -35,23 +37,22 @@ int main(int argc,char* argv[])
 
         // Informations modifiables pour changer l'état
         //création des personnages
-        Entite entite1("Diana");
+        Heros entite1("Diana", ARCHER);
         entite1.setPositionX(4);
         entite1.setPositionY(2);
-        entite1.setPV(100);
-        entite1.setPM(50);
         entite1.setType(0);
-        ActionSupp action1("Boule de feu");
-        ActionSupp action2("Soin");
+        ActionSuppOff action1("Boule de feu", 50, BRULE);
+        ActionSuppDef action2("Soin", 20, false);
+        Equipement equip1("Epee");
+        Equipement equip2("Bouclier");
         entite1.setAutresActions({action1, action2});
-
-        Entite test = entite1;
-        cout<<"Actions Supp : "<<(test.getAutresActions()[0]).getNom()<<endl;
+        entite1.setEquipement({equip1,equip2});
 
         Entite entite2("Charles");
         entite2.setPositionX(2);
         entite2.setPositionY(1);
         entite2.setPV(70);
+        entite2.setStat(PVMAX, 30);
         entite2.setPM(3);
         entite1.setType(1);
 
@@ -61,6 +62,9 @@ int main(int argc,char* argv[])
         entite3.setPV(300);
         entite3.setPM(500);
         entite3.setType(2);
+
+        entite1.effectuerActionSupp(&action1, &entite2);
+        entite1.effectuerActionSupp(&action2, &entite2);
 
         //création de la map
         std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
@@ -76,7 +80,6 @@ int main(int argc,char* argv[])
         Decor decor(nbLargeur, 4, map);
         decor.action(6,2, &entite1);
         
-        cout<<entite1.getPV()<<endl;
         //implémentation dans le state
         state.setDecor(decor);
         state.setDe(6);

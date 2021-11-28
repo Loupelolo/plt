@@ -19,6 +19,8 @@ Ennemi::Ennemi () {
 
     m_race = ORC;
     m_actif = false;
+
+    this->initialisation();
 }
 
 Ennemi::Ennemi (std::string nom, Race race){
@@ -36,6 +38,27 @@ Ennemi::Ennemi (std::string nom, Race race){
 
     m_race = race;
     m_actif = false;
+
+    this->initialisation();
+}
+
+Ennemi::Ennemi (std::string nom, Race race, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp> autresActions){
+    m_nom = nom;
+    m_type = 0;
+    m_niveau = niveau;
+    m_positionX = positionX;
+    m_positionY = positionY;
+    m_PV = 100;
+    m_PM = 100;
+    m_equipement = equipement;
+    m_autresActions = autresActions;
+    m_stats = {0,0,0,0,0,0,0,0,0};
+    m_statutsSubis = {true, false, false, false, false, false};
+
+    m_race = race;
+    m_actif = false;
+
+    this->initialisation();
 }
 
 Ennemi::Ennemi (const Ennemi &p){

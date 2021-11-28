@@ -16,7 +16,7 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
   BOOST_CHECK(1);
 }
-
+/*
 BOOST_AUTO_TEST_CASE(TestStateActionSupp)
 {
   {
@@ -338,6 +338,7 @@ BOOST_AUTO_TEST_CASE(TestStateState)
     BOOST_CHECK_EQUAL(testedDe, 9);
   }
 }
+*/
 
 /*
 
