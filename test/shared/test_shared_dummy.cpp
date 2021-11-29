@@ -145,25 +145,72 @@ BOOST_AUTO_TEST_CASE(TestStateActionSuppOff)
     BOOST_CHECK_EQUAL(entiteTest.getPV(), 5);
   }
 }
-/*
+
 BOOST_AUTO_TEST_CASE(TestStateDecor)
 {
   {
     // Test du constructeur Decor (std::vector<TypeTerrain> map)
-    std::vector<TypeTerrain> mapTest{NONE, SOL, MUR};
+    std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
     Decor decorTest(mapTest);
     std::vector<TypeTerrain> testedMap = decorTest.getMap();
-    BOOST_CHECK_EQUAL(testedMap[0], NONE);
+    BOOST_CHECK_EQUAL(testedMap[0], TNON);
     BOOST_CHECK_EQUAL(testedMap[1], SOL);
     BOOST_CHECK_EQUAL(testedMap[2], MUR);
   }
 
   {
-    // Test de setHauteur(int hauteur) et getHauteur ()
-    Decor decorTest;
-    decorTest.setHauteur(9);
-    int testedHauteur = decorTest.getHauteur();
-    BOOST_CHECK_EQUAL(testedHauteur, 9);
+    // Test du constructeur Decor (int largeur, int hauteur, std::vector<TypeTerrain> map)
+    std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
+    Decor decorTest(9, 8, mapTest);
+    std::vector<TypeTerrain> testedMap = decorTest.getMap();
+    BOOST_CHECK_EQUAL(decorTest.getLargeur(), 9);
+    BOOST_CHECK_EQUAL(decorTest.getHauteur(), 8);
+    BOOST_CHECK_EQUAL(testedMap[0], TNON);
+    BOOST_CHECK_EQUAL(testedMap[1], SOL);
+    BOOST_CHECK_EQUAL(testedMap[2], MUR);
+  }
+
+  {
+    // Test du constructeur Decor (int largeur, int hauteur, std::vector<TypeTerrain> map, std::vector<int> meteo, std::vector<int> lumiere)
+    std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
+    std::vector<int> meteoTest = {0, 1, 2};
+    std::vector<int> lumiereTest = {0, 1, 2};
+    Decor decorTest(9, 8, mapTest, meteoTest, lumiereTest);
+    std::vector<TypeTerrain> testedMap = decorTest.getMap();
+    std::vector<int> testedMeteo = decorTest.getMeteo();
+    std::vector<int> testedLumiere = decorTest.getLumiere();
+    BOOST_CHECK_EQUAL(decorTest.getLargeur(), 9);
+    BOOST_CHECK_EQUAL(decorTest.getHauteur(), 8);
+    BOOST_CHECK_EQUAL(testedMap[0], TNON);
+    BOOST_CHECK_EQUAL(testedMap[1], SOL);
+    BOOST_CHECK_EQUAL(testedMap[2], MUR);
+    for (unsigned int i = 0; i < 3; i++) 
+    {
+      BOOST_CHECK_EQUAL(testedMeteo[i], i);
+      BOOST_CHECK_EQUAL(testedLumiere[i], i);
+    }
+  }
+
+  {
+    // Test du constructeur Decor (const Decor &p)
+    std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
+    std::vector<int> meteoTest = {0, 1, 2};
+    std::vector<int> lumiereTest = {0, 1, 2};
+    Decor decorTest1(9, 8, mapTest, meteoTest, lumiereTest);
+    Decor decorTest2(decorTest1);
+    std::vector<TypeTerrain> testedMap = decorTest2.getMap();
+    std::vector<int> testedMeteo = decorTest2.getMeteo();
+    std::vector<int> testedLumiere = decorTest2.getLumiere();
+    BOOST_CHECK_EQUAL(decorTest2.getLargeur(), 9);
+    BOOST_CHECK_EQUAL(decorTest2.getHauteur(), 8);
+    BOOST_CHECK_EQUAL(testedMap[0], TNON);
+    BOOST_CHECK_EQUAL(testedMap[1], SOL);
+    BOOST_CHECK_EQUAL(testedMap[2], MUR);
+    for (unsigned int i = 0; i < 3; i++) 
+    {
+      BOOST_CHECK_EQUAL(testedMeteo[i], i);
+      BOOST_CHECK_EQUAL(testedLumiere[i], i);
+    }
   }
 
   {
@@ -175,11 +222,19 @@ BOOST_AUTO_TEST_CASE(TestStateDecor)
   }
 
   {
+    // Test de setHauteur(int hauteur) et getHauteur ()
+    Decor decorTest;
+    decorTest.setHauteur(9);
+    int testedHauteur = decorTest.getHauteur();
+    BOOST_CHECK_EQUAL(testedHauteur, 9);
+  }
+
+  {
     // Test de setMap(std::vector<TypeTerrain> map) et getMap ()
     Decor decorTest;
-    decorTest.setMap({NONE, SOL, MUR});
+    decorTest.setMap({TNON, SOL, MUR});
     std::vector<TypeTerrain> testedMap = decorTest.getMap();
-    BOOST_CHECK_EQUAL(testedMap[0], NONE);
+    BOOST_CHECK_EQUAL(testedMap[0], TNON);
     BOOST_CHECK_EQUAL(testedMap[1], SOL);
     BOOST_CHECK_EQUAL(testedMap[2], MUR);
   }
@@ -206,12 +261,11 @@ BOOST_AUTO_TEST_CASE(TestStateDecor)
     }
   }
 
-  {
-    // -----Test d'action ()
-    BOOST_CHECK(1);
-  }
+  /*{
+    // Test d'action ()
+  }*/
 }
-
+/*
 BOOST_AUTO_TEST_CASE(TestStateEnnemi)
 {
   {
