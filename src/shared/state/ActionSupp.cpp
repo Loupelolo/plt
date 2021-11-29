@@ -1,15 +1,23 @@
 #include "ActionSupp.h"
+#include <iostream>
 
 namespace state {
 
 // Constructeur & destructeur
 
 ActionSupp::ActionSupp () {
-
+    m_nom = "Action";
+    m_stat = 0;
 }
 
 ActionSupp::ActionSupp (std::string nom) {
     m_nom = nom;
+    m_stat = 0;    
+}
+
+ActionSupp::ActionSupp (const ActionSupp &p) {
+    m_nom = p.m_nom;
+    m_stat = p.m_stat;
 }
 
 ActionSupp::~ActionSupp () {
@@ -28,12 +36,20 @@ void ActionSupp::setNom (std::string nom){
     m_nom = nom;
 }
 
-std::vector<int> ActionSupp::getStats (){
-    return m_stats;
+int ActionSupp::getStat (){
+    return m_stat;
 }
 
-void ActionSupp::setStats (std::vector<int> stats){
-    m_stats = stats;
+void ActionSupp::setStat (int stat){
+    m_stat = stat;
+}
+
+
+
+
+void ActionSupp::effectuerAction (Entite* cible){
+    std::cout<<"Mais qu'est-ce que je fais la"<<std::endl;
 }
 
 }
+

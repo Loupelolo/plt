@@ -1,6 +1,9 @@
 #include <engine.h>
 #include <state.h>
+<<<<<<< HEAD
 #include <typeinfo>
+=======
+>>>>>>> master
 #include <iostream>
 
 namespace engine {
@@ -42,7 +45,10 @@ namespace engine {
     void Engine::addCommande (Commande& cmd){
         if(cmd.getCommandeTypeId() == Deplacement){
             if (cmd.handleDeplacement(*m_currentState.getOrdreTour()[0], m_currentState.getDecor().getMap(), m_currentState.getDecor().getLargeur()) && cmd.handleCollision(m_currentState.getEntites())){
+<<<<<<< HEAD
                 std::cout << "yeeeeeeah" << std::endl;
+=======
+>>>>>>> master
                 cmd.execute(this);
             }
         }

@@ -69,4 +69,15 @@ void State::nouveauTour (){
 void State::joueurSuivant (){
     //passage au personnage suivant
 }
+
+void State::actualiserEntite (Entite entite){
+    Entite nvPrs = *m_ordreTour[0];
+    int taille = m_entites.size();
+    for(int i = 0; i<taille; i++){
+        if(nvPrs.getNom() == m_entites[i].getNom()){
+           m_entites[i] = entite; 
+        }
+    }
+    *m_ordreTour[0] = entite;
+}
 }
