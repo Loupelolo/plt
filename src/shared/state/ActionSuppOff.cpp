@@ -5,7 +5,21 @@ namespace state {
 // Constructeur & destructeur
 
 ActionSuppOff::ActionSuppOff () {
+    m_nom = "Action";
+    m_stat = 0;
+    m_statut = SNONE;
+}
 
+ActionSuppOff::ActionSuppOff (std::string nom, int stat, Statut statut){
+    m_nom = nom;
+    m_stat = stat;
+    m_statut = statut;
+}
+
+ActionSuppOff::ActionSuppOff (const ActionSuppOff &p){
+    m_nom = p.m_nom;
+    m_stat = p.m_stat;
+    m_statut = p.m_statut;
 }
 
 ActionSuppOff::~ActionSuppOff () {
@@ -16,20 +30,21 @@ ActionSuppOff::~ActionSuppOff () {
 
 // Setters & Getters
 
-std::vector<bool> ActionSuppOff::getStatuts (){
-    return m_statuts;
+Statut ActionSuppOff::getStatut (){
+    return m_statut;
 }
 
-void ActionSuppOff::setStatuts (std::vector<bool> statuts){
-    m_statuts = statuts;
+void ActionSuppOff::setStatut (Statut statut){
+    m_statut = statut;
 }
 
 
 
 // Méthodes
 
-void ActionSuppOff::attaque (Entite cible){
+void ActionSuppOff::effectuerAction (Entite* cible){
     //attaque avec l'arme offensive
+    cible->Entite::degats(m_stat, m_statut);
 }
 
 

@@ -2,6 +2,10 @@
 #include <cstring>
 #include <unistd.h>
 
+#include <state.h>
+#include <render.h>
+#include <engine.h>
+
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
 
@@ -11,14 +15,13 @@ void testSFML() {
 
 // Fin test SFML
 
-#include <state.h>
-#include <render.h>
-#include <engine.h>
 
 using namespace std;
 using namespace state;
 using namespace render;
 using namespace engine;
+
+
 
 int main(int argc,char* argv[])
 {
@@ -36,20 +39,22 @@ int main(int argc,char* argv[])
 
         // Informations modifiables pour changer l'état
         //création des personnages
-        Entite entite1("Diana");
+        Heros entite1("Diana", ARCHER);
         entite1.setPositionX(4);
         entite1.setPositionY(2);
-        entite1.setPV(100);
-        entite1.setPM(50);
         entite1.setType(0);
-        ActionSupp action1("Boule de feu");
-        ActionSupp action2("Soin");
+        ActionSuppOff action1("Boule de feu", 50, BRULE);
+        ActionSuppDef action2("Soin", 20, false);
+        Equipement equip1("Epee");
+        Equipement equip2("Bouclier");
         entite1.setAutresActions({action1, action2});
+        entite1.setEquipement({equip1,equip2});
 
         Entite entite2("Charles");
         entite2.setPositionX(2);
         entite2.setPositionY(1);
         entite2.setPV(70);
+        entite2.setStat(PVMAX, 30);
         entite2.setPM(3);
         entite1.setType(1);
 
@@ -60,12 +65,14 @@ int main(int argc,char* argv[])
         entite3.setPM(500);
         entite3.setType(2);
 
+        entite1.effectuerActionSupp(&action1, &entite2);
+        entite1.effectuerActionSupp(&action2, &entite2);
+
         // valeur de deplacement
         entite1.setStats({0,0,0,0,0,0,0,0,3});
         entite2.setStats({0,0,0,0,0,0,0,0,4});
         entite3.setStats({0,0,0,0,0,0,0,0,2});
 
-        //création de la map
         //création de la map
         std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
           {
@@ -76,16 +83,16 @@ int main(int argc,char* argv[])
           };
         int nbLargeur = 13;
 
+        //informations non-modifiables
+        Decor decor(nbLargeur, 4, map);
+        decor.action(6,2, &entite1);
+        
         //implémentation dans le state
+        state.setDecor(decor);
         state.setDe(6);
         state.setEntites({entite1,entite2,entite3});
         state.setOrdreTour({&entite1,&entite2,&entite3});
-
-        //informations non-modifiables
-        Decor decor(map);
-        decor.setLargeur(nbLargeur);
-        state.setDecor(decor);
-
+      
         //définition de l'affichage des menus
         int largeurColonne1 = 150;
         int largeurColonne2 = 600;
@@ -134,6 +141,7 @@ int main(int argc,char* argv[])
 
         //Affichage
         scene2.afficherFenetre(menus,{coucheDecor,couchePerso});
+
 
     }
     else
