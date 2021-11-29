@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cstring>
+#include <unistd.h>
 
 #include <state.h>
 #include <render.h>
+#include <engine.h>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -14,10 +16,10 @@ void testSFML() {
 // Fin test SFML
 
 
-
 using namespace std;
 using namespace state;
 using namespace render;
+using namespace engine;
 
 
 
@@ -66,6 +68,11 @@ int main(int argc,char* argv[])
         entite1.effectuerActionSupp(&action1, &entite2);
         entite1.effectuerActionSupp(&action2, &entite2);
 
+        // valeur de deplacement
+        entite1.setStats({0,0,0,0,0,0,0,0,3});
+        entite2.setStats({0,0,0,0,0,0,0,0,4});
+        entite3.setStats({0,0,0,0,0,0,0,0,2});
+
         //création de la map
         std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
           {
@@ -85,7 +92,7 @@ int main(int argc,char* argv[])
         state.setDe(6);
         state.setEntites({entite1,entite2,entite3});
         state.setOrdreTour({&entite1,&entite2,&entite3});
-
+      
         //définition de l'affichage des menus
         int largeurColonne1 = 150;
         int largeurColonne2 = 600;
@@ -120,7 +127,20 @@ int main(int argc,char* argv[])
         scene.setCaseActuelle(sf::Vector2f(2,1));
 
         //Affichage
-        scene.afficherFenetre(menus,{coucheDecor,couchePerso});
+        scene.afficherFenetre(menus,{coucheDecor,couchePerso});        
+
+        //engine
+        Engine engine(state);
+        CommandeDeplacement dep1(3,1);
+        engine.addCommande(dep1);
+
+        //définition de l'affichage
+        Scene scene2(hauteurFenetre,largeurFenetre);
+        scene2.setState(engine.getState());
+        scene2.setCaseActuelle(sf::Vector2f(2,1));
+
+        //Affichage
+        scene2.afficherFenetre(menus,{coucheDecor,couchePerso});
 
 
     }

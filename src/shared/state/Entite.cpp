@@ -162,6 +162,8 @@ void Entite::initialisation (){
 
 void Entite::deplacement (int dx, int dy){
     //deplacement de l'entite
+    m_positionX = dx;
+    m_positionY = dy;
 }
 
 void Entite::attaque (Entite* cible){

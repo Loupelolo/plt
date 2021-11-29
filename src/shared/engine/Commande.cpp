@@ -1,17 +1,26 @@
-#include "Commande.h"
+#include <engine.h>
+#include <state.h>
 
 namespace engine {
 
     Commande::Commande () {
-
+        m_commandeTypeId = Deplacement;
     }
 
     Commande::~Commande () {
     
     }
 
-    int Commande::getCommandeTypeId(){
+    CommandeTypeId Commande::getCommandeTypeId(){
         return m_commandeTypeId;
+    }
+
+
+    bool Commande::handleDeplacement (state::Entite perso, std::vector<state::TypeTerrain> map, int largeur){
+        return false;
+    }
+    bool Commande::handleCollision (std::vector<state::Entite> listeEntites){
+        return false;
     }
 
     bool Commande::execute (Engine* engine){
@@ -19,6 +28,8 @@ namespace engine {
     }
 
     Json::Value Commande::serialize(){
-        
+        Json::Value value;
+        value["test"] = "test";
+        return value;
     }
 }
