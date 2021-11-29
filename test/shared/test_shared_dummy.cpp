@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(TestStateDecor)
     {
       BOOST_CHECK_EQUAL(testedMap[i], i);
     }
-  }*/
+  }
 
   {
     //Test de setHauteur et getHauteur
@@ -260,7 +260,7 @@ BOOST_AUTO_TEST_CASE(TestStateEquipement)
     std::string testedNom = equipementTest.getNom();
     BOOST_CHECK_EQUAL(testedNom, "testName");
   }
-
+*/
   /*
     //Test de setStatutInflige et getStatutInflige
     Equipement equipementTest;
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(TestStateEquipement)
     int testedStatutInflige = equipementTest.getStatutInflige();
     BOOST_CHECK_EQUAL(testedStatutInflige, 9);
   }*/
-
+/*
   {
     //Test de setBonusStat et getBonusStat
     Equipement equipementTest;
