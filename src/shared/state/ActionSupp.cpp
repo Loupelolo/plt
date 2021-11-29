@@ -28,23 +28,23 @@ namespace state {
 
     // Setters & Getters
 
-    std::string ActionSupp::getNom (){
+    std::string ActionSupp::getNom () {
         return m_nom;
     }
 
-    void ActionSupp::setNom (std::string nom){
+    void ActionSupp::setNom (std::string nom) {
         m_nom = nom;
     }
 
-    int ActionSupp::getStat (){
+    int ActionSupp::getStat () {
         return m_stat;
     }
 
-    void ActionSupp::setStat (int stat){
+    void ActionSupp::setStat (int stat) {
         m_stat = stat;
     }
 
-    void ActionSupp::effectuerAction (Entite* cible){
+    void ActionSupp::effectuerAction (Entite* cible) {
         std::cout<<"Mais qu'est-ce que je fais la"<<std::endl;
     }
 }

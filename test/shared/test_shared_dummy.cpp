@@ -100,21 +100,49 @@ BOOST_AUTO_TEST_CASE(TestStateActionSuppDef)
     BOOST_CHECK_EQUAL(entiteTest.getStatutSubi(0), true);
   }
 }
-/*
+
 BOOST_AUTO_TEST_CASE(TestStateActionSuppOff)
 {
   {
-    // Test de setStatuts (std::vector<bool> statuts) et getStatuts ()
-    ActionSuppOff actionSuppOffTest;
-    actionSuppOffTest.setStatuts({true, false});
-    std::vector<bool> testedStatuts = actionSuppOffTest.getStatuts();
-    BOOST_CHECK_EQUAL(testedStatuts[0], true);
-    BOOST_CHECK_EQUAL(testedStatuts[1], false);
+    // Test d'ActionSuppOff ()
+    ActionSuppOff actionSuppOfftest;
+    BOOST_CHECK_EQUAL(actionSuppOfftest.getNom(), "Action");
+    BOOST_CHECK_EQUAL(actionSuppOfftest.getStat(), 0);
+    BOOST_CHECK_EQUAL(actionSuppOfftest.getStatut(), SNONE);
   }
 
   {
-    // -----Test d'attaque (Entite cible)
-    BOOST_CHECK(1);
+    // Test d'ActionSuppOff (std::string nom, int stat, Statut statut)
+    ActionSuppOff actionSuppOfftest("nomTest", 9, CONFUS);
+    BOOST_CHECK_EQUAL(actionSuppOfftest.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(actionSuppOfftest.getStat(), 9);
+    BOOST_CHECK_EQUAL(actionSuppOfftest.getStatut(), CONFUS);
+  }
+
+  {
+    // Test d'ActionSuppOff (const ActionSuppOff &p)
+    ActionSuppOff actionSuppOfftest1("nomTest", 9, CONFUS);
+    ActionSuppOff actionSuppOfftest2(actionSuppOfftest1);
+    BOOST_CHECK_EQUAL(actionSuppOfftest2.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(actionSuppOfftest2.getStat(), 9);
+    BOOST_CHECK_EQUAL(actionSuppOfftest2.getStatut(), CONFUS);
+  }
+
+  {
+    // Test de setStatut (Statut statut) et getStatut ()
+    ActionSuppOff actionSuppOffTest;
+    actionSuppOffTest.setStatut(CONFUS);
+    Statut testedStatut = actionSuppOffTest.getStatut();
+    BOOST_CHECK_EQUAL(testedStatut, CONFUS);
+  }
+
+  {
+    // Test d'effectuerAction (Entite* cible)
+    ActionSuppOff actionSuppOffTest("nomTest", 5, SNONE);
+    Entite entiteTest;
+    entiteTest.setPV(10);
+    actionSuppOffTest.effectuerAction(&entiteTest);
+    BOOST_CHECK_EQUAL(entiteTest.getPV(), 5);
   }
 }
 /*
