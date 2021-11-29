@@ -12,9 +12,6 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
 {
   BOOST_CHECK(1);
 }
-<<<<<<< HEAD
-
-=======
 /*
 BOOST_AUTO_TEST_CASE(TestSFML)
 {
@@ -23,17 +20,10 @@ BOOST_AUTO_TEST_CASE(TestSFML)
     BOOST_CHECK(texture.getSize() == ::sf::Vector2<unsigned int> {});
   }
 }
->>>>>>> master
 
 
 
 
-<<<<<<< HEAD
-
-
-
-
-=======
 BOOST_AUTO_TEST_CASE(TestRenderScene)
 {
   {
@@ -70,7 +60,6 @@ BOOST_AUTO_TEST_CASE(TestRenderScene)
     BOOST_CHECK_EQUAL(testedState.getNbTour(), 9);
   }
 }*/
->>>>>>> master
 
 /*
 

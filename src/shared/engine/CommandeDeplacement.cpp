@@ -2,10 +2,6 @@
 #include <state.h>
 #include <iostream>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 namespace engine {
 
     CommandeDeplacement::CommandeDeplacement() {
@@ -22,22 +18,12 @@ namespace engine {
         
     }
 
-<<<<<<< HEAD
-    bool CommandeDeplacement::handleDeplacement (state::Entite perso, std::vector<int> map, int largeur){
-        int mouvement = perso.getStat(8);
-        int posX = perso.getPositionX();
-        int posY = perso.getPositionY();
-
-        if (abs(m_x-posX)+abs(m_y-posY)<=mouvement){
-            if (map[m_x+m_y*largeur]==0 || map[m_x+m_y*largeur]==3){
-=======
     bool CommandeDeplacement::handleDeplacement (state::Entite perso, std::vector<state::TypeTerrain> map, int largeur){
         int mvt = perso.getStat(8);
         int posX = perso.getPositionX();
         int posY = perso.getPositionY();
         if (abs(m_x-posX)+abs(m_y-posY)<=mvt){
             if (map[m_x+m_y*largeur]==state::SOL || map[m_x+m_y*largeur]==state::TRES || map[m_x+m_y*largeur]==state::SECR){
->>>>>>> master
                 return true;
             }
         }
@@ -54,18 +40,12 @@ namespace engine {
         return true;
     }
 
-    bool CommandeDeplacement::execute (Engine* engine){
-        state::State& st = engine->getState();
-<<<<<<< HEAD
-        state::Entite perso = *st.getOrdreTour()[0];
-        perso.deplacement(m_x,m_y);
-        *st.getOrdreTour()[0] = perso;
-=======
-        state::Entite prs = *st.getOrdreTour()[0];
+    bool CommandeDeplacement::execute (state::State* state){
+        //state::State& st = engine->getState();
+        state::Entite prs = state->getOrdreTour()[0];
         prs.deplacement(m_x,m_y);
-        st.actualiserEntite(prs);
->>>>>>> master
-        engine->setState(st);
+        //st.actualiserEntite(prs);
+        //engine->setState(st);
         return true;
     }
 

@@ -168,8 +168,8 @@ void Entite::deplacement (int dx, int dy){
 
 void Entite::attaque (Entite* cible){
     //attaque basique d'une autre entite
-    std::cout<<m_stats[0]<<std::endl;
-    cible->degats(m_stats[0], 0);
+    std::cout<<m_stats[ATTAQUE]<<std::endl;
+    cible->degats(m_stats[ATTAQUE], 0);
 }
 
 void Entite::effectuerActionSupp (ActionSupp* action, Entite* cible){
