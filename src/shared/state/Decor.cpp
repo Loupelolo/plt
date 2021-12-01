@@ -1,5 +1,4 @@
 #include "Decor.h"
-
 #include <iostream>
 
 namespace state {

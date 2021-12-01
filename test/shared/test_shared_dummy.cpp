@@ -742,14 +742,82 @@ BOOST_AUTO_TEST_CASE(TestStateEquipement)
     }
   }
 }
-/*
+
 BOOST_AUTO_TEST_CASE(TestStateHeros)
 {
   {
-    // Test de Heros (std::string nom, Classe classe)
-    Heros herosTest("testNom", ARCHER);
-    BOOST_CHECK_EQUAL(herosTest.getNom(), "testNom");
+    // Test de Heros ()
+    Heros herosTest;
+    BOOST_CHECK_EQUAL(herosTest.getNom(), "Jane Doe");
     BOOST_CHECK_EQUAL(herosTest.getClasse(), ARCHER);
+    BOOST_CHECK_EQUAL(herosTest.getType(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getNiveau(), 1);
+    BOOST_CHECK_EQUAL(herosTest.getPositionX(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getPositionY(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getPV(), 100);
+    BOOST_CHECK_EQUAL(herosTest.getPM(), 100);
+    BOOST_CHECK(herosTest.getEquipement().empty());
+    BOOST_CHECK(herosTest.getAutresActions().empty());
+    std::vector<int> testedStats = herosTest.getStats();
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], 0);
+    }
+    std::vector<bool> testedStatutsSubis = herosTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
+  }
+
+  {
+    // Test de Heros (std::string nom, Classe classe)
+    Heros herosTest("nomTest", MAGE);
+    BOOST_CHECK_EQUAL(herosTest.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(herosTest.getClasse(), MAGE);
+    BOOST_CHECK_EQUAL(herosTest.getType(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getNiveau(), 1);
+    BOOST_CHECK_EQUAL(herosTest.getPositionX(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getPositionY(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getPV(), 90);
+    BOOST_CHECK_EQUAL(herosTest.getPM(), 50);
+    BOOST_CHECK(herosTest.getEquipement().empty());
+    BOOST_CHECK(herosTest.getAutresActions().empty());
+    std::vector<int> testedStats = herosTest.getStats();
+    std::vector<int> statsMage = {70, 30, 10, 10, 90, 50, 2, 8, 5};
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], statsMage[i]);
+    }
+    std::vector<bool> testedStatutsSubis = herosTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
+  }
+
+  {
+    // Test de Heros (const Heros &p)
+    Heros herosTest1("nomTest", MAGE);
+    Heros herosTest(herosTest1);
+    BOOST_CHECK_EQUAL(herosTest.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(herosTest.getClasse(), MAGE);
+    BOOST_CHECK_EQUAL(herosTest.getType(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getNiveau(), 1);
+    BOOST_CHECK_EQUAL(herosTest.getPositionX(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getPositionY(), 0);
+    BOOST_CHECK_EQUAL(herosTest.getPV(), 90);
+    BOOST_CHECK_EQUAL(herosTest.getPM(), 50);
+    BOOST_CHECK(herosTest.getEquipement().empty());
+    BOOST_CHECK(herosTest.getAutresActions().empty());
+    std::vector<int> testedStats = herosTest.getStats();
+    std::vector<int> statsMage = {70, 30, 10, 10, 90, 50, 2, 8, 5};
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], statsMage[i]);
+    }
+    std::vector<bool> testedStatutsSubis = herosTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
   }
 
   {
@@ -758,33 +826,46 @@ BOOST_AUTO_TEST_CASE(TestStateHeros)
     herosTest.setClasse(ARCHER);
     Classe testedClasse = herosTest.getClasse();
     BOOST_CHECK_EQUAL(testedClasse, ARCHER);
+    
   }
 
   {
-    // Test de obtenirEquipement (Equipement newEquipement)
+    // Test d'initialisation ()
     Heros herosTest;
-    Equipement equipementTest1;
-    equipementTest1.setNom("nomTest1");
-    herosTest.setEquipement({equipementTest1});
-    Equipement equipementTest2;
-    equipementTest2.setNom("nomTest2");
-    herosTest.obtenirEquipement(equipementTest2);
-    BOOST_CHECK_EQUAL(herosTest.getEquipement()[1].getNom(), "nomTest2");
+    herosTest.initialisation();
+    std::vector<int> statsArcher = {40, 40, 30, 25, 60, 30, 10, 30, 8};
+    std::vector<int> testedStats = herosTest.getStats();
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], statsArcher[i]);
+    }
+    BOOST_CHECK_EQUAL(herosTest.getPV(), statsArcher[PVMAX]);
+    BOOST_CHECK_EQUAL(herosTest.getPM(), statsArcher[PMMAX]);
   }
 
   {
-    // -----Test de lacherEquipement (Equipement oldEquipement)
-    BOOST_CHECK(1);
+    // Test d'obtenirEquipement (Equipement newEquipement)
+    Heros herosTest;
+    Equipement equipementTest1("nomTest1");
+    herosTest.setEquipement({equipementTest1});
+    Equipement equipementTest2("nomTest2");
+    herosTest.obtenirEquipement(equipementTest2);
+    BOOST_CHECK(herosTest.getEquipement()[1] == equipementTest2);
   }
 
+  {
+    // Test de lacherEquipement (Equipement oldEquipement)
+    Heros herosTest;
+    Equipement equipementTest("nomTest");
+    herosTest.setEquipement({equipementTest});
+    herosTest.lacherEquipement(equipementTest);
+    BOOST_CHECK(herosTest.getEquipement().empty());
+  }
   {
     // Test d'obtenirActionSupp (ActionSupp newActionSupp) 
     Heros herosTest;
-    ActionSupp actionSuppTest1;
-    actionSuppTest1.setNom("nomTest1");
+    ActionSupp actionSuppTest1("nomTest1");
     herosTest.setAutresActions({actionSuppTest1});
-    ActionSupp actionSuppTest2;
-    actionSuppTest2.setNom("nomTest2");
+    ActionSupp actionSuppTest2("nomTest2");
     herosTest.obtenirActionSupp(actionSuppTest2);
     BOOST_CHECK_EQUAL(herosTest.getAutresActions()[1].getNom(), "nomTest2");
   }
@@ -792,6 +873,7 @@ BOOST_AUTO_TEST_CASE(TestStateHeros)
 
 BOOST_AUTO_TEST_CASE(TestStateState)
 {
+  /*
   {
     // Test de setNbTour (int nbTour) et getNbTour ()
     State stateTest;
@@ -843,12 +925,12 @@ BOOST_AUTO_TEST_CASE(TestStateState)
     // -----Test de nouveauTour ()
     BOOST_CHECK(1);
   }
-
+*/
   {
     // -----Test de joueurSuivant ()
     BOOST_CHECK(1);
   }
 }
-*/
+
 
 /* vim: set sw=2 sts=2 et : */
