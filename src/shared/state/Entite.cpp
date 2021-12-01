@@ -204,6 +204,4 @@ namespace state {
     void Entite::mort (){
         // mort de l'entite
     }
-
-
 }

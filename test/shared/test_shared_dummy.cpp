@@ -647,9 +647,74 @@ BOOST_AUTO_TEST_CASE(TestStateEntite)
     // Test de mort () 
   }*/
 }
-/*
+
 BOOST_AUTO_TEST_CASE(TestStateEquipement)
 {
+  {
+    // Test d'Equipement ()
+    Equipement equipementTest;
+    BOOST_CHECK_EQUAL(equipementTest.getNom(), "no name");
+    std::vector<int> testedBonusStat = equipementTest.getBonusStat();
+    for (unsigned int i = 0; i < testedBonusStat.size(); i++) {
+      BOOST_CHECK_EQUAL(testedBonusStat[i], 0);
+    }
+    BOOST_CHECK_EQUAL(equipementTest.getStatutInflige(), SNONE);
+  }
+
+  {
+    // Test d'Equipement (std::string nom)
+    Equipement equipementTest("nomTest");
+    BOOST_CHECK_EQUAL(equipementTest.getNom(), "nomTest");
+    std::vector<int> testedBonusStat = equipementTest.getBonusStat();
+    for (unsigned int i = 0; i < testedBonusStat.size(); i++) {
+      BOOST_CHECK_EQUAL(testedBonusStat[i], 0);
+    }
+    BOOST_CHECK_EQUAL(equipementTest.getStatutInflige(), SNONE);
+  }
+
+  {
+    // Test d'Equipement (std::string nom, Statut statutInflige, std::vector<int> bonusStat)
+    std::vector<int> bonusStatTest = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    Equipement equipementTest("nomTest", CONFUS, bonusStatTest);
+    BOOST_CHECK_EQUAL(equipementTest.getNom(), "nomTest");
+    std::vector<int> testedBonusStat = equipementTest.getBonusStat();
+    for (unsigned int i = 0; i < testedBonusStat.size(); i++) {
+      BOOST_CHECK_EQUAL(testedBonusStat[i], i);
+    }
+    BOOST_CHECK_EQUAL(equipementTest.getStatutInflige(), CONFUS);
+  }
+
+  {
+    // Test d'Equipement (const Equipement &p)
+    std::vector<int> bonusStatTest = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+    Equipement equipementTest1("nomTest", CONFUS, bonusStatTest);
+    Equipement equipementTest(equipementTest1);
+    BOOST_CHECK_EQUAL(equipementTest.getNom(), "nomTest");
+    std::vector<int> testedBonusStat = equipementTest.getBonusStat();
+    for (unsigned int i = 0; i < testedBonusStat.size(); i++) {
+      BOOST_CHECK_EQUAL(testedBonusStat[i], i);
+    }
+    BOOST_CHECK_EQUAL(equipementTest.getStatutInflige(), CONFUS);
+  }
+
+  {
+    // Test d'operator==(Equipement equip)
+    Equipement equipementTest1("nomTest");
+    Equipement equipementTest2("nomTest");
+    Equipement equipementTest3("nomTest3");
+    BOOST_CHECK(equipementTest1 == equipementTest2);
+    BOOST_CHECK(!(equipementTest1 == equipementTest3));
+  }
+
+  {
+    // Test d'operator!=(Equipement equip)
+    Equipement equipementTest1("nomTest");
+    Equipement equipementTest2("nomTest");
+    Equipement equipementTest3("nomTest3");
+    BOOST_CHECK(equipementTest1 != equipementTest3);
+    BOOST_CHECK(!(equipementTest1 != equipementTest2));
+  }
+  
   {
     // Test de setNom (std::string nom) et getNom ()
     Equipement equipementTest;
@@ -677,7 +742,7 @@ BOOST_AUTO_TEST_CASE(TestStateEquipement)
     }
   }
 }
-
+/*
 BOOST_AUTO_TEST_CASE(TestStateHeros)
 {
   {
