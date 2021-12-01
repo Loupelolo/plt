@@ -8,7 +8,7 @@ namespace engine {
         m_commandeTypeId = Attaque;
     }
 
-    CommandeAttaque::CommandeAttaque(state::Entite cible) {
+    CommandeAttaque::CommandeAttaque(state::Entite* cible) {
         m_commandeTypeId = Attaque;
         m_cible = cible;
     }
@@ -17,14 +17,16 @@ namespace engine {
         
     }
 
+    state::Entite* CommandeAttaque::getCible() {
+        return m_cible;
+    }
+
     bool CommandeAttaque::handleAttaque (state::Entite perso){
         int portee = perso.getStat(state::PORTEE);
         int posX = perso.getPositionX();
         int posY = perso.getPositionY();
-        int cibleX = m_cible.getPositionX();
-        int cibleY = m_cible.getPositionY();
-        std::cout << abs(cibleX-posX)+abs(cibleY-posY) << std::endl;
-        std::cout << portee << std::endl;
+        int cibleX = m_cible->getPositionX();
+        int cibleY = m_cible->getPositionY();
         if (abs(cibleX-posX)+abs(cibleY-posY)<=portee){
                 return true;
         }
@@ -34,8 +36,8 @@ namespace engine {
 
     bool CommandeAttaque::execute (state::State* state){
         //state::State& st = engine->getState();
-        state::Entite prs = state->getOrdreTour()[0];
-        prs.attaque(&m_cible);
+        state::Entite *prs = state->getOrdreTour()[0];
+        prs->attaque(m_cible);
         //st.actualiserEntite(m_cible);
         //engine->setState(st);
         return true;

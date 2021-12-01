@@ -90,7 +90,7 @@ int main(int argc,char* argv[])
         //implémentation dans le state
         state.setDecor(decor);
         state.setDe(6);
-        state.setEntites({entite1,entite2,entite3});
+        state.setEntites({&entite1,&entite2,&entite3});
         state.setOrdreTour({&entite1,&entite2,&entite3});
       
         //définition de l'affichage des menus
@@ -142,7 +142,7 @@ int main(int argc,char* argv[])
         //Affichage
         scene2.afficherFenetre(menus,{coucheDecor,couchePerso});
 
-        CommandeAttaque att1(entite2);
+        CommandeAttaque att1(&entite2);
         engine.addCommande(att1);
 
         //définition de l'affichage
@@ -152,6 +152,17 @@ int main(int argc,char* argv[])
 
         //Affichage
         scene3.afficherFenetre(menus,{coucheDecor,couchePerso});
+
+        CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
+        engine.addCommande(act1);
+
+        //définition de l'affichage
+        Scene scene4(hauteurFenetre,largeurFenetre);
+        scene4.setState(engine.getState());
+        scene4.setCaseActuelle(sf::Vector2f(2,1));
+
+        //Affichage
+        scene4.afficherFenetre(menus,{coucheDecor,couchePerso});
 
 
     }

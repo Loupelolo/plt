@@ -85,7 +85,7 @@ bool CoucheTerrain::loadDecor(const std::string& tileset, sf::Vector2u tileSize,
     return true;
 }
 
-bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize, std::vector<state::Entite> entites){
+bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize, std::vector<state::Entite*> entites){
     unsigned int taille = entites.size();
     int decalX = m_posX + 12 + m_tailleTuile*(18-m_largeur)/2; //décallage vertical pour centrer
 
@@ -102,9 +102,9 @@ bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize,
     for(unsigned int i=0; i<taille;i++){
         sf::Vertex* quad = &m_vertices[(i) * 4];
 
-        int posX = entites[i].getPositionX();
-        int posY = entites[i].getPositionY();
-        int tu = entites[i].getType();            
+        int posX = entites[i]->getPositionX();
+        int posY = entites[i]->getPositionY();
+        int tu = entites[i]->getType();            
 
         quad[0].position = sf::Vector2f(posX * m_tailleTuile +decalX, posY * m_tailleTuile+m_posY);
         quad[1].position = sf::Vector2f((posX + 1) * m_tailleTuile+decalX, posY * m_tailleTuile+m_posY);

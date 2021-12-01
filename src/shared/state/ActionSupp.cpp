@@ -45,6 +45,10 @@ void ActionSupp::setStat (int stat){
 }
 
 
+int ActionSupp::getPortee (){
+    return m_portee;
+}
+
 
 
 void ActionSupp::effectuerAction (Entite* cible){

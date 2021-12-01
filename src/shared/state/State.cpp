@@ -34,11 +34,11 @@ void State::setDecor (Decor decors){
     m_decor = decors;
 }
 
-std::vector<Entite> State::getEntites (){
+std::vector<Entite*> State::getEntites (){
     return m_entites;
 }
 
-void State::setEntites (std::vector<Entite> entites){
+void State::setEntites (std::vector<Entite*> entites){
     m_entites = entites;
 }
 
@@ -74,8 +74,8 @@ void State::actualiserEntite (Entite entite){
     //Entite nvPrs = *m_ordreTour[0];
     int taille = m_entites.size();
     for(int i = 0; i<taille; i++){
-        if(entite.getNom() == m_entites[i].getNom()){
-           m_entites[i] = entite; 
+        if(entite.getNom() == m_entites[i]->getNom()){
+           m_entites[i] = &entite; 
         }
     }
     //*m_ordreTour[0] = entite;
