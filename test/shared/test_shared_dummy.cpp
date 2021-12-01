@@ -1,4 +1,5 @@
 #include <boost/test/unit_test.hpp>
+#include <iostream>
 
 #include "../../src/shared/state.h"
 
@@ -149,7 +150,7 @@ BOOST_AUTO_TEST_CASE(TestStateActionSuppOff)
 BOOST_AUTO_TEST_CASE(TestStateDecor)
 {
   {
-    // Test du constructeur Decor (std::vector<TypeTerrain> map)
+    // Test de Decor (std::vector<TypeTerrain> map)
     std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
     Decor decorTest(mapTest);
     std::vector<TypeTerrain> testedMap = decorTest.getMap();
@@ -159,7 +160,7 @@ BOOST_AUTO_TEST_CASE(TestStateDecor)
   }
 
   {
-    // Test du constructeur Decor (int largeur, int hauteur, std::vector<TypeTerrain> map)
+    // Test de Decor (int largeur, int hauteur, std::vector<TypeTerrain> map)
     std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
     Decor decorTest(9, 8, mapTest);
     std::vector<TypeTerrain> testedMap = decorTest.getMap();
@@ -171,7 +172,7 @@ BOOST_AUTO_TEST_CASE(TestStateDecor)
   }
 
   {
-    // Test du constructeur Decor (int largeur, int hauteur, std::vector<TypeTerrain> map, std::vector<int> meteo, std::vector<int> lumiere)
+    // Test de Decor (int largeur, int hauteur, std::vector<TypeTerrain> map, std::vector<int> meteo, std::vector<int> lumiere)
     std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
     std::vector<int> meteoTest = {0, 1, 2};
     std::vector<int> lumiereTest = {0, 1, 2};
@@ -192,7 +193,7 @@ BOOST_AUTO_TEST_CASE(TestStateDecor)
   }
 
   {
-    // Test du constructeur Decor (const Decor &p)
+    // Test de Decor (const Decor &p)
     std::vector<TypeTerrain> mapTest{TNON, SOL, MUR};
     std::vector<int> meteoTest = {0, 1, 2};
     std::vector<int> lumiereTest = {0, 1, 2};
@@ -265,14 +266,116 @@ BOOST_AUTO_TEST_CASE(TestStateDecor)
     // Test d'action ()
   }*/
 }
-/*
+
 BOOST_AUTO_TEST_CASE(TestStateEnnemi)
 {
   {
-    // Test du constructeur Ennemi (std::string nom, Race race)
-    Ennemi ennemiTest("nomTest", ORC);
-    BOOST_CHECK_EQUAL(ennemiTest.getNom(), "nomTest");
+    // Test d'Ennemi ()
+    Ennemi ennemiTest;
+    BOOST_CHECK_EQUAL(ennemiTest.getNom(), "John Doe");
+    BOOST_CHECK_EQUAL(ennemiTest.getType(), 0);
+    BOOST_CHECK_EQUAL(ennemiTest.getNiveau(), 1);
+    BOOST_CHECK_EQUAL(ennemiTest.getPositionX(), 0);
+    BOOST_CHECK_EQUAL(ennemiTest.getPositionY(), 0);
+    BOOST_CHECK_EQUAL(ennemiTest.getPV(), 100);
+    BOOST_CHECK_EQUAL(ennemiTest.getPM(), 100);
+    BOOST_CHECK(ennemiTest.getEquipement().empty());
+    BOOST_CHECK(ennemiTest.getAutresActions().empty());
+    std::vector<int> testedStats = ennemiTest.getStats();
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], 0);
+    }
+    std::vector<bool> testedStatutsSubis = ennemiTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
     BOOST_CHECK_EQUAL(ennemiTest.getRace(), ORC);
+    BOOST_CHECK_EQUAL(ennemiTest.getActif(), false);
+  }
+
+  {
+    // Test d'Ennemi (std::string nom, Race race)
+    Ennemi ennemiTest("nomTest", SERPENT);
+    BOOST_CHECK_EQUAL(ennemiTest.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(ennemiTest.getType(), 0);
+    BOOST_CHECK_EQUAL(ennemiTest.getNiveau(), 1);
+    BOOST_CHECK_EQUAL(ennemiTest.getPositionX(), 0);
+    BOOST_CHECK_EQUAL(ennemiTest.getPositionY(), 0);
+    BOOST_CHECK_EQUAL(ennemiTest.getPV(), 100);
+    BOOST_CHECK_EQUAL(ennemiTest.getPM(), 100);
+    BOOST_CHECK(ennemiTest.getEquipement().empty());
+    BOOST_CHECK(ennemiTest.getAutresActions().empty());
+    std::vector<int> testedStats = ennemiTest.getStats();
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], 0);
+    }
+    std::vector<bool> testedStatutsSubis = ennemiTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
+    BOOST_CHECK_EQUAL(ennemiTest.getRace(), SERPENT);
+    BOOST_CHECK_EQUAL(ennemiTest.getActif(), false);
+  }
+
+  {
+    // Test d'Ennemi (std::string nom, Race race, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp> autresActions)
+    Equipement equipementTest1;
+    std::vector<Equipement> equipementTest = {equipementTest1};
+    ActionSupp autresActionsTest1;
+    std::vector<ActionSupp> autresActionsTest = {autresActionsTest1};
+    Ennemi ennemiTest("nomTest", SERPENT, 9, 8, 7, equipementTest, autresActionsTest);
+    BOOST_CHECK_EQUAL(ennemiTest.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(ennemiTest.getType(), 0);
+    BOOST_CHECK_EQUAL(ennemiTest.getNiveau(), 9);
+    BOOST_CHECK_EQUAL(ennemiTest.getPositionX(), 8);
+    BOOST_CHECK_EQUAL(ennemiTest.getPositionY(), 7);
+    BOOST_CHECK_EQUAL(ennemiTest.getPV(), 100);
+    BOOST_CHECK_EQUAL(ennemiTest.getPM(), 100);
+    BOOST_CHECK_EQUAL(ennemiTest.getEquipement()[0].getNom(), "no name");
+    BOOST_CHECK_EQUAL(ennemiTest.getAutresActions()[0].getNom(), "Action");
+    std::vector<int> testedStats = ennemiTest.getStats();
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], 0);
+    }
+    std::vector<bool> testedStatutsSubis = ennemiTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
+    BOOST_CHECK_EQUAL(ennemiTest.getRace(), SERPENT);
+    BOOST_CHECK_EQUAL(ennemiTest.getActif(), false);
+  }
+
+  {
+    // Test d'Ennemi (const Ennemi &p)
+    Equipement equipementTest1;
+    std::vector<Equipement> equipementTest = {equipementTest1};
+    ActionSupp autresActionsTest1;
+    std::vector<ActionSupp> autresActionsTest = {autresActionsTest1};
+    Ennemi ennemiTest1("nomTest", SERPENT, 9, 8, 7, equipementTest, autresActionsTest);
+    Ennemi ennemiTest(ennemiTest1);
+    BOOST_CHECK_EQUAL(ennemiTest.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(ennemiTest.getType(), 0);
+    BOOST_CHECK_EQUAL(ennemiTest.getNiveau(), 9);
+    BOOST_CHECK_EQUAL(ennemiTest.getPositionX(), 8);
+    BOOST_CHECK_EQUAL(ennemiTest.getPositionY(), 7);
+    BOOST_CHECK_EQUAL(ennemiTest.getPV(), 100);
+    BOOST_CHECK_EQUAL(ennemiTest.getPM(), 100);
+    BOOST_CHECK_EQUAL(ennemiTest.getEquipement()[0].getNom(), "no name");
+    BOOST_CHECK_EQUAL(ennemiTest.getAutresActions()[0].getNom(), "Action");
+    std::vector<int> testedStats = ennemiTest.getStats();
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], 0);
+    }
+    std::vector<bool> testedStatutsSubis = ennemiTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
+    BOOST_CHECK_EQUAL(ennemiTest.getRace(), SERPENT);
+    BOOST_CHECK_EQUAL(ennemiTest.getActif(), false);
   }
 
   {
@@ -291,12 +394,15 @@ BOOST_AUTO_TEST_CASE(TestStateEnnemi)
     BOOST_CHECK_EQUAL(testedActif, false);
   }
 
-  {
-    // -----Test d'activer ()
-    BOOST_CHECK(1);
-  }
-}
+  /*{
+    // Test d'activer ()
+  }*/
 
+  /*{
+    // Test d'initialisation ()
+  }*/
+}
+/*
 BOOST_AUTO_TEST_CASE(TestStateEntite)
 {
   {
