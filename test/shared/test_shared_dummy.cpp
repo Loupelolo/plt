@@ -402,13 +402,58 @@ BOOST_AUTO_TEST_CASE(TestStateEnnemi)
     // Test d'initialisation ()
   }*/
 }
-/*
+
 BOOST_AUTO_TEST_CASE(TestStateEntite)
 {
+  /*{
+    // Test d'Entite ()
+  }*/
+
   {
-    //  Test de Entite (std::string nom)
+    //  Test d'Entite (std::string nom)
     Entite entiteTest("nomTest");
     BOOST_CHECK_EQUAL(entiteTest.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(entiteTest.getType(), 0);
+    BOOST_CHECK_EQUAL(entiteTest.getNiveau(), 1);
+    BOOST_CHECK_EQUAL(entiteTest.getPositionX(), 0);
+    BOOST_CHECK_EQUAL(entiteTest.getPositionY(), 0);
+    BOOST_CHECK_EQUAL(entiteTest.getPV(), 100);
+    BOOST_CHECK_EQUAL(entiteTest.getPM(), 100);
+    BOOST_CHECK(entiteTest.getEquipement().empty());
+    BOOST_CHECK(entiteTest.getAutresActions().empty());
+    std::vector<int> testedStats = entiteTest.getStats();
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], 0);
+    }
+    std::vector<bool> testedStatutsSubis = entiteTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
+  }
+
+  {
+    //  Test d'Entite (const Entite &p)
+    Entite entiteTest1("nomTest");
+    Entite entiteTest(entiteTest1);
+    BOOST_CHECK_EQUAL(entiteTest.getNom(), "nomTest");
+    BOOST_CHECK_EQUAL(entiteTest.getType(), 0);
+    BOOST_CHECK_EQUAL(entiteTest.getNiveau(), 1);
+    BOOST_CHECK_EQUAL(entiteTest.getPositionX(), 0);
+    BOOST_CHECK_EQUAL(entiteTest.getPositionY(), 0);
+    BOOST_CHECK_EQUAL(entiteTest.getPV(), 100);
+    BOOST_CHECK_EQUAL(entiteTest.getPM(), 100);
+    BOOST_CHECK(entiteTest.getEquipement().empty());
+    BOOST_CHECK(entiteTest.getAutresActions().empty());
+    std::vector<int> testedStats = entiteTest.getStats();
+    for (unsigned int i = 0; i < testedStats.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStats[i], 0);
+    }
+    std::vector<bool> testedStatutsSubis = entiteTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
   }
 
   {
@@ -530,43 +575,79 @@ BOOST_AUTO_TEST_CASE(TestStateEntite)
     BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
     BOOST_CHECK_EQUAL(testedStatutsSubis[1], false);
   }
-
+  
   {
-    // -----Test d'initialisation ()
-    BOOST_CHECK(1);
+    // Test d'initialisation ()
+    Entite entiteTest("nomTest");
+    entiteTest.initialisation();
+    BOOST_CHECK_EQUAL(entiteTest.getStat(0), 10);
   }
 
   {
     // Test de deplacement (int dx, int dy)
-    Entite entiteTest;
-    entiteTest.setPositionX(0);
+    Entite entiteTest("nomTest");
+    entiteTest.setPositionX(1);
     entiteTest.setPositionY(0);
     entiteTest.deplacement(9, -8);
-    BOOST_CHECK_EQUAL(entiteTest.getPositionX(), 9);
+    BOOST_CHECK_EQUAL(entiteTest.getPositionX(), 10);
     BOOST_CHECK_EQUAL(entiteTest.getPositionY(), -8);
   }
 
   {
-    // -----Test de attaque (Entite cible) 
-    BOOST_CHECK(1);
+    // Test d'attaque (Entite* cible) 
+    Entite entiteOff("nomOff");
+    Entite entiteDef("nomDef");
+    entiteOff.initialisation();
+    entiteOff.attaque(&entiteDef);
+    BOOST_CHECK_EQUAL(entiteDef.getPV(), 90);
   }
 
   {
-    // -----Test d'effectuerActionSupp (ActionSupp action) 
-    BOOST_CHECK(1);
+    // Test d'effectuerActionSupp (ActionSupp* action, Entite* cible)
+    Entite entiteOff("nomOff");
+    Entite entiteDef("nomDef");
+    ActionSuppOff actionSuppOffTest("nomTest", 50, SNONE);
+    entiteOff.effectuerActionSupp(&actionSuppOffTest, &entiteDef);
+    BOOST_CHECK_EQUAL(entiteDef.getPV(), 50);
+    // Bon prototype? Le paramètre ActionSupp* action rend inutile m_equipement des entités
   }
 
   {
-    // -----Test de degats (int degatsSubis, int statutsSubis) 
-    BOOST_CHECK(1);
+    // Test de degats (int degatsSubis, int statutsSubis)
+    Entite entiteTest("nomTest");
+    entiteTest.degats(50, 1);
+    BOOST_CHECK_EQUAL(entiteTest.getPV(), 50);
+    BOOST_CHECK_EQUAL(entiteTest.getStatutSubi(1), true);
   }
 
   {
-    // -----Test de mort () 
-    BOOST_CHECK(1);
+    // Test de soin (int pvRecup, bool soigneStatuts)
+    Entite entiteTest("nomTest");
+    entiteTest.setStat(PVMAX, 100);
+    entiteTest.setPV(50);
+    entiteTest.setStatutSubi(1, true);
+    entiteTest.soin(25, false); // Test du regain de PV
+    BOOST_CHECK_EQUAL(entiteTest.getPV(), 75);
+    std::vector<bool> testedStatutsSubis = entiteTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    BOOST_CHECK_EQUAL(testedStatutsSubis[1], true);
+    for (unsigned int i = 2; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
+    entiteTest.soin(0, true); // Test du soin de statuts
+    BOOST_CHECK_EQUAL(entiteTest.getPV(), 75);
+    testedStatutsSubis = entiteTest.getStatutsSubis();
+    BOOST_CHECK_EQUAL(testedStatutsSubis[0], true);
+    for (unsigned int i = 1; i < testedStatutsSubis.size(); i++) {
+      BOOST_CHECK_EQUAL(testedStatutsSubis[i], false);
+    }
   }
+
+  /*{
+    // Test de mort () 
+  }*/
 }
-
+/*
 BOOST_AUTO_TEST_CASE(TestStateEquipement)
 {
   {
