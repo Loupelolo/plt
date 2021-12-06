@@ -1,5 +1,4 @@
 #include <boost/test/unit_test.hpp>
-#include <iostream>
 
 #include "../../src/shared/state.h"
 
@@ -873,7 +872,7 @@ BOOST_AUTO_TEST_CASE(TestStateHeros)
 
 BOOST_AUTO_TEST_CASE(TestStateState)
 {
-  /*
+  
   {
     // Test de setNbTour (int nbTour) et getNbTour ()
     State stateTest;
@@ -904,7 +903,7 @@ BOOST_AUTO_TEST_CASE(TestStateState)
   }
 
   {
-    // -----Test de setOrdreTour (std::vector<Entite*> ordreTour) et getOrdreTour ()
+    // Test de setOrdreTour (std::vector<Entite*> ordreTour) et getOrdreTour ()
     State stateTest;
     Entite entiteTest1;
     Entite entiteTest2;
@@ -912,7 +911,7 @@ BOOST_AUTO_TEST_CASE(TestStateState)
     std::vector<Entite*> testedOrdreTour = stateTest.getOrdreTour();
     BOOST_CHECK_EQUAL(testedOrdreTour[0], &entiteTest1);
   }
-  
+
   {
     // Test de setDe (int de) et getDe ()
     State stateTest;
@@ -921,16 +920,17 @@ BOOST_AUTO_TEST_CASE(TestStateState)
     BOOST_CHECK_EQUAL(testedDe, 9);
   }
 
-  {
-    // -----Test de nouveauTour ()
-    BOOST_CHECK(1);
-  }
-*/
-  {
-    // -----Test de joueurSuivant ()
-    BOOST_CHECK(1);
-  }
-}
+  /*{
+    // Test de nouveauTour ()
+  }*/
 
+  /*{
+    // Test de joueurSuivant ()
+  }*/
+
+  /*{
+    // Test d'actualiserEntite ()
+  }*/
+}
 
 /* vim: set sw=2 sts=2 et : */

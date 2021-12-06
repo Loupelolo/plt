@@ -4,80 +4,80 @@
 
 namespace state {
 
-// Constructeur & destructeur
+    // Constructeur & destructeur
 
-State::State () {
+    State::State () {
 
-}
-
-State::~State () {
-
-}
-
-
-
-// Setters & Getters
-
-int State::getNbTour (){
-    return m_nbTour;
-}
-
-void State::setNbTour (int nbTour){
-    m_nbTour = nbTour;
-}
-
-Decor State::getDecor (){
-    return m_decor;
-}
-
-void State::setDecor (Decor decors){
-    m_decor = decors;
-}
-
-std::vector<Entite> State::getEntites (){
-    return m_entites;
-}
-
-void State::setEntites (std::vector<Entite> entites){
-    m_entites = entites;
-}
-
-std::vector<Entite*> State::getOrdreTour (){
-    return m_ordreTour;
-}
-
-void State::setOrdreTour (std::vector<Entite*> ordreTour){
-    m_ordreTour = ordreTour;
-}
-
-int State::getDe (){
-    return m_de;
-}
-
-void State::setDe (int de){
-    m_de = de;
-}
-
-
-
-// Méthodes
-
-void State::nouveauTour (){
-    //initialisation d'un nouveau tour
-}
-
-void State::joueurSuivant (){
-    //passage au personnage suivant
-}
-
-void State::actualiserEntite (Entite entite){
-    Entite nvPrs = *m_ordreTour[0];
-    int taille = m_entites.size();
-    for(int i = 0; i<taille; i++){
-        if(nvPrs.getNom() == m_entites[i].getNom()){
-           m_entites[i] = entite; 
-        }
     }
-    *m_ordreTour[0] = entite;
-}
+
+    State::~State () {
+
+    }
+
+
+
+    // Setters & Getters
+
+    int State::getNbTour (){
+        return m_nbTour;
+    }
+
+    void State::setNbTour (int nbTour){
+        m_nbTour = nbTour;
+    }
+
+    Decor State::getDecor (){
+        return m_decor;
+    }
+
+    void State::setDecor (Decor decors){
+        m_decor = decors;
+    }
+
+    std::vector<Entite> State::getEntites (){
+        return m_entites;
+    }
+
+    void State::setEntites (std::vector<Entite> entites){
+        m_entites = entites;
+    }
+
+    std::vector<Entite*> State::getOrdreTour (){
+        return m_ordreTour;
+    }
+
+    void State::setOrdreTour (std::vector<Entite*> ordreTour){
+        m_ordreTour = ordreTour;
+    }
+
+    int State::getDe (){
+        return m_de;
+    }
+
+    void State::setDe (int de){
+        m_de = de;
+    }
+
+
+
+    // Méthodes
+
+    void State::nouveauTour (){
+        //initialisation d'un nouveau tour
+    }
+
+    void State::joueurSuivant (){
+        //passage au personnage suivant
+    }
+
+    void State::actualiserEntite (Entite entite){
+        Entite nvPrs = *m_ordreTour[0];
+        int taille = m_entites.size();
+        for(int i = 0; i<taille; i++){
+            if(nvPrs.getNom() == m_entites[i].getNom()){
+            m_entites[i] = entite; 
+            }
+        }
+        *m_ordreTour[0] = entite;
+    }
 }
