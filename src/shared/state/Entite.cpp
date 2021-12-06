@@ -151,8 +151,12 @@ namespace state {
         m_statutsSubis = statutsSubis;
     }
 
-
-
+    void Entite::attaque (Entite* cible){
+        //attaque basique d'une autre entite
+        std::cout<<m_stats[ATTAQUE]<<std::endl;
+        cible->degats(m_stats[ATTAQUE], 0);
+    }
+  
     // Méthodes
 
     void Entite::initialisation (){

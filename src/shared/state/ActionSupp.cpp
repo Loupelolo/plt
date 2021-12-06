@@ -36,9 +36,15 @@ namespace state {
         m_nom = nom;
     }
 
+
+    int ActionSupp::getPortee (){
+        return m_portee;
+    }
+
     int ActionSupp::getStat () {
         return m_stat;
     }
+
 
     void ActionSupp::setStat (int stat) {
         m_stat = stat;
