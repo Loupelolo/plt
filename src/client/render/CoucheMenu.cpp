@@ -92,7 +92,7 @@ bool CoucheMenu::load(){
     return true;
 }
 
-std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseActuelle){
+std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseActuelle){
     std::vector<sf::Text> texts;
     std::vector<std::string> str;
     std::vector<state::Entite*> ordreEntite = state->getOrdreTour();
@@ -168,7 +168,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseAc
             texts.resize(1);
             texts[0].setPosition(m_posX + 40, m_posY+50); 
             texts[0].setFont(m_police); 
-            texts[0].setString(std::to_string(state.getDe()));
+            texts[0].setString(std::to_string(state->getDe()));
             texts[0].setCharacterSize(40); 
             texts[0].setFillColor(sf::Color::Black);
             break;
