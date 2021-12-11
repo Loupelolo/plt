@@ -22,7 +22,6 @@ BOOST_AUTO_TEST_CASE(TestSFML)
     BOOST_CHECK(texture.getSize() == ::sf::Vector2<unsigned int> {});
   }
 }
-
 BOOST_AUTO_TEST_CASE(TestRenderCouche)
 {
   {
@@ -33,7 +32,6 @@ BOOST_AUTO_TEST_CASE(TestRenderCouche)
     BOOST_CHECK_EQUAL(coucheTest.getHauteur(), 7);
     BOOST_CHECK_EQUAL(coucheTest.getLargeur(), 6);
   }
-
   {
     //Test de setPos, getPosX et getPosY
     Couche coucheTest;
@@ -43,7 +41,6 @@ BOOST_AUTO_TEST_CASE(TestRenderCouche)
     BOOST_CHECK_EQUAL(testedPosX, 9);
     BOOST_CHECK_EQUAL(testedPosY, 8);
   }
-
   {
     //Test de setDimensions, getHauteur et getLargeur
     Couche coucheTest;
@@ -54,7 +51,6 @@ BOOST_AUTO_TEST_CASE(TestRenderCouche)
     BOOST_CHECK_EQUAL(testedLargeur, 8);
   }
 }
-
 BOOST_AUTO_TEST_CASE(TestRenderCoucheMenu)
 {
   {
@@ -66,7 +62,6 @@ BOOST_AUTO_TEST_CASE(TestRenderCoucheMenu)
     BOOST_CHECK_EQUAL(coucheMenuTest.getHauteur(), 7);
     BOOST_CHECK_EQUAL(coucheMenuTest.getLargeur(), 6);
   }
-
   {
     //Test de setType et getType
     CoucheMenu coucheMenuTest;
@@ -75,7 +70,6 @@ BOOST_AUTO_TEST_CASE(TestRenderCoucheMenu)
     BOOST_CHECK_EQUAL(testedType, 9);
   }
 }
-
 BOOST_AUTO_TEST_CASE(TestRenderCoucheTerrain)
 {
   {
@@ -84,7 +78,6 @@ BOOST_AUTO_TEST_CASE(TestRenderCoucheTerrain)
     BOOST_CHECK_EQUAL(coucheTerrainTest.getPosX(), 9);
     BOOST_CHECK_EQUAL(coucheTerrainTest.getPosY(), 8);
   }
-
   {
     //Test du constructeur CoucheTerrain (int x, int y, int h, int l, int tailleTuile)
     CoucheTerrain coucheTerrainTest(9, 8, 7, 6, 5);
@@ -94,7 +87,6 @@ BOOST_AUTO_TEST_CASE(TestRenderCoucheTerrain)
     BOOST_CHECK_EQUAL(coucheTerrainTest.getLargeur(), 6);
     BOOST_CHECK_EQUAL(coucheTerrainTest.getTailleTuile(), 5);
   }
-
   {
     //Test de setTailleTuile et getTailleTuile
     CoucheTerrain coucheTerrainTest;
@@ -103,7 +95,6 @@ BOOST_AUTO_TEST_CASE(TestRenderCoucheTerrain)
     BOOST_CHECK_EQUAL(testedTailleTuile, 9);
   }
 }
-
 BOOST_AUTO_TEST_CASE(TestRenderScene)
 {
   {
@@ -113,7 +104,6 @@ BOOST_AUTO_TEST_CASE(TestRenderScene)
     int testedJoueurID = sceneTest.getJoueurID();
     BOOST_CHECK_EQUAL(testedJoueurID, 9);
   }
-
   {
     //Test de setActionSelectionnee et getActionSelectionnee
     Scene sceneTest;
@@ -121,7 +111,6 @@ BOOST_AUTO_TEST_CASE(TestRenderScene)
     int testedActionSelectionnee = sceneTest.getActionSelectionnee();
     BOOST_CHECK_EQUAL(testedActionSelectionnee, 9);
   }
-
   {
     //Test de setSceneID et getSceneID
     Scene sceneTest;
@@ -129,7 +118,6 @@ BOOST_AUTO_TEST_CASE(TestRenderScene)
     int testedSceneID = sceneTest.getSceneID();
     BOOST_CHECK_EQUAL(testedSceneID, 9);
   }
-
   {
     //Test de setState et getState
     State stateTest;
@@ -142,13 +130,11 @@ BOOST_AUTO_TEST_CASE(TestRenderScene)
 }*/
 
 /*
-
 ----- PAS TESTÉ ----- 
 getters et setters d'attributs de types provenant de la librairie SFML
 méthodes autres que les getters et setters
 setCasesAccessibles et getCasesAccessibles de CoucheTerrain
 ---------------------
-
 */
 
 /* vim: set sw=2 sts=2 et : */

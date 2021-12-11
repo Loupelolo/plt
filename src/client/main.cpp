@@ -69,7 +69,7 @@ int main(int argc,char* argv[])
         entite1.effectuerActionSupp(&action2, &entite2);
 
         // valeur de deplacement
-        entite1.setStats({0,0,0,0,0,0,0,0,3});
+        //entite1.setStats({0,0,0,0,0,0,0,0,3});
         entite2.setStats({0,0,0,0,0,0,0,0,4});
         entite3.setStats({0,0,0,0,0,0,0,0,2});
 
@@ -90,7 +90,7 @@ int main(int argc,char* argv[])
         //implémentation dans le state
         state.setDecor(decor);
         state.setDe(6);
-        state.setEntites({entite1,entite2,entite3});
+        state.setEntites({&entite1,&entite2,&entite3});
         state.setOrdreTour({&entite1,&entite2,&entite3});
       
         //définition de l'affichage des menus
@@ -119,48 +119,50 @@ int main(int argc,char* argv[])
         CoucheTerrain coucheDecor(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
         CoucheTerrain couchePerso(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
 
-        std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};
+        std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};  
         std::vector<CoucheTerrain> terrains = {coucheDecor, couchePerso};
-
-        //définition de l'affichage
-        /*Scene scene(hauteurFenetre,largeurFenetre);
-        scene.setState(&state);
-        scene.setCaseActuelle(sf::Vector2f(2,1));
-
-        //Affichage
-        scene.setMenus(menus);
-        scene.setTerrains(terrains);
-        scene.afficherFenetre();*/        
 
         //engine
         Engine engine(state);
 
-        sf::Clock depl;
-        bool deplacement = false;
+        CommandeDeplacement dep1(3,1);
+        CommandeAttaque att1(&entite2);
+        CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
+
+        sf::Clock clkEngine;
+        bool depl1Fait = false;
+        bool att1Fait = false;
+        bool act1Fait = false;
         bool fenetre = true;
-        
-        Scene scene2(hauteurFenetre,largeurFenetre);
 
         while(fenetre){
         
-        sf::Time elapsed2 = depl.getElapsedTime();
+        sf::Time actuEngine = clkEngine.getElapsedTime();
 
-        if(elapsed2 >= sf::seconds(5) && !deplacement){
+        if(actuEngine >= sf::seconds(5) && !depl1Fait){
             cout<<"depl"<<endl;
-            CommandeDeplacement dep1(3,1);
             engine.addCommande(dep1);
-            deplacement = true;
-            //return true;
+            depl1Fait = true;
+        }
+        
+        if(actuEngine >= sf::seconds(10) && !att1Fait){
+            cout<<"att"<<endl;
+            engine.addCommande(act1);
+            att1Fait = true;
+        }
+        
+        if(actuEngine >= sf::seconds(15) && !act1Fait){
+            cout<<"act"<<endl;
+            engine.addCommande(act1);
+            act1Fait = true;
         }
 
-        scene2.setState(&engine.getState());
-        scene2.setCaseActuelle(sf::Vector2f(2,1));
-        scene2.setMenus(menus);
-        scene2.setTerrains(terrains);
-        fenetre = scene2.afficherFenetre(); 
+        scene.setState(&engine.getState());
+        scene.setCaseActuelle(sf::Vector2f(2,1));
+        scene.setMenus(menus);
+        scene.setTerrains(terrains);
+        fenetre = scene.afficherFenetre(); 
         }
-        //scene.afficherFenetre();
-
 
     }
     else

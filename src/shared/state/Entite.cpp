@@ -21,7 +21,7 @@ Entite::Entite (std::string nom) {
     m_PM = 100;
     m_equipement = {};
     m_autresActions = {};
-    m_stats = {0,0,0,0,0,0,0,0,0}; //attaque, defense, esquive, coup critique, pvmax, pmmax, portee, initiative, deplacement
+    m_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0}; //attaque, defense, esquive, coup critique, pvmax, pmmax, portee, initiative, deplacement
     m_statutsSubis = {true, false, false, false, false, false};
 }
 
@@ -162,8 +162,8 @@ void Entite::initialisation (){
 
 void Entite::deplacement (int dx, int dy){
     //deplacement de l'entite
-    m_positionX = dx;
-    m_positionY = dy;
+    m_positionX += dx;
+    m_positionY += dy;
 }
 
 void Entite::attaque (Entite* cible){

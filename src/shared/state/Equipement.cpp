@@ -6,7 +6,7 @@ namespace state {
 
 Equipement::Equipement () {
     m_nom = "no name";
-    m_bonusStat = {0,0,0,0,0,0,0,0,0};
+    m_bonusStat = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     m_statutInflige = SNONE;
 }
 

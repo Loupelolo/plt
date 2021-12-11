@@ -96,7 +96,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseA
     std::vector<sf::Text> texts;
     std::vector<std::string> str;
     std::vector<state::Entite*> ordreEntite = state->getOrdreTour();
-    std::vector<state::Entite> entites = state->getEntites();
+    std::vector<state::Entite*> entites = state->getEntites();
     state::Entite persoActuel = *state->getOrdreTour()[0];
     std::vector<state::ActionSupp> autresActions = persoActuel.getAutresActions();
 
@@ -150,9 +150,9 @@ std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseA
             break;
         case 3: //caseActuelle
             for(unsigned int i = 0;i<entites.size() ;i++){
-                sf::Vector2f posEntite = sf::Vector2f(entites[i].getPositionX(),entites[i].getPositionY());
+                sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
                 if (caseActuelle == posEntite){
-                    str = {"Nom : "+entites[i].getNom(),"PV : " +std::to_string(entites[i].getPV()),"PM : "+std::to_string(entites[i].getPM())};
+                    str = {"Nom : "+entites[i]->getNom(),"PV : " +std::to_string(entites[i]->getPV()),"PM : "+std::to_string(entites[i]->getPM())};
                     texts.resize(3);
                     for(int i = 0; i<3; i++){
                         texts[i].setPosition(m_posX + 20,m_posY+40+i*15); 

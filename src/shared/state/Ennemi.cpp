@@ -14,13 +14,13 @@ Ennemi::Ennemi () {
     m_PM = 100;
     m_equipement = {};
     m_autresActions = {};
-    m_stats = {0,0,0,0,0,0,0,0,0};
-    m_statutsSubis = {false, false, false, false, false};
+    m_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    m_statutsSubis = {true, false, false, false, false, false};
 
     m_race = ORC;
     m_actif = false;
 
-    this->initialisation();
+    initialisation();
 }
 
 Ennemi::Ennemi (std::string nom, Race race){
@@ -33,13 +33,13 @@ Ennemi::Ennemi (std::string nom, Race race){
     m_PM = 100;
     m_equipement = {};
     m_autresActions = {};
-    m_stats = {0,0,0,0,0,0,0,0,0};
-    m_statutsSubis = {false, false, false, false, false};
+    m_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    m_statutsSubis = {true, false, false, false, false, false};
 
     m_race = race;
     m_actif = false;
 
-    this->initialisation();
+    initialisation();
 }
 
 Ennemi::Ennemi (std::string nom, Race race, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp> autresActions){
@@ -58,7 +58,7 @@ Ennemi::Ennemi (std::string nom, Race race, int niveau, int positionX, int posit
     m_race = race;
     m_actif = false;
 
-    this->initialisation();
+    initialisation();
 }
 
 Ennemi::Ennemi (const Ennemi &p){
@@ -110,5 +110,7 @@ void Ennemi::activer (){
     //activer l'ennemi lorsque les joueurs sont suffisamment proche de lui
 }
 
+void Ennemi::initialisation() {
 
+}
 }

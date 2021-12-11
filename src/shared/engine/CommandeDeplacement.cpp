@@ -2,7 +2,6 @@
 #include <state.h>
 #include <iostream>
 
-
 namespace engine {
 
     CommandeDeplacement::CommandeDeplacement() {
@@ -31,22 +30,23 @@ namespace engine {
         return false;
     }
 
-    bool CommandeDeplacement::handleCollision (std::vector<state::Entite> listeEntites){
+    bool CommandeDeplacement::handleCollision (std::vector<state::Entite*> listeEntites){
         int length = listeEntites.size();
         for (int i = 0; i < length ; i++){
-            if ((listeEntites[i].getPositionX() == m_x) && (listeEntites[i].getPositionY() == m_y)){
+            if ((listeEntites[i]->getPositionX() == m_x) && (listeEntites[i]->getPositionY() == m_y)){
                 return false;
             }
         }
         return true;
     }
 
-    bool CommandeDeplacement::execute (Engine* engine){
-        state::State& st = engine->getState();
-        state::Entite prs = *st.getOrdreTour()[0];
-        prs.deplacement(m_x,m_y);
-        st.actualiserEntite(prs);
-        engine->setState(st);
+    bool CommandeDeplacement::execute (state::State* state){
+        //state::State& st = engine->getState();
+        state::Entite *prs = state->getOrdreTour()[0];
+        prs->deplacement(m_x,m_y);
+
+        //st.actualiserEntite(prs);
+        //engine->setState(st);
         return true;
     }
 

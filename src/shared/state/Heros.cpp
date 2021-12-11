@@ -17,8 +17,8 @@ Heros::Heros () {
     m_PM = 100;
     m_equipement = {};
     m_autresActions = {};
-    m_stats = {0,0,0,0,0,0,0,0,0};
-    m_statutsSubis = {false, false, false, false, false};
+    m_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    m_statutsSubis = {true, false, false, false, false, false};
 
 }
 
@@ -33,8 +33,8 @@ Heros::Heros (std::string nom, Classe classe){
     m_PM = 100;
     m_equipement = {};
     m_autresActions = {};
-    m_stats = {0,0,0,0,0,0,0,0,0};
-    m_statutsSubis = {false, false, false, false, false};
+    m_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+    m_statutsSubis = {true, false, false, false, false, false};
 
     this->initialisation();
 }
@@ -94,7 +94,7 @@ void Heros::setClasse (Classe classe){
 
 // Méthodes
 
-void Heros::initialisation(){
+void Heros::initialisation (){
     switch (m_classe)
     {
     case ARCHER:
@@ -129,8 +129,8 @@ void Heros::obtenirEquipement (Equipement newEquipement){
 
 void Heros::lacherEquipement (Equipement oldEquipement){
     //suppression d'un equipement
-    unsigned int i =0;
-    while(i< m_equipement.size() && m_equipement[i] != oldEquipement ){
+    unsigned int i = 0;
+    while(i < m_equipement.size() && m_equipement[i] != oldEquipement ){
         i++;
     }
     if (m_equipement[i] == oldEquipement) m_equipement.erase(m_equipement.begin() + i);
