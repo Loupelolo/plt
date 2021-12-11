@@ -119,51 +119,50 @@ int main(int argc,char* argv[])
         CoucheTerrain coucheDecor(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
         CoucheTerrain couchePerso(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
 
-        std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};
-
-        //définition de l'affichage
-        Scene scene(hauteurFenetre,largeurFenetre);
-        scene.setState(state);
-        scene.setCaseActuelle(sf::Vector2f(2,1));
-
-        //Affichage
-        scene.afficherFenetre(menus,{coucheDecor,couchePerso});        
+        std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};  
+        std::vector<CoucheTerrain> terrains = {coucheDecor, couchePerso};
 
         //engine
         Engine engine(state);
+
         CommandeDeplacement dep1(3,1);
-        engine.addCommande(dep1);
-
-        //définition de l'affichage
-        Scene scene2(hauteurFenetre,largeurFenetre);
-        scene2.setState(engine.getState());
-        scene2.setCaseActuelle(sf::Vector2f(2,1));
-
-        //Affichage
-        scene2.afficherFenetre(menus,{coucheDecor,couchePerso});
-
         CommandeAttaque att1(&entite2);
-        engine.addCommande(att1);
-
-        //définition de l'affichage
-        Scene scene3(hauteurFenetre,largeurFenetre);
-        scene3.setState(engine.getState());
-        scene3.setCaseActuelle(sf::Vector2f(2,1));
-
-        //Affichage
-        scene3.afficherFenetre(menus,{coucheDecor,couchePerso});
-
         CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
-        engine.addCommande(act1);
 
-        //définition de l'affichage
-        Scene scene4(hauteurFenetre,largeurFenetre);
-        scene4.setState(engine.getState());
-        scene4.setCaseActuelle(sf::Vector2f(2,1));
+        sf::Clock clkEngine;
+        bool depl1Fait = false;
+        bool att1Fait = false;
+        bool act1Fait = false;
+        bool fenetre = true;
 
-        //Affichage
-        scene4.afficherFenetre(menus,{coucheDecor,couchePerso});
+        while(fenetre){
+        
+        sf::Time actuEngine = clkEngine.getElapsedTime();
 
+        if(actuEngine >= sf::seconds(5) && !depl1Fait){
+            cout<<"depl"<<endl;
+            engine.addCommande(dep1);
+            depl1Fait = true;
+        }
+        
+        if(actuEngine >= sf::seconds(10) && !att1Fait){
+            cout<<"att"<<endl;
+            engine.addCommande(act1);
+            att1Fait = true;
+        }
+        
+        if(actuEngine >= sf::seconds(15) && !act1Fait){
+            cout<<"act"<<endl;
+            engine.addCommande(act1);
+            act1Fait = true;
+        }
+
+        scene.setState(&engine.getState());
+        scene.setCaseActuelle(sf::Vector2f(2,1));
+        scene.setMenus(menus);
+        scene.setTerrains(terrains);
+        fenetre = scene.afficherFenetre(); 
+        }
 
     }
     else

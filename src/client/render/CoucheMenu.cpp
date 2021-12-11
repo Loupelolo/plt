@@ -95,9 +95,9 @@ bool CoucheMenu::load(){
 std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseActuelle){
     std::vector<sf::Text> texts;
     std::vector<std::string> str;
-    std::vector<state::Entite*> ordreEntite = state.getOrdreTour();
-    std::vector<state::Entite*> entites = state.getEntites();
-    state::Entite persoActuel = *state.getOrdreTour()[0];
+    std::vector<state::Entite*> ordreEntite = state->getOrdreTour();
+    std::vector<state::Entite*> entites = state->getEntites();
+    state::Entite persoActuel = *state->getOrdreTour()[0];
     std::vector<state::ActionSupp> autresActions = persoActuel.getAutresActions();
 
     switch (m_type)
