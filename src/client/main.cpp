@@ -120,27 +120,46 @@ int main(int argc,char* argv[])
         CoucheTerrain couchePerso(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
 
         std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};
+        std::vector<CoucheTerrain> terrains = {coucheDecor, couchePerso};
 
         //définition de l'affichage
-        Scene scene(hauteurFenetre,largeurFenetre);
-        scene.setState(state);
+        /*Scene scene(hauteurFenetre,largeurFenetre);
+        scene.setState(&state);
         scene.setCaseActuelle(sf::Vector2f(2,1));
 
         //Affichage
-        scene.afficherFenetre(menus,{coucheDecor,couchePerso});        
+        scene.setMenus(menus);
+        scene.setTerrains(terrains);
+        scene.afficherFenetre();*/        
 
         //engine
         Engine engine(state);
-        CommandeDeplacement dep1(3,1);
-        engine.addCommande(dep1);
 
-        //définition de l'affichage
+        sf::Clock depl;
+        bool deplacement = false;
+        bool fenetre = true;
+        
         Scene scene2(hauteurFenetre,largeurFenetre);
-        scene2.setState(engine.getState());
-        scene2.setCaseActuelle(sf::Vector2f(2,1));
 
-        //Affichage
-        scene2.afficherFenetre(menus,{coucheDecor,couchePerso});
+        while(fenetre){
+        
+        sf::Time elapsed2 = depl.getElapsedTime();
+
+        if(elapsed2 >= sf::seconds(5) && !deplacement){
+            cout<<"depl"<<endl;
+            CommandeDeplacement dep1(3,1);
+            engine.addCommande(dep1);
+            deplacement = true;
+            //return true;
+        }
+
+        scene2.setState(&engine.getState());
+        scene2.setCaseActuelle(sf::Vector2f(2,1));
+        scene2.setMenus(menus);
+        scene2.setTerrains(terrains);
+        fenetre = scene2.afficherFenetre(); 
+        }
+        //scene.afficherFenetre();
 
 
     }
