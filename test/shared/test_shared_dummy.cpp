@@ -68,18 +68,20 @@ BOOST_AUTO_TEST_CASE(TestStateActionSuppDef)
 
   {
     // Test d'ActionSuppDef (std::string nom, int stat, bool soigneStatuts)
-    ActionSuppDef actionSuppDeftest("nomTest", 9, true);
+    ActionSuppDef actionSuppDeftest("nomTest", 9, 8, true);
     BOOST_CHECK_EQUAL(actionSuppDeftest.getNom(), "nomTest");
     BOOST_CHECK_EQUAL(actionSuppDeftest.getStat(), 9);
+    BOOST_CHECK_EQUAL(actionSuppDeftest.getPortee(), 8);
     BOOST_CHECK_EQUAL(actionSuppDeftest.getSoigneStatuts(), true);
   }
 
   {
     // Test d'ActionSuppDef (const ActionSuppDef &p)
-    ActionSuppDef actionSuppDeftest1("nomTest", 9, true);
+    ActionSuppDef actionSuppDeftest1("nomTest", 9, 8, true);
     ActionSuppDef actionSuppDeftest2(actionSuppDeftest1);
     BOOST_CHECK_EQUAL(actionSuppDeftest2.getNom(), "nomTest");
     BOOST_CHECK_EQUAL(actionSuppDeftest2.getStat(), 9);
+    BOOST_CHECK_EQUAL(actionSuppDeftest2.getPortee(), 8);
     BOOST_CHECK_EQUAL(actionSuppDeftest2.getSoigneStatuts(), true);
   }
 
@@ -93,7 +95,7 @@ BOOST_AUTO_TEST_CASE(TestStateActionSuppDef)
 
 {
     // Test d'effectuerAction (Entite* cible)
-    ActionSuppDef actionSuppDeftest("nomTest", 0, true);
+    ActionSuppDef actionSuppDeftest("nomTest", 0, 0, true);
     Entite entiteTest;
     entiteTest.setStats({false, false, false, false, false, false});
     actionSuppDeftest.effectuerAction(&entiteTest);
@@ -113,18 +115,20 @@ BOOST_AUTO_TEST_CASE(TestStateActionSuppOff)
 
   {
     // Test d'ActionSuppOff (std::string nom, int stat, Statut statut)
-    ActionSuppOff actionSuppOfftest("nomTest", 9, CONFUS);
+    ActionSuppOff actionSuppOfftest("nomTest", 9, 8, CONFUS);
     BOOST_CHECK_EQUAL(actionSuppOfftest.getNom(), "nomTest");
     BOOST_CHECK_EQUAL(actionSuppOfftest.getStat(), 9);
+    BOOST_CHECK_EQUAL(actionSuppOfftest.getPortee(), 8);
     BOOST_CHECK_EQUAL(actionSuppOfftest.getStatut(), CONFUS);
   }
 
   {
     // Test d'ActionSuppOff (const ActionSuppOff &p)
-    ActionSuppOff actionSuppOfftest1("nomTest", 9, CONFUS);
+    ActionSuppOff actionSuppOfftest1("nomTest", 9, 8, CONFUS);
     ActionSuppOff actionSuppOfftest2(actionSuppOfftest1);
     BOOST_CHECK_EQUAL(actionSuppOfftest2.getNom(), "nomTest");
     BOOST_CHECK_EQUAL(actionSuppOfftest2.getStat(), 9);
+    BOOST_CHECK_EQUAL(actionSuppOfftest2.getPortee(), 8);
     BOOST_CHECK_EQUAL(actionSuppOfftest2.getStatut(), CONFUS);
   }
 
@@ -138,7 +142,7 @@ BOOST_AUTO_TEST_CASE(TestStateActionSuppOff)
 
   {
     // Test d'effectuerAction (Entite* cible)
-    ActionSuppOff actionSuppOffTest("nomTest", 5, SNONE);
+    ActionSuppOff actionSuppOffTest("nomTest", 5, 4, SNONE);
     Entite entiteTest;
     entiteTest.setPV(10);
     actionSuppOffTest.effectuerAction(&entiteTest);
@@ -323,7 +327,7 @@ BOOST_AUTO_TEST_CASE(TestStateEnnemi)
     Equipement equipementTest1;
     std::vector<Equipement> equipementTest = {equipementTest1};
     ActionSupp autresActionsTest1;
-    std::vector<ActionSupp> autresActionsTest = {autresActionsTest1};
+    std::vector<ActionSupp*> autresActionsTest = {&autresActionsTest1};
     Ennemi ennemiTest("nomTest", SERPENT, 9, 8, 7, equipementTest, autresActionsTest);
     BOOST_CHECK_EQUAL(ennemiTest.getNom(), "nomTest");
     BOOST_CHECK_EQUAL(ennemiTest.getType(), 0);
@@ -333,7 +337,7 @@ BOOST_AUTO_TEST_CASE(TestStateEnnemi)
     BOOST_CHECK_EQUAL(ennemiTest.getPV(), 100);
     BOOST_CHECK_EQUAL(ennemiTest.getPM(), 100);
     BOOST_CHECK_EQUAL(ennemiTest.getEquipement()[0].getNom(), "no name");
-    BOOST_CHECK_EQUAL(ennemiTest.getAutresActions()[0].getNom(), "Action");
+    BOOST_CHECK_EQUAL(ennemiTest.getAutresActions()[0]->getNom(), "Action");
     std::vector<int> testedStats = ennemiTest.getStats();
     for (unsigned int i = 0; i < testedStats.size(); i++) {
       BOOST_CHECK_EQUAL(testedStats[i], 0);
@@ -352,7 +356,7 @@ BOOST_AUTO_TEST_CASE(TestStateEnnemi)
     Equipement equipementTest1;
     std::vector<Equipement> equipementTest = {equipementTest1};
     ActionSupp autresActionsTest1;
-    std::vector<ActionSupp> autresActionsTest = {autresActionsTest1};
+    std::vector<ActionSupp*> autresActionsTest = {&autresActionsTest1};
     Ennemi ennemiTest1("nomTest", SERPENT, 9, 8, 7, equipementTest, autresActionsTest);
     Ennemi ennemiTest(ennemiTest1);
     BOOST_CHECK_EQUAL(ennemiTest.getNom(), "nomTest");
@@ -363,7 +367,7 @@ BOOST_AUTO_TEST_CASE(TestStateEnnemi)
     BOOST_CHECK_EQUAL(ennemiTest.getPV(), 100);
     BOOST_CHECK_EQUAL(ennemiTest.getPM(), 100);
     BOOST_CHECK_EQUAL(ennemiTest.getEquipement()[0].getNom(), "no name");
-    BOOST_CHECK_EQUAL(ennemiTest.getAutresActions()[0].getNom(), "Action");
+    BOOST_CHECK_EQUAL(ennemiTest.getAutresActions()[0]->getNom(), "Action");
     std::vector<int> testedStats = ennemiTest.getStats();
     for (unsigned int i = 0; i < testedStats.size(); i++) {
       BOOST_CHECK_EQUAL(testedStats[i], 0);
@@ -531,10 +535,10 @@ BOOST_AUTO_TEST_CASE(TestStateEntite)
     ActionSupp actionSuppTest2;
     actionSuppTest2.setNom("nomTest2");
     Entite entiteTest;
-    entiteTest.setAutresActions({actionSuppTest1, actionSuppTest2});
-    std::vector<ActionSupp> testedActionSupp = entiteTest.getAutresActions();
-    BOOST_CHECK_EQUAL(testedActionSupp[0].getNom(), "nomTest1");
-    BOOST_CHECK_EQUAL(testedActionSupp[1].getNom(), "nomTest2");
+    entiteTest.setAutresActions({&actionSuppTest1, &actionSuppTest2});
+    std::vector<ActionSupp*> testedActionSupp = entiteTest.getAutresActions();
+    BOOST_CHECK_EQUAL(testedActionSupp[0]->getNom(), "nomTest1");
+    BOOST_CHECK_EQUAL(testedActionSupp[1]->getNom(), "nomTest2");
   }
 
   {
@@ -605,7 +609,7 @@ BOOST_AUTO_TEST_CASE(TestStateEntite)
     // Test d'effectuerActionSupp (ActionSupp* action, Entite* cible)
     Entite entiteOff("nomOff");
     Entite entiteDef("nomDef");
-    ActionSuppOff actionSuppOffTest("nomTest", 50, SNONE);
+    ActionSuppOff actionSuppOffTest("nomTest", 50, 4, SNONE);
     entiteOff.effectuerActionSupp(&actionSuppOffTest, &entiteDef);
     BOOST_CHECK_EQUAL(entiteDef.getPV(), 50);
     // Bon prototype? Le paramètre ActionSupp* action rend inutile m_equipement des entités
@@ -863,10 +867,10 @@ BOOST_AUTO_TEST_CASE(TestStateHeros)
     // Test d'obtenirActionSupp (ActionSupp newActionSupp) 
     Heros herosTest;
     ActionSupp actionSuppTest1("nomTest1");
-    herosTest.setAutresActions({actionSuppTest1});
+    herosTest.setAutresActions({&actionSuppTest1});
     ActionSupp actionSuppTest2("nomTest2");
-    herosTest.obtenirActionSupp(actionSuppTest2);
-    BOOST_CHECK_EQUAL(herosTest.getAutresActions()[1].getNom(), "nomTest2");
+    herosTest.obtenirActionSupp(&actionSuppTest2);
+    BOOST_CHECK_EQUAL(herosTest.getAutresActions()[1]->getNom(), "nomTest2");
   }
 }
 

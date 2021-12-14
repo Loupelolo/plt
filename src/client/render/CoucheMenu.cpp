@@ -98,7 +98,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseA
     std::vector<state::Entite*> ordreEntite = state->getOrdreTour();
     std::vector<state::Entite*> entites = state->getEntites();
     state::Entite persoActuel = *state->getOrdreTour()[0];
-    std::vector<state::ActionSupp> autresActions = persoActuel.getAutresActions();
+    std::vector<state::ActionSupp*> autresActions = persoActuel.getAutresActions();
 
     switch (m_type)
     {
@@ -138,7 +138,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseA
             }
 
             for(unsigned int i = 0;i<autresActions.size() and i<3;i++){
-                str[i] = autresActions[i].getNom();
+                str[i] = autresActions[i]->getNom();
             }
             for(unsigned int i = 0; i<3 and i<autresActions.size(); i++){
                 texts[i+3].setPosition(m_posX + 30 + i*200, m_posY+90);

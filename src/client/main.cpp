@@ -43,11 +43,11 @@ int main(int argc,char* argv[])
         entite1.setPositionX(4);
         entite1.setPositionY(2);
         entite1.setType(0);
-        ActionSuppOff action1("Boule de feu", 50, BRULE);
-        ActionSuppDef action2("Soin", 20, false);
+        ActionSuppOff action1("Boule de feu", 50, 5, BRULE);
+        ActionSuppDef action2("Soin", 20, 10, false);
         Equipement equip1("Epee");
         Equipement equip2("Bouclier");
-        entite1.setAutresActions({action1, action2});
+        entite1.setAutresActions({&action1, &action2});
         entite1.setEquipement({equip1,equip2});
 
         Entite entite2("Charles");
@@ -55,23 +55,20 @@ int main(int argc,char* argv[])
         entite2.setPositionY(1);
         entite2.setPV(70);
         entite2.setStat(PVMAX, 30);
+        entite2.setStat(DEPLACEMENT, 4);
         entite2.setPM(3);
         entite1.setType(1);
 
         Entite entite3("Elisabeth");
         entite3.setPositionX(7);
         entite3.setPositionY(0);
+        entite2.setStat(DEPLACEMENT, 2);
         entite3.setPV(300);
         entite3.setPM(500);
         entite3.setType(2);
 
         entite1.effectuerActionSupp(&action1, &entite2);
         entite1.effectuerActionSupp(&action2, &entite2);
-
-        // valeur de deplacement
-        //entite1.setStats({0,0,0,0,0,0,0,0,3});
-        entite2.setStats({0,0,0,0,0,0,0,0,4});
-        entite3.setStats({0,0,0,0,0,0,0,0,2});
 
         //création de la map
         std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
@@ -134,37 +131,39 @@ int main(int argc,char* argv[])
         bool att1Fait = false;
         bool act1Fait = false;
         bool fenetre = true;
+        
+        Scene scene(hauteurFenetre,largeurFenetre);
 
         while(fenetre){
-        
-        sf::Time actuEngine = clkEngine.getElapsedTime();
+            
+            sf::Time actuEngine = clkEngine.getElapsedTime();
 
-        if(actuEngine >= sf::seconds(5) && !depl1Fait){
-            cout<<"depl"<<endl;
-            engine.addCommande(dep1);
-            depl1Fait = true;
-        }
-        
-        if(actuEngine >= sf::seconds(10) && !att1Fait){
-            cout<<"att"<<endl;
-            engine.addCommande(act1);
-            att1Fait = true;
-        }
-        
-        if(actuEngine >= sf::seconds(15) && !act1Fait){
-            cout<<"act"<<endl;
-            engine.addCommande(act1);
-            act1Fait = true;
-        }
+            if(actuEngine >= sf::seconds(5) && !depl1Fait){
+                cout<<"depl"<<endl;
+                engine.addCommande(dep1);
+                depl1Fait = true;
+            }
+            
+            if(actuEngine >= sf::seconds(10) && !att1Fait){
+                cout<<"att"<<endl;
+                engine.addCommande(att1);
+                att1Fait = true;
+            }
+            
+            if(actuEngine >= sf::seconds(15) && !act1Fait){
+                cout<<"act"<<endl;
+                engine.addCommande(act1);
+                act1Fait = true;
+            }
 
-        scene.setState(&engine.getState());
-        scene.setCaseActuelle(sf::Vector2f(2,1));
-        scene.setMenus(menus);
-        scene.setTerrains(terrains);
-        fenetre = scene.afficherFenetre(); 
+            scene.setState(&engine.getState());
+            scene.setCaseActuelle(sf::Vector2f(2,1));
+            scene.setMenus(menus);
+            scene.setTerrains(terrains);
+            fenetre = scene.afficherFenetre(); 
         }
-
     }
+
     else
     {
         cout << "Veuillez entrer une commande" << endl << "Commandes disponibles : hello, state, render" << endl;

@@ -9,7 +9,7 @@ namespace engine {
         m_commandeTypeId = ActionSupplementaire;
     }
 
-    CommandeActionSupplementaire::CommandeActionSupplementaire (state::Entite* cible, state::ActionSupp action){
+    CommandeActionSupplementaire::CommandeActionSupplementaire (state::Entite* cible, state::ActionSupp* action){
         m_commandeTypeId = ActionSupplementaire;
         m_cible = cible;
         m_action = action;
@@ -22,8 +22,8 @@ namespace engine {
 
     bool CommandeActionSupplementaire::handleActionSupplementaire (state::Entite perso){
         for(long unsigned int i = 0; i < perso.getAutresActions().size(); i++){
-            if (perso.getAutresActions()[i].getNom() == m_action.getNom()){
-                int portee = m_action.getPortee();
+            if (perso.getAutresActions()[i]->getNom() == m_action->getNom()){
+                int portee = m_action->getPortee();
                 int posX = perso.getPositionX();
                 int posY = perso.getPositionY();
                 int cibleX = m_cible->getPositionX();
@@ -38,7 +38,7 @@ namespace engine {
 
     bool CommandeActionSupplementaire::execute (state::State* state){
         state::Entite *prs = state->getOrdreTour()[0];
-        prs->effectuerActionSupp(&m_action,m_cible);
+        prs->effectuerActionSupp(m_action,m_cible);
         return true;
     }
 
