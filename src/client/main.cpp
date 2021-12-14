@@ -5,6 +5,7 @@
 #include <state.h>
 #include <render.h>
 #include <engine.h>
+#include <ai.h>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -20,7 +21,7 @@ using namespace std;
 using namespace state;
 using namespace render;
 using namespace engine;
-
+using namespace ai;
 
 
 int main(int argc,char* argv[])
@@ -85,7 +86,7 @@ int main(int argc,char* argv[])
 
         //informations non-modifiables
         Decor decor(nbLargeur, 4, map);
-        decor.action(6,2, &entite1);
+        decor.action(6, 2, &entite1);
         
         //implémentation dans le state
         state.setDecor(decor);
@@ -132,7 +133,7 @@ int main(int argc,char* argv[])
         //engine
         Engine engine(state);
         CommandeDeplacement dep1(3,1);
-        engine.addCommande(dep1);
+        engine.executerCommande(dep1);
 
         //définition de l'affichage
         Scene scene2(hauteurFenetre,largeurFenetre);
@@ -143,7 +144,7 @@ int main(int argc,char* argv[])
         scene2.afficherFenetre(menus,{coucheDecor,couchePerso});
 
         CommandeAttaque att1(&entite2);
-        engine.addCommande(att1);
+        engine.executerCommande(att1);
 
         //définition de l'affichage
         Scene scene3(hauteurFenetre,largeurFenetre);
@@ -154,7 +155,7 @@ int main(int argc,char* argv[])
         scene3.afficherFenetre(menus,{coucheDecor,couchePerso});
 
         CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
-        engine.addCommande(act1);
+        engine.executerCommande(act1);
 
         //définition de l'affichage
         Scene scene4(hauteurFenetre,largeurFenetre);
@@ -166,9 +167,40 @@ int main(int argc,char* argv[])
 
 
     }
+    else if (strcmp(argv[1],"testRandomAi")==0)
+    {
+        State stateTest;
+        Heros herosTest("Diana", ARCHER);
+        herosTest.setPositionX(1);
+        herosTest.setPositionY(1);
+        Ennemi ennemiTest("Alma", ORC);
+        ennemiTest.setPositionX(12);
+        ennemiTest.setPositionY(1);
+        stateTest.setEntites({&herosTest, &ennemiTest});
+
+        std::vector<TypeTerrain> mapTest = //maximum 18 de largeur et 9 de hauteur
+          {
+            MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
+            PORT, SOL , SOL , SOL , SOL , SOL , SOL , SOL , OBST, SOL , SOL , SOL , SECR,
+            MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
+            MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
+          };
+        int nbLargeur = 13;
+        Decor decorTest(nbLargeur, 4, mapTest);
+        stateTest.setDecor(decorTest);
+        stateTest.setOrdreTour({&herosTest, &ennemiTest});
+
+        Engine engineTest(stateTest);
+
+        RandomAI randomAItest(stateTest);
+
+        randomAItest.run(stateTest, engineTest);
+    }
     else
     {
         cout << "Veuillez entrer une commande" << endl << "Commandes disponibles : hello, state, render" << endl;
     }
     return 0;
 }
+
+//Modification d'engine.dia : executerCommande dans Engine

@@ -38,10 +38,15 @@ namespace engine {
         m_record = record;
     }
 
-    void Engine::addCommande (Commande& cmd){
+    bool Engine::executerCommande (Commande& cmd){
         if(cmd.getCommandeTypeId() == Deplacement){
             if (cmd.handleDeplacement(*m_currentState.getOrdreTour()[0], m_currentState.getDecor().getMap(), m_currentState.getDecor().getLargeur()) && cmd.handleCollision(m_currentState.getEntites())){
                 cmd.execute(&this->getState());
+                std::cout << "Deplacement possible" << std::endl;
+                return true;
+            } else {
+            std::cout << "Deplacement échoué" << std::endl;
+            return false;
             }
         }
         else if(cmd.getCommandeTypeId() == Attaque){
