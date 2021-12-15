@@ -1,7 +1,7 @@
 #include "ActionSupp.h"
 #include <iostream>
 
-namespace state {
+    namespace state {
 
     // Constructeur & destructeur
 
@@ -36,21 +36,24 @@ namespace state {
         m_nom = nom;
     }
 
-
-    int ActionSupp::getPortee (){
-        return m_portee;
-    }
-
     int ActionSupp::getStat () {
         return m_stat;
     }
-
 
     void ActionSupp::setStat (int stat) {
         m_stat = stat;
     }
 
+    int ActionSupp::getPortee (){
+        return m_portee;
+    }
+
+    void ActionSupp::setPortee (int portee) {
+        m_portee = portee;
+    }
+
     void ActionSupp::effectuerAction (Entite* cible) {
         std::cout<<"Mais qu'est-ce que je fais la"<<std::endl;
     }
+    
 }

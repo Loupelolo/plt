@@ -92,13 +92,13 @@ bool CoucheMenu::load(){
     return true;
 }
 
-std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseActuelle){
+std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseActuelle){
     std::vector<sf::Text> texts;
     std::vector<std::string> str;
-    std::vector<state::Entite*> ordreEntite = state.getOrdreTour();
-    std::vector<state::Entite*> entites = state.getEntites();
-    state::Entite persoActuel = *state.getOrdreTour()[0];
-    std::vector<state::ActionSupp> autresActions = persoActuel.getAutresActions();
+    std::vector<state::Entite*> ordreEntite = state->getOrdreTour();
+    std::vector<state::Entite*> entites = state->getEntites();
+    state::Entite persoActuel = *state->getOrdreTour()[0];
+    std::vector<state::ActionSupp*> autresActions = persoActuel.getAutresActions();
 
     switch (m_type)
     {
@@ -138,7 +138,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseAc
             }
 
             for(unsigned int i = 0;i<autresActions.size() and i<3;i++){
-                str[i] = autresActions[i].getNom();
+                str[i] = autresActions[i]->getNom();
             }
             for(unsigned int i = 0; i<3 and i<autresActions.size(); i++){
                 texts[i+3].setPosition(m_posX + 30 + i*200, m_posY+90);
@@ -168,7 +168,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State state, sf::Vector2f caseAc
             texts.resize(1);
             texts[0].setPosition(m_posX + 40, m_posY+50); 
             texts[0].setFont(m_police); 
-            texts[0].setString(std::to_string(state.getDe()));
+            texts[0].setString(std::to_string(state->getDe()));
             texts[0].setCharacterSize(40); 
             texts[0].setFillColor(sf::Color::Black);
             break;

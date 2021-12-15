@@ -1,4 +1,5 @@
 #include "Decor.h"
+
 #include <iostream>
 
 namespace state {
@@ -42,43 +43,43 @@ namespace state {
 
     // Setters & Getters
 
-    int Decor::getLargeur(){
+    int Decor::getLargeur () {
         return m_largeur;
     }
 
-    void Decor::setLargeur(int largeur){
+    void Decor::setLargeur (int largeur) {
         m_largeur = largeur;
     }
 
-    int Decor::getHauteur(){
+    int Decor::getHauteur () {
         return m_hauteur;
     }
 
-    void Decor::setHauteur(int hauteur){
+    void Decor::setHauteur (int hauteur) {
         m_hauteur = hauteur;
     }
 
-    std::vector<TypeTerrain> Decor::getMap(){
+    std::vector<TypeTerrain> Decor::getMap () {
         return m_map;
     }
 
-    void Decor::setMap(std::vector<TypeTerrain> map){
+    void Decor::setMap (std::vector<TypeTerrain> map) {
         m_map = map;
     }
 
-    std::vector<int> Decor::getMeteo(){
+    std::vector<int> Decor::getMeteo () {
         return m_meteo;
     }
 
-    void Decor::setMeteo(std::vector<int> meteo){
+    void Decor::setMeteo (std::vector<int> meteo) {
         m_meteo = meteo;
     }
 
-    std::vector<int> Decor::getLumiere(){
+    std::vector<int> Decor::getLumiere () {
         return m_lumiere;
     }
 
-    void Decor::setLumiere(std::vector<int> lumiere){
+    void Decor::setLumiere (std::vector<int> lumiere) {
         m_lumiere = lumiere;
     }
 
@@ -86,7 +87,7 @@ namespace state {
 
     // Méthodes
 
-    void Decor::action (int posX, int posY, Entite* aEntite){
+    void Decor::action (int posX, int posY, Entite* aEntite) {
         //declenche l'action de la case
         int indiceMap = posX + m_largeur*posY;
         

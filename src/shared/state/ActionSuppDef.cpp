@@ -8,25 +8,29 @@ namespace state {
     ActionSuppDef::ActionSuppDef () {
         m_nom = "Action";
         m_stat = 0;
+        m_portee = 0;
         m_soigneStatuts = false;
     }
 
-    ActionSuppDef::ActionSuppDef (std::string nom, int stat, bool soigneStatuts) {
+    ActionSuppDef::ActionSuppDef (std::string nom, int stat, int portee, bool soigneStatuts) {
         m_nom = nom;
         m_stat = stat;
+        m_portee = portee;
         m_soigneStatuts = soigneStatuts;
     }
 
     ActionSuppDef::ActionSuppDef (const ActionSuppDef &p) {
         m_nom = p.m_nom;
         m_stat = p.m_stat;
+        m_portee = p.m_portee;
         m_soigneStatuts = p.m_soigneStatuts;
     }
 
     ActionSuppDef::~ActionSuppDef () {
 
     }
-        
+
+
 
 
     // Setters & Getters
@@ -47,4 +51,5 @@ namespace state {
         //soin d'une cible
         cible->Entite::soin(m_stat, m_soigneStatuts);
     }
+
 }

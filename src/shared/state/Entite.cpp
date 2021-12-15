@@ -111,11 +111,11 @@ namespace state {
         m_equipement = equipement;
     }
 
-    std::vector<ActionSupp> Entite::getAutresActions (){
+    std::vector<ActionSupp*> Entite::getAutresActions (){
         return m_autresActions;
     }
 
-    void Entite::setAutresActions (std::vector<ActionSupp> autresActions){
+    void Entite::setAutresActions (std::vector<ActionSupp*> autresActions){
         m_autresActions = autresActions;
     }
 
@@ -150,7 +150,7 @@ namespace state {
     void Entite::setStatutsSubis (std::vector<bool> statutsSubis){
         m_statutsSubis = statutsSubis;
     }
-  
+
     // Méthodes
 
     void Entite::initialisation (){
@@ -160,8 +160,8 @@ namespace state {
 
     void Entite::deplacement (int dx, int dy){
         //deplacement de l'entite
-        m_positionX += dx;
-        m_positionY += dy;
+        m_positionX = dx;
+        m_positionY = dy;
     }
 
     void Entite::attaque (Entite* cible){
@@ -202,4 +202,6 @@ namespace state {
     void Entite::mort (){
         // mort de l'entite
     }
+
+
 }

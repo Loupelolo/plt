@@ -1,4 +1,5 @@
 #include "Heros.h"
+
 #include <iostream>
 
 namespace state {
@@ -34,10 +35,10 @@ namespace state {
         m_stats = {0, 0, 0, 0, 0, 0, 0, 0, 0};
         m_statutsSubis = {true, false, false, false, false, false};
 
-        initialisation();
+        this->initialisation();
     }
 
-    Heros::Heros (std::string nom, Classe classe, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp> autresActions){
+    Heros::Heros (std::string nom, Classe classe, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp*> autresActions){
         m_nom = nom;
         m_type = classe;
         m_niveau = niveau;
@@ -49,7 +50,10 @@ namespace state {
         m_autresActions = autresActions;
         m_stats = {0,0,0,0,0,0,0,0,0};
         m_statutsSubis = {true, false, false, false, false, false};
+
         m_classe = classe;
+
+
         this->initialisation();
     }
 
@@ -65,6 +69,7 @@ namespace state {
         m_autresActions = p.m_autresActions;
         m_stats = p.m_stats;
         m_statutsSubis = p.m_statutsSubis;
+
         m_classe = p.m_classe;
     }
 
@@ -131,8 +136,10 @@ namespace state {
         else std::cout<<"equipement non present"<<std::endl;
     }
 
-    void Heros::obtenirActionSupp (ActionSupp newActionSupp){
+    void Heros::obtenirActionSupp (ActionSupp* newActionSupp){
         //ajout d'une action
         m_autresActions.push_back(newActionSupp);
     }
+
+
 }

@@ -23,7 +23,7 @@ namespace state {
         initialisation();
     }
 
-    Ennemi::Ennemi (std::string nom, Race race){
+    Ennemi::Ennemi (std::string nom, Race race) {
         m_nom = nom;
         m_type = 0;
         m_niveau = 1;
@@ -42,7 +42,7 @@ namespace state {
         initialisation();
     }
 
-    Ennemi::Ennemi (std::string nom, Race race, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp> autresActions){
+    Ennemi::Ennemi (std::string nom, Race race, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp*> autresActions) {
         m_nom = nom;
         m_type = 0;
         m_niveau = niveau;
@@ -61,7 +61,7 @@ namespace state {
         initialisation();
     }
 
-    Ennemi::Ennemi (const Ennemi &p){
+    Ennemi::Ennemi (const Ennemi &p) {
         m_nom = p.m_nom;
         m_type = p.m_type;
         m_niveau = p.m_niveau;
@@ -86,19 +86,19 @@ namespace state {
 
     // Setters & Getters
 
-    Race Ennemi::getRace (){
+    Race Ennemi::getRace () {
         return m_race;
     }
 
-    void Ennemi::setRace (Race race){
+    void Ennemi::setRace (Race race) {
         m_race = race;
     }
 
-    bool Ennemi::getActif (){
+    bool Ennemi::getActif () {
         return m_actif;
     }
 
-    void Ennemi::setActif (bool actif){
+    void Ennemi::setActif (bool actif) {
         m_actif = actif;
     }
 
@@ -106,7 +106,7 @@ namespace state {
 
     // Méthodes
 
-    void Ennemi::activer (){
+    void Ennemi::activer () {
         //activer l'ennemi lorsque les joueurs sont suffisamment proche de lui
     }
 

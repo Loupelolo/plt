@@ -71,4 +71,5 @@ namespace state {
     void Equipement::setBonusStat (std::vector<int> bonusStat){
         m_bonusStat = bonusStat;
     }
+
 }
