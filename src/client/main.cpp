@@ -141,19 +141,19 @@ int main(int argc,char* argv[])
 
             if(actuEngine >= sf::seconds(5) && !depl1Fait){
                 cout<<"depl"<<endl;
-                engine.addCommande(dep1);
+                engine.executerCommande(dep1);
                 depl1Fait = true;
             }
             
             if(actuEngine >= sf::seconds(10) && !att1Fait){
                 cout<<"att"<<endl;
-                engine.addCommande(att1);
+                engine.executerCommande(att1);
                 att1Fait = true;
             }
             
             if(actuEngine >= sf::seconds(15) && !act1Fait){
                 cout<<"act"<<endl;
-                engine.addCommande(act1);
+                engine.executerCommande(act1);
                 act1Fait = true;
             }
 
