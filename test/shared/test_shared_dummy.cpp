@@ -591,9 +591,9 @@ BOOST_AUTO_TEST_CASE(TestStateEntite)
     Entite entiteTest("nomTest");
     entiteTest.setPositionX(1);
     entiteTest.setPositionY(0);
-    entiteTest.deplacement(9, -8);
-    BOOST_CHECK_EQUAL(entiteTest.getPositionX(), 10);
-    BOOST_CHECK_EQUAL(entiteTest.getPositionY(), -8);
+    entiteTest.deplacement(9, 8);
+    BOOST_CHECK_EQUAL(entiteTest.getPositionX(), 9);
+    BOOST_CHECK_EQUAL(entiteTest.getPositionY(), 8);
   }
 
   {
