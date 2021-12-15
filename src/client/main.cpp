@@ -173,10 +173,13 @@ int main(int argc,char* argv[])
         Heros herosTest("Diana", ARCHER);
         herosTest.setPositionX(1);
         herosTest.setPositionY(1);
-        Ennemi ennemiTest("Alma", ORC);
+        Ennemi ennemiTest("Paparazzi", ORC);
+        ennemiTest.setPositionX(2);
+        ennemiTest.setPositionY(1);
+        Ennemi ennemiTest2("Alma", ORC);
         ennemiTest.setPositionX(12);
         ennemiTest.setPositionY(1);
-        stateTest.setEntites({&herosTest, &ennemiTest});
+        stateTest.setEntites({&herosTest, &ennemiTest, &ennemiTest2});
 
         std::vector<TypeTerrain> mapTest = //maximum 18 de largeur et 9 de hauteur
           {
@@ -188,7 +191,7 @@ int main(int argc,char* argv[])
         int nbLargeur = 13;
         Decor decorTest(nbLargeur, 4, mapTest);
         stateTest.setDecor(decorTest);
-        stateTest.setOrdreTour({&herosTest, &ennemiTest});
+        stateTest.setOrdreTour({&herosTest, &ennemiTest, &ennemiTest2});
 
         Engine engineTest(stateTest);
 

@@ -51,9 +51,16 @@ namespace engine {
                 return false;
             }
         }
-        else if(cmd.getCommandeTypeId() == Attaque){
-            if(cmd.handleAttaque(*m_currentState.getOrdreTour()[0])){
+        else if(cmd.getCommandeTypeId() == Attaque)
+        {
+            if(cmd.handleAttaque(*m_currentState.getOrdreTour()[0]))
+            {
                 cmd.execute(&this->getState());
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         else if(cmd.getCommandeTypeId() == ActionSupplementaire){
