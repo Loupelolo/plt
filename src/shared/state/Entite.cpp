@@ -151,8 +151,6 @@ namespace state {
         m_statutsSubis = statutsSubis;
     }
 
-
-
     // Méthodes
 
     void Entite::initialisation (){

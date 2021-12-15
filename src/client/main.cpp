@@ -5,6 +5,7 @@
 #include <state.h>
 #include <render.h>
 #include <engine.h>
+#include <ai.h>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -20,7 +21,7 @@ using namespace std;
 using namespace state;
 using namespace render;
 using namespace engine;
-
+using namespace ai;
 
 
 int main(int argc,char* argv[])
@@ -82,7 +83,7 @@ int main(int argc,char* argv[])
 
         //informations non-modifiables
         Decor decor(nbLargeur, 4, map);
-        decor.action(6,2, &entite1);
+        decor.action(6, 2, &entite1);
         
         //implémentation dans le state
         state.setDecor(decor);
@@ -163,7 +164,38 @@ int main(int argc,char* argv[])
             fenetre = scene.afficherFenetre(); 
         }
     }
+    else if (strcmp(argv[1],"testRandomAi")==0)
+    {
+        State stateTest;
+        Heros herosTest("Diana", ARCHER);
+        herosTest.setPositionX(1);
+        herosTest.setPositionY(1);
+        Ennemi ennemiTest("Paparazzi", ORC);
+        ennemiTest.setPositionX(2);
+        ennemiTest.setPositionY(1);
+        Ennemi ennemiTest2("Alma", ORC);
+        ennemiTest.setPositionX(12);
+        ennemiTest.setPositionY(1);
+        stateTest.setEntites({&herosTest, &ennemiTest, &ennemiTest2});
 
+        std::vector<TypeTerrain> mapTest = //maximum 18 de largeur et 9 de hauteur
+          {
+            MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
+            PORT, SOL , SOL , SOL , SOL , SOL , SOL , SOL , OBST, SOL , SOL , SOL , SECR,
+            MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
+            MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
+          };
+        int nbLargeur = 13;
+        Decor decorTest(nbLargeur, 4, mapTest);
+        stateTest.setDecor(decorTest);
+        stateTest.setOrdreTour({&herosTest, &ennemiTest, &ennemiTest2});
+
+        Engine engineTest(stateTest);
+
+        RandomAI randomAItest(stateTest);
+
+        randomAItest.run(stateTest, engineTest);
+    }
     else
     {
         cout << "Veuillez entrer une commande" << endl << "Commandes disponibles : hello, state, render" << endl;
