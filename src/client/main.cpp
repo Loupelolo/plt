@@ -39,7 +39,7 @@ int main(int argc,char* argv[])
 
         // Informations modifiables pour changer l'état
         //création des personnages
-        Heros entite1("Diana", ARCHER);
+        Heros entite1("Diana", MAGE);
         entite1.setPositionX(4);
         entite1.setPositionY(2);
         entite1.setType(0);
