@@ -40,7 +40,7 @@ int main(int argc,char* argv[])
 
         // Informations modifiables pour changer l'état
         //création des personnages
-        Heros entite1("Diana", ARCHER);
+        Heros entite1("Diana", MAGE);
         entite1.setPositionX(4);
         entite1.setPositionY(2);
         entite1.setType(0);
@@ -135,9 +135,16 @@ int main(int argc,char* argv[])
         
         Scene scene(hauteurFenetre,largeurFenetre);
 
+        scene.setState(&engine.getState());
+        scene.setCaseActuelle(sf::Vector2f(2,1));
+        scene.setMenus(menus);
+        scene.setTerrains(terrains);
+        scene.chargerFenetre();
+        fenetre = scene.afficherFenetre(); 
+
         while(fenetre){
             
-            sf::Time actuEngine = clkEngine.getElapsedTime();
+            /*sf::Time actuEngine = clkEngine.getElapsedTime();
 
             if(actuEngine >= sf::seconds(5) && !depl1Fait){
                 cout<<"depl"<<endl;
@@ -155,7 +162,7 @@ int main(int argc,char* argv[])
                 cout<<"act"<<endl;
                 engine.executerCommande(act1);
                 act1Fait = true;
-            }
+            }*/
 
             scene.setState(&engine.getState());
             scene.setCaseActuelle(sf::Vector2f(2,1));

@@ -37,14 +37,6 @@ void CoucheTerrain::setTailleTuile (int tailleTuile){
     m_tailleTuile = tailleTuile;
 }
 
-std::vector<std::vector<int>> CoucheTerrain::getCasesAccessibles (){
-    return m_casesAccesibles;
-}
-
-void CoucheTerrain::setCasesAccessibles (std::vector<std::vector<int>> casesAccessibles){
-    m_casesAccesibles = casesAccessibles;
-}
-
 
 
 //Méthodes
@@ -119,10 +111,6 @@ bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize,
     }
 
     return true;
-}
-
-void CoucheTerrain::actualisationCasesAccessibles (){
-    //défini les cases accessibles selon la portée
 }
 
 }

@@ -97,10 +97,10 @@ namespace state {
         switch (m_classe)
         {
         case ARCHER:
-            m_stats = {40, 40, 30, 25, 60, 30, 10, 30, 8};
+            m_stats = {40, 40, 30, 25, 60, 30, 10, 30, 5};
             break;
         case ASSASSIN:
-            m_stats = {30, 50, 40, 30, 70, 20, 2, 20, 11};
+            m_stats = {30, 50, 40, 30, 70, 20, 2, 20, 7};
             break;
         case DRUIDE:
             m_stats = {50, 40, 10, 10, 90, 60, 3, 6, 6};
