@@ -168,33 +168,41 @@ int main(int argc,char* argv[])
     {
         State stateTest;
         Heros herosTest("Diana", ARCHER);
-        herosTest.setPositionX(1);
-        herosTest.setPositionY(1);
+        herosTest.setPositionX(0);
+        herosTest.setPositionY(0);
         Ennemi ennemiTest("Paparazzi", ORC);
-        ennemiTest.setPositionX(2);
-        ennemiTest.setPositionY(1);
-        Ennemi ennemiTest2("Alma", ORC);
         ennemiTest.setPositionX(12);
-        ennemiTest.setPositionY(1);
-        stateTest.setEntites({&herosTest, &ennemiTest, &ennemiTest2});
+        ennemiTest.setPositionY(3);
+        Heros herosTest2("Charles", ARCHER);
+        herosTest2.setPositionX(12);
+        herosTest2.setPositionY(2);
+        Ennemi ennemiTest2("Alma", ORC);
+        ennemiTest2.setPositionX(11);
+        ennemiTest2.setPositionY(2);
+        stateTest.setEntites({&herosTest, &ennemiTest, &ennemiTest2, &herosTest2});
 
         std::vector<TypeTerrain> mapTest = //maximum 18 de largeur et 9 de hauteur
           {
-            MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
-            PORT, SOL , SOL , SOL , SOL , SOL , SOL , SOL , OBST, SOL , SOL , SOL , SECR,
-            MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
-            MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
+            SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL ,
+            SOL, SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL, SOL , SOL , SOL , SOL,
+            SOL , SOL , SOL , SOL , SOL , SOL , SOL, SOL , SOL , SOL , SOL , SOL, SOL ,
+            SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL 
           };
         int nbLargeur = 13;
         Decor decorTest(nbLargeur, 4, mapTest);
         stateTest.setDecor(decorTest);
-        stateTest.setOrdreTour({&herosTest, &ennemiTest, &ennemiTest2});
+        stateTest.setOrdreTour({&herosTest, &ennemiTest, &ennemiTest2, &herosTest2});
 
         Engine engineTest(stateTest);
 
-        RandomAI randomAItest(stateTest);
+        // Tests de l'IA aléatoire
+        //RandomAI randomAItest(stateTest);
+        //randomAItest.run(stateTest, engineTest);
 
-        randomAItest.run(stateTest, engineTest);
+
+        // Test de l'IA heuristique
+        HeuristiqueAI HeuristiqueAItest(stateTest);
+        HeuristiqueAItest.run(stateTest, engineTest);
     }
     else
     {
