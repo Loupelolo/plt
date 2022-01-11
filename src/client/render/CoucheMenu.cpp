@@ -106,7 +106,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseA
             int max;
             if(ordreEntite.size()<10) max = ordreEntite.size();
             else max=10;
-            m_texts.resize(max);
+            m_texts.resize(max+1);
             for(int i = 0; i<max; i++){
                 m_texts[i].setPosition(m_posX + 20,m_posY+40+i*15); 
                 m_texts[i].setFont(m_police); 
@@ -114,11 +114,22 @@ std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseA
                 m_texts[i].setCharacterSize(15); 
                 m_texts[i].setFillColor(sf::Color::Black);
             } 
+            m_texts[max].setPosition(m_posX + 100,m_posY+15); 
+            m_texts[max].setFont(m_police); 
+            m_texts[max].setString((std::to_string(state->getNbTour())));
+            m_texts[max].setCharacterSize(15); 
+            m_texts[max].setFillColor(sf::Color::Black);
             break;
         case 1: //perso
-            str = {"Nom : "+persoActuel.getNom(),"PV : " +std::to_string(persoActuel.getPV()),"PM : "+std::to_string(persoActuel.getPM())};
-            m_texts.resize(3);
-            for(int i = 0; i<3; i++){
+            str = {"Nom : "+persoActuel.getNom(),"PV : " +std::to_string(persoActuel.getPV()),"PM : "+std::to_string(persoActuel.getPM()),"Actions restantes :","- Deplacement","- Attaque"};
+            if(state->getABouge()){
+                str[4] = ("");
+            }
+            if(state->getAAttaque()){
+                str[5] = ("");
+            }
+            m_texts.resize(6);
+            for(int i = 0; i<6; i++){
                 m_texts[i].setPosition(m_posX + 20,m_posY+40+i*15); 
                 m_texts[i].setFont(m_police); 
                 m_texts[i].setString(str[i]);

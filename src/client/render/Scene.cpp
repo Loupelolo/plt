@@ -107,6 +107,7 @@ bool Scene::afficherFenetre(){
     sf::Clock clock;
     sf::Clock clock2;
     engine::Commande* commande = NULL;
+
     actualiserCasesAccessibles();
 
     while (m_window.isOpen())
@@ -142,9 +143,9 @@ bool Scene::afficherFenetre(){
                     int mouseX = event.mouseButton.x;
                     int mouseY = event.mouseButton.y;
                     if (mouseX >= m_menus[2].getPosX() && mouseX<= m_menus[2].getPosX() + m_menus[2].getLargeur()){
-                    //la souris a cliquée dans la partie du milieu
+                    //l'utilisateur a cliquée dans la partie du milieu
                        if(mouseY >= m_menus[0].getHauteur() ){
-                            //la souris a cliquée dans la partie menu
+                            //l'utilisateur a cliquée dans la partie menu
                             int actSel = selectAction(mouseX, mouseY);
                             if( actSel != -1) {
                                 if(actSel == m_actionSelectionnee){
@@ -182,40 +183,51 @@ bool Scene::afficherFenetre(){
                                 actualiserCasesAccessibles();
                             }
                         } else {
-                            //la souris a cliquée dans la partie plateau
+                            //l'utilisateur a cliquée dans la partie plateau
                             m_caseActuelle = selectCase(mouseX, mouseY);
                         }
                     }
 
+                    //l'utilisateur a cliqué sur le bouton executer
                     int largeur = m_terrains[0].getLargeur();
-                    if (commande!=NULL && m_casesAccessibles[m_caseActuelle.x +m_caseActuelle.y*largeur]){
+                    if ((commande!=NULL && m_casesAccessibles[m_caseActuelle.x +m_caseActuelle.y*largeur])||m_actionSelectionnee ==3){
                         if (mouseX >= m_menus[3].getPosX()+20 && mouseX<= m_menus[3].getPosX() + 120){
                             if(mouseY>= m_menus[4].getPosY()-80 && mouseY<= m_menus[4].getPosY()-50){
-                                if(m_actionSelectionnee == 1){
+                                //l'utilisateur souhaite effectuer un deplacement
+                                if(m_actionSelectionnee == 1 && !m_state->getABouge()){
+                                    std::cout<<"ici"<<std::endl;
                                     engine::CommandeDeplacement comDep(m_caseActuelle.x, m_caseActuelle.y);
                                     commande = &comDep;
-                                    commande->execute(m_state);
-                                } else if(m_actionSelectionnee ==2){
+                                    if(m_state->effectuerAction(m_actionSelectionnee)){
+                                        std::cout<<"la"<<std::endl;
+                                        commande->execute(m_state);
+                                    } 
+                                } else if(m_actionSelectionnee ==2 && !m_state->getAAttaque()){
+                                    //l'utilisateur souhaite effectuer une attaque
                                     std::vector<state::Entite*> entites = m_state->getEntites();
                                     for(unsigned int i = 0;i<entites.size() ;i++){
                                         sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
                                         if (m_caseActuelle == posEntite){
-                                                engine::CommandeAttaque comAtt(entites[i]);
-                                                commande = &comAtt;
-                                                commande->execute(m_state);
+                                            engine::CommandeAttaque comAtt(entites[i]);
+                                            commande = &comAtt;
+                                            if(m_state->effectuerAction(m_actionSelectionnee)) commande->execute(m_state);
                                         }
                                     }
-                                } else if(m_actionSelectionnee>3){
+                                } else if(m_actionSelectionnee==3){
+                                    //l'utilisateur souhaite passer son tour
+                                    m_state->joueurSuivant();
+                                } else if(m_actionSelectionnee>3 && !m_state->getAAttaque()) {
                                     std::vector<state::Entite*> entites = m_state->getEntites();
                                     for(unsigned int i = 0;i<entites.size() ;i++){
                                         sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
                                         if (m_caseActuelle == posEntite){
                                                 engine::CommandeActionSupplementaire comAct(entites[i], m_state->getOrdreTour()[0]->getAutresActions()[m_actionSelectionnee-4]);
                                                 commande = &comAct;
-                                                commande->execute(m_state);
+                                                if(m_state->effectuerAction(m_actionSelectionnee)) commande->execute(m_state);
                                         }
                                     }
                                 }
+                                m_actionSelectionnee = 0;
                             }
                         }
                     }
@@ -243,21 +255,18 @@ bool Scene::afficherFenetre(){
 
 
         int largeur = m_terrains[0].getLargeur();
-        if (commande!=NULL && m_casesAccessibles[m_caseActuelle.x +m_caseActuelle.y*largeur]){
-            sf::RectangleShape carreFaireAction(sf::Vector2f(100, 30));
-            carreFaireAction.setPosition(m_menus[3].getPosX()+20, m_menus[4].getPosY()-80);
-            carreFaireAction.setFillColor(sf::Color(0, 0, 0, 50));
-            m_window.draw(carreFaireAction);
+        //dessiner la case "executer"
+        if(m_actionSelectionnee ==3){
+            afficherExecuter("Passer");
+        }
 
-            sf::Text text;
-            text.setPosition(m_menus[3].getPosX()+35,m_menus[4].getPosY()-75); 
-            sf::Font police;
-            police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
-            text.setFont(police); 
-            text.setString("Executer");
-            text.setCharacterSize(15); 
-            text.setFillColor(sf::Color::Black);
-            m_window.draw(text);
+        if (m_casesAccessibles[m_caseActuelle.x +m_caseActuelle.y*largeur]){
+            if((m_actionSelectionnee == 1 && !m_state->getABouge())){
+                afficherExecuter("Deplacer");
+            } else if((m_actionSelectionnee == 2 ||m_actionSelectionnee>3) && !m_state->getAAttaque()){
+                afficherExecuter("Attaquer");
+            }
+            
         }
 
         m_window.display();
@@ -278,7 +287,7 @@ int Scene::selectAction (int x, int y) {
             action = i+1;
         }
     }
-    
+
     return action;
 }
 
@@ -432,6 +441,24 @@ void Scene::actualiserCasesAccessibles(){
             break;
     }
 }
+
+void Scene::afficherExecuter(sf::String texte){
+    sf::RectangleShape carreFaireAction(sf::Vector2f(100, 30));
+    carreFaireAction.setPosition(m_menus[3].getPosX()+20, m_menus[4].getPosY()-80);
+    carreFaireAction.setFillColor(sf::Color(0, 0, 0, 50));
+    m_window.draw(carreFaireAction);
+
+    sf::Text text;
+    text.setPosition(m_menus[3].getPosX()+35,m_menus[4].getPosY()-75); 
+    sf::Font police;
+    police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
+    text.setFont(police); 
+    text.setString(texte);
+    text.setCharacterSize(15); 
+    text.setFillColor(sf::Color::Black);
+    m_window.draw(text);
+}
+
 
 
 }
