@@ -20,14 +20,12 @@ namespace engine {
     }
 
 
-    bool Commande::handleDeplacement (state::Entite perso, std::vector<state::TypeTerrain> map, int largeur){
-        return false;
-    }
-    bool Commande::handleCollision (std::vector<state::Entite*> listeEntites){
+    bool Commande::handleDeplacement (state::State* etat){
         return false;
     }
 
-    bool Commande::handleAttaque (state::Entite perso){
+
+    bool Commande::handleAttaque (state::State* state){
         return false;
     }
 

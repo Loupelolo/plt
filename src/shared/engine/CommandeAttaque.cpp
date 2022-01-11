@@ -21,10 +21,10 @@ namespace engine {
         return m_cible;
     }
 
-    bool CommandeAttaque::handleAttaque (state::Entite perso){
-        int portee = perso.getStat(state::PORTEE);
-        int posX = perso.getPositionX();
-        int posY = perso.getPositionY();
+    bool CommandeAttaque::handleAttaque (state::State* state){
+        int portee = state->getOrdreTour()[0]->getStat(state::PORTEE);
+        int posX = state->getOrdreTour()[0]->getPositionX();
+        int posY = state->getOrdreTour()[0]->getPositionY();
         int cibleX = m_cible->getPositionX();
         int cibleY = m_cible->getPositionY();
         if (abs(cibleX-posX)+abs(cibleY-posY)<=portee){

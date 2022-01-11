@@ -50,6 +50,7 @@ int main(int argc,char* argv[])
         Equipement equip2("Bouclier");
         entite1.setAutresActions({&action1, &action2});
         entite1.setEquipement({equip1,equip2});
+        entite1.setStat(DEPLACEMENT, 3);
 
         Entite entite2("Charles");
         entite2.setPositionX(2);
@@ -123,9 +124,11 @@ int main(int argc,char* argv[])
         //engine
         Engine engine(state);
 
-        CommandeDeplacement dep1(3,1);
+        CommandeDeplacement dep1(7,2);
         CommandeAttaque att1(&entite2);
         CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
+
+        dep1.ActuMapLib(&state);
 
         sf::Clock clkEngine;
         bool depl1Fait = false;
