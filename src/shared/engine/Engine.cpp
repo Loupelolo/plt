@@ -9,7 +9,7 @@ namespace engine {
         
     }
 
-    Engine::Engine (state::State& currentState) {
+    Engine::Engine (state::State* currentState) {
         m_currentState = currentState;
     }
 
@@ -22,7 +22,7 @@ namespace engine {
         
     }
 
-    state::State& Engine::getState (){
+    state::State* Engine::getState (){
         return m_currentState;
     }
 
@@ -30,7 +30,7 @@ namespace engine {
         return m_record;
     }
 
-    void Engine::setState(state::State& currentState){
+    void Engine::setState(state::State* currentState){
         m_currentState = currentState;
     }
 
@@ -66,22 +66,22 @@ namespace engine {
         switch(cmd.getCommandeTypeId()){
             case Deplacement :
                 //if (cmd.handleDeplacement(*m_currentState.getOrdreTour()[0], m_currentState.getDecor().getMap(), m_currentState.getDecor().getLargeur()) && cmd.handleCollision(m_currentState.getEntites())){
-                if (cmd.handleDeplacement(&m_currentState)){
-                    cmd.execute(&this->getState());
+                if (cmd.handleDeplacement(m_currentState)){
+                    cmd.execute(this->getState());
                     return true;
                 }    
                 break;
 
             case Attaque :
-                if(cmd.handleAttaque(&m_currentState)){
-                    cmd.execute(&this->getState());
+                if(cmd.handleAttaque(m_currentState)){
+                    cmd.execute(this->getState());
                     return true;
                 }
                 break;
 
             case ActionSupplementaire :
-                if(cmd.handleActionSupplementaire(*m_currentState.getOrdreTour()[0])){
-                    cmd.execute(&this->getState());
+                if(cmd.handleActionSupplementaire(*m_currentState->getOrdreTour()[0])){
+                    cmd.execute(this->getState());
                     return true;
                 }
                 break;
