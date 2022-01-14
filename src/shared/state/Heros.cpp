@@ -78,7 +78,6 @@ namespace state {
     }
 
     Heros::~Heros () {
-        std::cout<<"yo"<<std::endl;
         /*delete &m_nom;
         delete &m_type;
         delete &m_niveau;
@@ -114,7 +113,7 @@ namespace state {
         switch (m_classe)
         {
         case ARCHER:
-            m_stats = {40, 40, 30, 25, 60, 30, 10, 30, 5};
+            m_stats = {40, 40, 30, 25, 60, 30, 10, 30, 8};
             break;
         case ASSASSIN:
             m_stats = {30, 50, 40, 30, 70, 20, 2, 20, 7};
