@@ -96,7 +96,9 @@ bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize,
 
         int posX = entites[i]->getPositionX();
         int posY = entites[i]->getPositionY();
-        int tu = entites[i]->getType();            
+        int tu = 0;
+        if(entites[i]->getEstVivant()) tu = entites[i]->getType();      
+        else tu = 7;   
 
         quad[0].position = sf::Vector2f(posX * m_tailleTuile +decalX, posY * m_tailleTuile+m_posY);
         quad[1].position = sf::Vector2f((posX + 1) * m_tailleTuile+decalX, posY * m_tailleTuile+m_posY);

@@ -1,13 +1,17 @@
 #include "State.h"
 #include "Decor.h"
+#include <cstdlib>
 #include <iostream>
+#include <ctime>
 
 namespace state {
 
     // Constructeur & destructeur
 
     State::State () {
-
+        m_nbTour = 1;
+        std::srand(std::time(nullptr)); // use current time as seed for random generator
+        
     }
 
     State::~State () {
@@ -58,28 +62,87 @@ namespace state {
         m_de = de;
     }
 
+    bool State::getABouge (){
+        return m_aBouge;
+    }
+
+    void State::setABouge (bool aBouge){
+        m_aBouge = aBouge;
+    }
+
+    bool State::getAAttaque (){
+        return m_aAttaque;
+    }
+
+    void State::setAAttaque (bool aAttaque){
+        m_aAttaque = aAttaque;
+    }
+
 
 
     // Méthodes
 
     void State::nouveauTour (){
+        //suppression des morts dans entites
+        for(unsigned int i = 0; i<m_entites.size();i++){
+            if(!m_entites[i]->getEstVivant()){
+                m_entites.erase(m_entites.begin()+i);
+            }
+        }
         //initialisation d'un nouveau tour
+        unsigned int taille = m_entites.size();
+        m_ordreTour.resize(taille);
+        std::vector<Entite*> tampon(m_entites.size());
+        copy(m_entites.begin(), m_entites.end(), tampon.begin());
+        for(unsigned int indiceOrdre = 0; indiceOrdre<taille; indiceOrdre++){
+            int indiceEnt = 0;
+            int max = tampon[indiceEnt]->getStat(INITIATIVE);
+            for(unsigned int indiceRecherche; indiceRecherche < taille-indiceOrdre; indiceRecherche++ ){
+                int stat = tampon[indiceEnt]->getStat(INITIATIVE);
+                if(stat>max){
+                    indiceEnt = indiceRecherche;
+                    max = stat;
+                }
+            }
+            m_ordreTour[indiceOrdre] = tampon[indiceEnt];
+            tampon.erase(tampon.begin() +indiceEnt);
+        }
+        m_nbTour++;
     }
 
     void State::joueurSuivant (){
+        //suppression des morts dans ordreTour
+        for(unsigned int i = 0; i<m_ordreTour.size();i++){
+            if(!m_ordreTour[i]->getEstVivant()){
+                m_ordreTour.erase(m_ordreTour.begin()+i);
+            }
+        }
         //passage au personnage suivant
+        if (m_ordreTour.size()>1) {
+            m_ordreTour.erase(m_ordreTour.begin());
+        } else {
+            this->nouveauTour();
+        }
+        m_aAttaque = false;
+        m_aBouge = false;
     }
 
-    void State::actualiserEntite (Entite entite){
-        //Entite nvPrs = *m_ordreTour[0];
-        int taille = m_entites.size();
-        for(int i = 0; i<taille; i++) {
-            if(entite.getNom() == m_entites[i]->getNom()) {
-                m_entites[i] = &entite; 
-                }
-            *m_ordreTour[0] = entite;
+    bool State::effectuerAction(int commandeAEffectuer){
+        if (commandeAEffectuer == 1)
+        {
+            if(!m_aBouge){
+                m_aBouge =true;
+                m_de = 1 + std::rand()/((RAND_MAX + 1u)/6);
+                return true;
+            }
+        } else if (commandeAEffectuer > 1) {
+            if(!m_aAttaque){
+                m_aAttaque =true;
+                m_de = 1 + std::rand()/((RAND_MAX + 1u)/6);
+                return true;
+            }            
         }
-        //*m_ordreTour[0] = entite;
+        return false;
     }
 
 }

@@ -8,6 +8,7 @@ namespace state {
 
     Heros::Heros () {
         m_nom = "Jane Doe";
+        m_estVivant = true;
         m_classe = ARCHER;
         m_type = 0;
         m_niveau = 1;
@@ -23,6 +24,7 @@ namespace state {
 
     Heros::Heros (std::string nom, Classe classe){
         m_nom = nom;
+        m_estVivant = true;
         m_classe = classe;
         m_type = 0;
         m_niveau = 1;
@@ -40,6 +42,7 @@ namespace state {
 
     Heros::Heros (std::string nom, Classe classe, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp*> autresActions){
         m_nom = nom;
+        m_estVivant = true;
         m_type = classe;
         m_niveau = niveau;
         m_positionX = positionX;
@@ -59,6 +62,7 @@ namespace state {
 
     Heros::Heros (const Heros &p){
         m_nom = p.m_nom;
+        m_estVivant = p.m_estVivant;
         m_type = p.m_type;
         m_niveau = p.m_niveau;
         m_positionX = p.m_positionX;
@@ -74,7 +78,20 @@ namespace state {
     }
 
     Heros::~Heros () {
+        std::cout<<"yo"<<std::endl;
+        /*delete &m_nom;
+        delete &m_type;
+        delete &m_niveau;
+        delete &m_positionX;
+        delete &m_positionY;
+        delete &m_PV;
+        delete &m_PM;
+        delete [] &m_equipement;
+        delete [] &m_autresActions;
+        delete [] &m_stats;
+        delete [] &m_statutsSubis;
 
+        delete &m_classe;*/
     }
 
 
