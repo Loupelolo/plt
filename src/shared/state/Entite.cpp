@@ -13,6 +13,7 @@ namespace state {
 
     Entite::Entite (std::string nom) {
         m_nom = nom;
+        m_estVivant = true;
         m_type = 0;
         m_niveau = 1;
         m_positionX = 0;
@@ -27,6 +28,7 @@ namespace state {
 
     Entite::Entite (const Entite &p){
         m_nom = p.m_nom;
+        m_estVivant = p.m_estVivant;
         m_type = p.m_type;
         m_niveau = p.m_niveau;
         m_positionX = p.m_positionX;
@@ -40,7 +42,7 @@ namespace state {
     }
 
     Entite::~Entite () {
-
+        
     }
 
 
@@ -53,6 +55,14 @@ namespace state {
 
     void Entite::setNom (std::string nom){
         m_nom = nom;
+    }
+
+    bool Entite::getEstVivant (){
+        return m_estVivant;
+    }
+
+    void Entite::setEstVivant (bool estVivant){
+        m_estVivant = estVivant;
     }
 
     int Entite::getType(){
@@ -182,25 +192,24 @@ namespace state {
         m_PV = m_PV - degatsSubis;
         std::cout<<m_PV<<std::endl;
         if(statutsSubis != 0) m_statutsSubis[statutsSubis] = true;
+        if(m_PV <= 0) this->mort();
     }
 
     void Entite::soin (int pvRecup, bool soigneStatuts){
         //soigner des degats
-        std::cout<<"je suis dans soin"<<std::endl;
-        std::cout<<"PV ="<<m_PV<<std::endl;
-        std::cout<<"PVMax ="<<m_stats[PVMAX]<<std::endl;
-
         if(m_PV + pvRecup < m_stats[PVMAX]){
             m_PV += pvRecup;
         } else {
             m_PV = m_stats[PVMAX];
         }
-        std::cout<<m_PV<<std::endl;
         if(soigneStatuts) m_statutsSubis = {true, false, false, false, false, false};
     }
 
     void Entite::mort (){
         // mort de l'entite
+        m_estVivant = false;
+        std::cout<<m_nom<<" est mort"<<std::endl;
+
     }
 
 

@@ -83,6 +83,12 @@ namespace state {
     // Méthodes
 
     void State::nouveauTour (){
+        //suppression des morts dans entites
+        for(unsigned int i = 0; i<m_entites.size();i++){
+            if(!m_entites[i]->getEstVivant()){
+                m_entites.erase(m_entites.begin()+i);
+            }
+        }
         //initialisation d'un nouveau tour
         unsigned int taille = m_entites.size();
         m_ordreTour.resize(taille);
@@ -105,11 +111,15 @@ namespace state {
     }
 
     void State::joueurSuivant (){
+        //suppression des morts dans ordreTour
+        for(unsigned int i = 0; i<m_ordreTour.size();i++){
+            if(!m_ordreTour[i]->getEstVivant()){
+                m_ordreTour.erase(m_ordreTour.begin()+i);
+            }
+        }
         //passage au personnage suivant
-        std::cout<<m_ordreTour.size()<<std::endl;
         if (m_ordreTour.size()>1) {
             m_ordreTour.erase(m_ordreTour.begin());
-            std::cout<<"tour suivant"<<std::endl;
         } else {
             this->nouveauTour();
         }
@@ -118,7 +128,6 @@ namespace state {
     }
 
     bool State::effectuerAction(int commandeAEffectuer){
-        std::cout<<"bouh"<<std::endl;
         if (commandeAEffectuer == 1)
         {
             if(!m_aBouge){
@@ -133,7 +142,6 @@ namespace state {
                 return true;
             }            
         }
-        std::cout<<"aaa"<<std::endl;
         return false;
     }
 

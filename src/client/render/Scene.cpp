@@ -216,6 +216,8 @@ bool Scene::afficherFenetre(){
                                 } else if(m_actionSelectionnee==3){
                                     //l'utilisateur souhaite passer son tour
                                     m_state->joueurSuivant();
+                                    m_caseActuelle.x = m_state->getOrdreTour()[0]->getPositionX();
+                                    m_caseActuelle.y = m_state->getOrdreTour()[0]->getPositionY();
                                 } else if(m_actionSelectionnee>3 && !m_state->getAAttaque()) {
                                     std::vector<state::Entite*> entites = m_state->getEntites();
                                     for(unsigned int i = 0;i<entites.size() ;i++){
