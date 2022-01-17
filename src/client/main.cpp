@@ -1,6 +1,9 @@
 #include <iostream>
+#include <fstream>
 #include <cstring>
 #include <unistd.h>
+
+#include <json/json.h>
 
 #include <state.h>
 #include <render.h>
@@ -15,7 +18,6 @@ void testSFML() {
 }
 
 // Fin test SFML
-
 
 using namespace std;
 using namespace state;
@@ -71,18 +73,41 @@ int main(int argc,char* argv[])
         entite1.effectuerActionSupp(&action1, &entite2);
         entite1.effectuerActionSupp(&action2, &entite2);
 
+
+        //exportation de la carte depuis le json
+        ifstream j("res/map.json");
+        Json::Reader reader;
+        Json::Value obj;
+        reader.parse(j, obj);
+
+        const Json::Value& layer = obj["layers"]; // tableau de layers
+
+        int nbLargeur = layer[0]["width"].asUInt();
+        int nbLongueur = layer[0]["height"].asUInt();
+
+        int tailleMap = nbLargeur*nbLongueur;
+
+        const Json::Value& data = layer[0]["data"]; // tableau de data
+
+        std::vector<TypeTerrain> map(tailleMap);
+        for (unsigned int i = 0; i < data.size(); i++){
+            map[i] = static_cast<TypeTerrain>(data[i].asUInt());
+        }
+
         //création de la map
-        std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
+        /*std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
           {
             MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
             PORT, SOL , SOL , SOL , SOL , SOL , SOL , SOL , OBST, SOL , SOL , SOL , SECR,
             MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
             MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
           };
+          /*
         int nbLargeur = 13;
+        int nbLongueur = 4;*/
 
         //informations non-modifiables
-        Decor decor(nbLargeur, 4, map);
+        Decor decor(nbLargeur, nbLongueur, map);
         decor.action(6, 2, &entite1);
         
         //implémentation dans le state
