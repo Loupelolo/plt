@@ -2,6 +2,7 @@
 #include <fstream>
 #include <cstring>
 #include <unistd.h>
+#include <unordered_map>
 
 #include <json/json.h>
 
@@ -40,18 +41,68 @@ int main(int argc,char* argv[])
     {
         State state;
 
+        static std::unordered_map<std::string,Classe> const nomsClasse = { {"ARCHER",Classe::ARCHER}, {"ASSASSIN",Classe::ASSASSIN}, {"DRUIDE",Classe::DRUIDE}, {"GUERRIER",Classe::GUERRIER}, {"MAGE",Classe::MAGE}, {"PRETRE",Classe::PRETRE} };
+        static std::unordered_map<std::string,Statut> const nomsStatut = { {"SNONE",Statut::SNONE}, {"CONFUS",Statut::CONFUS}, {"EMPOISONNE",Statut::EMPOISONNE}, {"GLACE",Statut::GLACE}, {"PARALYSE",Statut::PARALYSE}, {"BRULE",Statut::BRULE}};
+        
+
         // Informations modifiables pour changer l'état
         //création des personnages
-        Heros entite1("Diana", MAGE);
-        entite1.setPositionX(4);
-        entite1.setPositionY(2);
-        entite1.setType(0);
-        ActionSuppOff action1("Boule de feu", 50, 5, BRULE);
-        ActionSuppDef action2("Soin", 20, 10, false);
-        Equipement equip1("Epee");
-        Equipement equip2("Bouclier");
-        entite1.setAutresActions({&action1, &action2});
-        entite1.setEquipement({equip1,equip2});
+
+        ifstream jHeros("json/heros.json");
+        Json::Reader readerHeros;
+        Json::Value objHeros;
+        readerHeros.parse(jHeros, objHeros);
+
+        vector<Heros> herosJeu(6);
+        vector<vector<Equipement>> equipementsHeros(6);
+        vector<ActionSuppDef> actionSuppDefsHeros;
+        vector<ActionSuppOff> actionSuppOffsHeros;
+
+        for(unsigned int indHeros; indHeros<1;indHeros++){
+            string nom = objHeros[indHeros]["nom"].asString();
+            Classe classe = nomsClasse.find(objHeros[indHeros]["classe"].asString())->second;
+            int positionX = objHeros[indHeros]["positionX"].asUInt();
+            int positionY = objHeros[indHeros]["positionY"].asUInt();
+
+            const Json::Value& equipement = objHeros[indHeros]["equipement"];
+            equipementsHeros[indHeros].resize(equipement.size());
+           // vector<Equipement*> equipements(equipement.size());
+            for (unsigned int indEquip = 0; indEquip < equipement.size(); indEquip++){
+                string nomEquip = equipement[indEquip]["nom"].asString();
+                Statut statutEquip = nomsStatut.find(equipement[indEquip]["statut"].asString())->second;
+                vector<int> statEquip(9);
+                for(unsigned int indStat = 0; indStat<9;indStat++) statEquip[indStat] = equipement[indEquip]["stat"][indStat].asUInt();
+                Equipement equip(nomEquip, statutEquip, statEquip);
+                equipementsHeros[indHeros][indEquip] =equip;
+                //equipements[indEquip] = &equipementsHeros[indHeros][indEquip];
+            }
+
+            const Json::Value& actionSupp = objHeros[indHeros]["actionSupp"];
+            vector<ActionSupp*> actionSupps(actionSupp.size());
+            for (unsigned int indActionSupp = 0; indActionSupp < actionSupp.size(); indActionSupp++){
+                if(actionSupp[indActionSupp]["type"].asString() == "Def"){
+                    string nomActionSupp = actionSupp[indActionSupp]["nom"].asString();
+                    int statActionSupp = actionSupp[indActionSupp]["stat"].asUInt();
+                    int porteeActionSupp = actionSupp[indActionSupp]["portee"].asUInt();
+                    bool statutActionSupp = actionSupp[indActionSupp]["statut"].asBool();
+                    ActionSuppDef actionSupp(nomActionSupp, statActionSupp, porteeActionSupp, statutActionSupp);
+                    actionSuppDefsHeros.push_back(actionSupp);
+                    actionSupps[indActionSupp] = &actionSuppDefsHeros[actionSuppDefsHeros.size()-1];
+                } else {
+                    string nomActionSupp = actionSupp[indActionSupp]["nom"].asString();
+                    int statActionSupp = actionSupp[indActionSupp]["stat"].asUInt();
+                    int porteeActionSupp = actionSupp[indActionSupp]["portee"].asUInt();
+                    Statut statutActionSupp = nomsStatut.find(actionSupp[indActionSupp]["statut"].asString())->second;
+                    ActionSuppOff actionSupp(nomActionSupp, statActionSupp, porteeActionSupp, statutActionSupp);
+                    actionSuppOffsHeros.push_back(actionSupp);
+                    actionSupps[indActionSupp] = &actionSuppOffsHeros[actionSuppOffsHeros.size()-1];
+                }
+            }
+
+            Heros herosAct(nom, classe, 1, positionX, positionY, equipementsHeros[indHeros], actionSupps);
+            herosJeu[indHeros] = herosAct;
+        }
+        Heros entite1 = herosJeu[0];
 
         Entite entite2("Charles");
         entite2.setPositionX(2);
@@ -70,15 +121,15 @@ int main(int argc,char* argv[])
         entite3.setPM(500);
         entite3.setType(2);
 
-        entite1.effectuerActionSupp(&action1, &entite2);
-        entite1.effectuerActionSupp(&action2, &entite2);
+        //entite1.effectuerActionSupp(&action1, &entite2);
+        //entite1.effectuerActionSupp(&action2, &entite2);
 
 
         //exportation de la carte depuis le json
-        ifstream j("res/map.json");
+        ifstream jMap("json/map.json");
         Json::Reader reader;
         Json::Value obj;
-        reader.parse(j, obj);
+        reader.parse(jMap, obj);
 
         const Json::Value& layer = obj["layers"]; // tableau de layers
 
@@ -102,7 +153,6 @@ int main(int argc,char* argv[])
             MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
             MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
           };
-          /*
         int nbLargeur = 13;
         int nbLongueur = 4;*/
 
@@ -153,9 +203,9 @@ int main(int argc,char* argv[])
         CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
 
         sf::Clock clkEngine;
-        bool depl1Fait = false;
+        /*bool depl1Fait = false;
         bool att1Fait = false;
-        bool act1Fait = false;
+        bool act1Fait = false;*/
         bool fenetre = true;
         
         Scene scene(hauteurFenetre,largeurFenetre);

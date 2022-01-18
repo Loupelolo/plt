@@ -1,0 +1,56 @@
+[{
+    "nom" : "Diana",
+    "classe" : "MAGE",
+    "niveau" : 1,
+    "positionX" : 4,
+    "positionY" : 2,
+    "equipement" :[
+        {
+            "nom" : "Epée",
+            "statut": "SNONE",
+            "stat": [30,0,0,10,0,0,3,0,0]
+        },{
+            "nom" : "Bouclier",
+            "statut": "SNONE",
+            "stat": [0,40,0,0,0,0,0,0,0]
+        }
+    ],
+    "actionSupp" :[
+        {
+            "type" : "Off",
+            "nom" : "Boule de Feu",
+            "stat": 50,
+            "portee": 5,
+            "statut": "BRULE"
+        },{
+            "type" : "Def",
+            "nom" : "Soin",
+            "stat": 20,
+            "portee": 10,
+            "statut": false
+        }
+    ]
+},{
+    "nom" : "",
+    "classe" : "",
+    "niveau" : 1,
+    "positionX" : 0,
+    "positionY" : 0,
+    "equipement" :[
+        {
+            "nom" : "",
+            "statut": "",
+            "stat": [0,0,0,0,0,0,0,0,0]
+        }
+    ],
+    "actionSupp" :[
+        {
+            "type" : "",
+            "nom" : "",
+            "stat": 0,
+            "portee": 0,
+            "statut": false
+        }
+    ]
+}
+]
