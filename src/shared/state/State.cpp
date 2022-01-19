@@ -9,7 +9,7 @@ namespace state {
     // Constructeur & destructeur
 
     State::State () {
-        m_nbTour = 1;
+        m_nbTour = 0;
         std::srand(std::time(nullptr)); // use current time as seed for random generator
         
     }

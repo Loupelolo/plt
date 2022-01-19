@@ -3,7 +3,7 @@
     "classe" : "MAGE",
     "niveau" : 1,
     "positionX" : 4,
-    "positionY" : 2,
+    "positionY" : 8,
     "equipement" :[
         {
             "nom" : "Epée",
@@ -31,26 +31,54 @@
         }
     ]
 },{
-    "nom" : "",
-    "classe" : "",
+    "nom" : "Charles",
+    "classe" : "GUERRIER",
     "niveau" : 1,
-    "positionX" : 0,
-    "positionY" : 0,
+    "positionX" : 2,
+    "positionY" : 7,
     "equipement" :[
-        {
-            "nom" : "",
-            "statut": "",
-            "stat": [0,0,0,0,0,0,0,0,0]
-        }
     ],
     "actionSupp" :[
-        {
-            "type" : "",
-            "nom" : "",
-            "stat": 0,
-            "portee": 0,
-            "statut": false
-        }
+    ]
+},{
+    "nom" : "Elisabeth",
+    "classe" : "PRETRE",
+    "niveau" : 1,
+    "positionX" : 12,
+    "positionY" : 8,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "William",
+    "classe" : "ARCHER",
+    "niveau" : 1,
+    "positionX" : 10,
+    "positionY" : 6,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Harry",
+    "classe" : "ASSASSIN",
+    "niveau" : 1,
+    "positionX" : 8,
+    "positionY" : 8,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Philip",
+    "classe" : "DRUIDE",
+    "niveau" : 1,
+    "positionX" : 6,
+    "positionY" : 6,
+    "equipement" :[
+    ],
+    "actionSupp" :[
     ]
 }
 ]

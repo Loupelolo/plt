@@ -53,12 +53,13 @@ int main(int argc,char* argv[])
         Json::Value objHeros;
         readerHeros.parse(jHeros, objHeros);
 
+        vector<Entite*> persoJeu;
         vector<Heros> herosJeu(6);
         vector<vector<Equipement>> equipementsHeros(6);
         vector<ActionSuppDef> actionSuppDefsHeros;
         vector<ActionSuppOff> actionSuppOffsHeros;
 
-        for(unsigned int indHeros; indHeros<1;indHeros++){
+        for(unsigned int indHeros; indHeros<6;indHeros++){
             string nom = objHeros[indHeros]["nom"].asString();
             Classe classe = nomsClasse.find(objHeros[indHeros]["classe"].asString())->second;
             int positionX = objHeros[indHeros]["positionX"].asUInt();
@@ -101,10 +102,10 @@ int main(int argc,char* argv[])
 
             Heros herosAct(nom, classe, 1, positionX, positionY, equipementsHeros[indHeros], actionSupps);
             herosJeu[indHeros] = herosAct;
+            persoJeu.push_back(&herosJeu[indHeros]);
         }
-        Heros entite1 = herosJeu[0];
 
-        Entite entite2("Charles");
+        /*Entite entite2("Charles");
         entite2.setPositionX(2);
         entite2.setPositionY(1);
         entite2.setPV(70);
@@ -119,7 +120,7 @@ int main(int argc,char* argv[])
         entite2.setStat(DEPLACEMENT, 2);
         entite3.setPV(300);
         entite3.setPM(500);
-        entite3.setType(2);
+        entite3.setType(2);*/
 
         //entite1.effectuerActionSupp(&action1, &entite2);
         //entite1.effectuerActionSupp(&action2, &entite2);
@@ -158,13 +159,13 @@ int main(int argc,char* argv[])
 
         //informations non-modifiables
         Decor decor(nbLargeur, nbLongueur, map);
-        decor.action(6, 2, &entite1);
+        //decor.action(6, 2, &entite1);
         
         //implémentation dans le state
         state.setDecor(decor);
         state.setDe(6);
-        state.setEntites({&entite1,&entite2,&entite3});
-        state.setOrdreTour({&entite1,&entite2,&entite3});
+        state.setEntites({persoJeu.begin(), persoJeu.begin()+6});
+        state.nouveauTour();
       
         //définition de l'affichage des menus
         int largeurColonne1 = 150;
@@ -198,9 +199,9 @@ int main(int argc,char* argv[])
         //engine
         Engine engine(state);
 
-        CommandeDeplacement dep1(3,1);
-        CommandeAttaque att1(&entite2);
-        CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
+        //CommandeDeplacement dep1(3,1);
+        //CommandeAttaque att1(&entite2);
+        //CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
 
         sf::Clock clkEngine;
         /*bool depl1Fait = false;
