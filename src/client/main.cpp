@@ -48,16 +48,16 @@ int main(int argc,char* argv[])
         // Informations modifiables pour changer l'état
         //création des personnages
 
-        ifstream jHeros("json/heros.json");
-        Json::Reader readerHeros;
-        Json::Value objHeros;
-        readerHeros.parse(jHeros, objHeros);
-
         vector<Entite*> persoJeu;
         vector<Heros> herosJeu(6);
         vector<vector<Equipement>> equipementsHeros(6);
         vector<ActionSuppDef> actionSuppDefsHeros;
         vector<ActionSuppOff> actionSuppOffsHeros;
+
+        ifstream jHeros("json/heros.json");
+        Json::Reader readerHeros;
+        Json::Value objHeros;
+        readerHeros.parse(jHeros, objHeros);
 
         for(unsigned int indHeros; indHeros<6;indHeros++){
             string nom = objHeros[indHeros]["nom"].asString();
@@ -104,26 +104,6 @@ int main(int argc,char* argv[])
             herosJeu[indHeros] = herosAct;
             persoJeu.push_back(&herosJeu[indHeros]);
         }
-
-        /*Entite entite2("Charles");
-        entite2.setPositionX(2);
-        entite2.setPositionY(1);
-        entite2.setPV(70);
-        entite2.setStat(PVMAX, 30);
-        entite2.setStat(DEPLACEMENT, 4);
-        entite2.setPM(3);
-        entite1.setType(1);
-
-        Entite entite3("Elisabeth");
-        entite3.setPositionX(7);
-        entite3.setPositionY(0);
-        entite2.setStat(DEPLACEMENT, 2);
-        entite3.setPV(300);
-        entite3.setPM(500);
-        entite3.setType(2);*/
-
-        //entite1.effectuerActionSupp(&action1, &entite2);
-        //entite1.effectuerActionSupp(&action2, &entite2);
 
 
         //exportation de la carte depuis le json

@@ -140,8 +140,8 @@ bool Scene::afficherFenetre(){
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    int mouseX = event.mouseButton.x;
-                    int mouseY = event.mouseButton.y;
+                    int mouseX = event.mouseButton.x*900/m_window.getSize().x;
+                    int mouseY = event.mouseButton.y*450/m_window.getSize().y;
                     if (mouseX >= m_menus[2].getPosX() && mouseX<= m_menus[2].getPosX() + m_menus[2].getLargeur()){
                     //l'utilisateur a cliquée dans la partie du milieu
                        if(mouseY >= m_menus[0].getHauteur() ){
