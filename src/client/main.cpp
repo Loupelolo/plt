@@ -145,6 +145,7 @@ int main(int argc,char* argv[])
             map[i] = static_cast<TypeTerrain>(data[i].asUInt());
         }*/
 
+
         //création de la map
 
         //informations non-modifiables
@@ -192,6 +193,8 @@ int main(int argc,char* argv[])
         //CommandeDeplacement dep1(3,1);
         //CommandeAttaque att1(&entite2);
         //CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
+
+        att1.ActuMapLib(&state);
 
         sf::Clock clkEngine;
         /*bool depl1Fait = false;
