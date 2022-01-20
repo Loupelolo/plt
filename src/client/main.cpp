@@ -145,6 +145,7 @@ int main(int argc,char* argv[])
             map[i] = static_cast<TypeTerrain>(data[i].asUInt());
         }*/
 
+
         //création de la map
 
         //informations non-modifiables
@@ -186,12 +187,15 @@ int main(int argc,char* argv[])
         std::vector<CoucheTerrain> terrains = {coucheDecor, couchePerso};
 
         //engine
-        Engine engine(state);
+        Engine engine(&state);
+
 
 
         //CommandeDeplacement dep1(3,1);
         //CommandeAttaque att1(&entite2);
         //CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
+
+        att1.ActuMapLib(&state);
 
         sf::Clock clkEngine;
         /*bool depl1Fait = false;
@@ -230,7 +234,7 @@ int main(int argc,char* argv[])
                 act1Fait = true;
             }*/
 
-            scene.setState(&engine.getState());
+            scene.setState(engine.getState());
             scene.setCaseActuelle(sf::Vector2f(2,1));
             scene.setMenus(menus);
             scene.setTerrains(terrains);
@@ -266,7 +270,7 @@ int main(int argc,char* argv[])
         stateTest.setDecor(decorTest);
         stateTest.setOrdreTour({&herosTest, &ennemiTest, &ennemiTest2, &herosTest2});
 
-        Engine engineTest(stateTest);
+        Engine engineTest(&stateTest);
 
         // Tests de l'IA aléatoire
         //RandomAI randomAItest(stateTest);
