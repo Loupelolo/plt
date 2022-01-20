@@ -1,6 +1,10 @@
 #include <iostream>
+#include <fstream>
 #include <cstring>
 #include <unistd.h>
+#include <unordered_map>
+
+#include <json/json.h>
 
 #include <state.h>
 #include <render.h>
@@ -16,12 +20,76 @@ void testSFML() {
 
 // Fin test SFML
 
-
 using namespace std;
 using namespace state;
 using namespace render;
 using namespace engine;
 using namespace ai;
+
+
+void exportationPerso(string fichierJson, string type, vector<Heros>& herosJeu, vector<Ennemi>& ennemiJeu, vector<ActionSuppDef>& actionSuppDefs, vector<ActionSuppOff>& actionSuppOffs){
+    static std::unordered_map<std::string,Classe> const nomsClasse = { {"ARCHER",Classe::ARCHER}, {"ASSASSIN",Classe::ASSASSIN}, {"DRUIDE",Classe::DRUIDE}, {"GUERRIER",Classe::GUERRIER}, {"MAGE",Classe::MAGE}, {"PRETRE",Classe::PRETRE} };
+    static std::unordered_map<std::string,Race> const nomsRace = { {"ORC",Race::ORC}, {"ARAIGNEE",Race::ARAIGNEE}, {"SQUELETTE",Race::SQUELETTE}, {"FANTOME",Race::FANTOME}, {"ZOMBIE",Race::ZOMBIE}, {"SERPENT",Race::SERPENT} };
+    static std::unordered_map<std::string,Statut> const nomsStatut = { {"SNONE",Statut::SNONE}, {"CONFUS",Statut::CONFUS}, {"EMPOISONNE",Statut::EMPOISONNE}, {"GLACE",Statut::GLACE}, {"PARALYSE",Statut::PARALYSE}, {"BRULE",Statut::BRULE}};
+    
+    ifstream jPerso(fichierJson);
+    Json::Reader readerPerso;
+    Json::Value obj;
+    readerPerso.parse(jPerso, obj);
+
+    Json::Value& objPerso = obj[type];
+
+    for(unsigned int indPerso = 0; indPerso<objPerso.size();indPerso++){
+        string nom = objPerso[indPerso]["nom"].asString();
+        int positionX = objPerso[indPerso]["positionX"].asUInt();
+        int positionY = objPerso[indPerso]["positionY"].asUInt();
+        int niveau = objPerso[indPerso]["niveau"].asUInt();
+
+        const Json::Value& equipement = objPerso[indPerso]["equipement"];
+        vector<Equipement> equipementsPerso;
+        // vector<Equipement*> equipements(equipement.size());
+        for (unsigned int indEquip = 0; indEquip < equipement.size(); indEquip++){
+            string nomEquip = equipement[indEquip]["nom"].asString();
+            Statut statutEquip = nomsStatut.find(equipement[indEquip]["statut"].asString())->second;
+            vector<int> statEquip(9);
+            for(unsigned int indStat = 0; indStat<9;indStat++) statEquip[indStat] = equipement[indEquip]["stat"][indStat].asUInt();
+            Equipement equip(nomEquip, statutEquip, statEquip);
+            equipementsPerso.push_back(equip);
+        }
+
+        const Json::Value& actionSupp = objPerso[indPerso]["actionSupp"];
+        vector<ActionSupp*> actionSupps(actionSupp.size());
+        for (unsigned int indActionSupp = 0; indActionSupp < actionSupp.size(); indActionSupp++){
+            if(actionSupp[indActionSupp]["type"].asString() == "Def"){
+                string nomActionSupp = actionSupp[indActionSupp]["nom"].asString();
+                int statActionSupp = actionSupp[indActionSupp]["stat"].asUInt();
+                int porteeActionSupp = actionSupp[indActionSupp]["portee"].asUInt();
+                bool statutActionSupp = actionSupp[indActionSupp]["statut"].asBool();
+                ActionSuppDef actionSupp(nomActionSupp, statActionSupp, porteeActionSupp, statutActionSupp);
+                actionSuppDefs.push_back(actionSupp);
+                actionSupps[indActionSupp] = &actionSuppDefs[actionSuppDefs.size()-1];
+            } else {
+                string nomActionSupp = actionSupp[indActionSupp]["nom"].asString();
+                int statActionSupp = actionSupp[indActionSupp]["stat"].asUInt();
+                int porteeActionSupp = actionSupp[indActionSupp]["portee"].asUInt();
+                Statut statutActionSupp = nomsStatut.find(actionSupp[indActionSupp]["statut"].asString())->second;
+                ActionSuppOff actionSupp(nomActionSupp, statActionSupp, porteeActionSupp, statutActionSupp);
+                actionSuppOffs.push_back(actionSupp);
+                actionSupps[indActionSupp] = &actionSuppOffs[actionSuppOffs.size()-1];
+            }
+        }
+
+        if(type == "HEROS"){
+            Classe classe = nomsClasse.find(objPerso[indPerso]["classe"].asString())->second;
+            Heros herosAct(nom, classe, niveau, positionX, positionY, equipementsPerso, actionSupps);
+            herosJeu.push_back(herosAct);
+        } else {
+            Race race = nomsRace.find(objPerso[indPerso]["race"].asString())->second;
+            Ennemi ennemiAct(nom, race, niveau, positionX, positionY, equipementsPerso, actionSupps);
+            ennemiJeu.push_back(ennemiAct);
+        }
+    }
+}
 
 
 int main(int argc,char* argv[])
@@ -40,58 +108,54 @@ int main(int argc,char* argv[])
 
         // Informations modifiables pour changer l'état
         //création des personnages
-        Heros entite1("Diana", ARCHER);
-        entite1.setPositionX(4);
-        entite1.setPositionY(2);
-        entite1.setType(0);
-        ActionSuppOff action1("Boule de feu", 50, 5, BRULE);
-        ActionSuppDef action2("Soin", 20, 10, false);
-        Equipement equip1("Epee");
-        Equipement equip2("Bouclier");
-        entite1.setAutresActions({&action1, &action2});
-        entite1.setEquipement({equip1,equip2});
-        entite1.setStat(DEPLACEMENT, 3);
-        entite1.setStat(PORTEE, 10);
 
-        Entite entite2("Charles");
-        entite2.setPositionX(2);
-        entite2.setPositionY(1);
-        entite2.setPV(70);
-        entite2.setStat(PVMAX, 30);
-        entite2.setStat(DEPLACEMENT, 4);
-        entite2.setPM(3);
-        entite1.setType(1);
+        vector<Entite*> persoJeu;
+        vector<Heros> herosJeu;
+        vector<Ennemi> ennemiJeu;
+        //vector<vector<Equipement>> equipementsHeros(6);
+        vector<ActionSuppDef> actionSuppDefs;
+        vector<ActionSuppOff> actionSuppOffs;
 
-        Entite entite3("Elisabeth");
-        entite3.setPositionX(9);
-        entite3.setPositionY(1);
-        entite2.setStat(DEPLACEMENT, 2);
-        entite3.setPV(300);
-        entite3.setPM(500);
-        entite3.setType(2);
+        exportationPerso("json/heros.json", "HEROS", herosJeu, ennemiJeu, actionSuppDefs,actionSuppOffs);
+        for(unsigned int i = 0; i<herosJeu.size();i++) persoJeu.push_back(&herosJeu[i]);
+        exportationPerso("json/ennemis.json", "ENNEMIS", herosJeu, ennemiJeu, actionSuppDefs,actionSuppOffs);
+        for(unsigned int i = 0; i<ennemiJeu.size();i++) persoJeu.push_back(&ennemiJeu[i]);
 
-        entite1.effectuerActionSupp(&action1, &entite2);
-        entite1.effectuerActionSupp(&action2, &entite2);
+
+        //exportation de la carte depuis le json
+        state.chargerMap("json/map.json");
+        int nbLargeur = state.getDecor().getLargeur();
+        int nbHauteur = state.getDecor().getHauteur();
+        /*ifstream jMap("json/map.json");
+        Json::Reader reader;
+        Json::Value obj;
+        reader.parse(jMap, obj);
+
+        const Json::Value& layer = obj["layers"]; // tableau de layers
+
+        int nbLargeur = layer[0]["width"].asUInt();
+        int nbLongueur = layer[0]["height"].asUInt();
+
+        int tailleMap = nbLargeur*nbLongueur;
+
+        const Json::Value& data = layer[0]["data"]; // tableau de data
+
+        std::vector<TypeTerrain> map(tailleMap);
+        for (unsigned int i = 0; i < data.size(); i++){
+            map[i] = static_cast<TypeTerrain>(data[i].asUInt());
+        }*/
+
 
         //création de la map
-        std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
-          {
-            MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
-            PORT, SOL , SOL , SOL , SOL , SOL , SOL , SOL , OBST, SOL , SOL , SOL , SECR,
-            MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
-            MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
-          };
-        int nbLargeur = 13;
 
         //informations non-modifiables
-        Decor decor(nbLargeur, 4, map);
-        decor.action(6, 2, &entite1);
+        //Decor decor(nbLargeur, nbLongueur, map);
         
         //implémentation dans le state
-        state.setDecor(decor);
+        //state.setDecor(decor);
         state.setDe(6);
-        state.setEntites({&entite1,&entite2,&entite3});
-        state.setOrdreTour({&entite1,&entite2,&entite3});
+        state.setEntites(persoJeu);
+        state.nouveauTour();
       
         //définition de l'affichage des menus
         int largeurColonne1 = 150;
@@ -116,8 +180,8 @@ int main(int argc,char* argv[])
         menuDes.setTitre({"Des :"},15);
 
         //définition de l'affichage du terrain
-        CoucheTerrain coucheDecor(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
-        CoucheTerrain couchePerso(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
+        CoucheTerrain coucheDecor(largeurColonne1, 0, nbHauteur, nbLargeur, 30);
+        CoucheTerrain couchePerso(largeurColonne1, 0, nbHauteur, nbLargeur, 30);
 
         std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};  
         std::vector<CoucheTerrain> terrains = {coucheDecor, couchePerso};
@@ -125,23 +189,32 @@ int main(int argc,char* argv[])
         //engine
         Engine engine(&state);
 
-        CommandeDeplacement dep1(7,2);
-        CommandeAttaque att1(&entite2);
-        CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
+
+
+        //CommandeDeplacement dep1(3,1);
+        //CommandeAttaque att1(&entite2);
+        //CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
 
         att1.ActuMapLib(&state);
 
         sf::Clock clkEngine;
-        bool depl1Fait = false;
+        /*bool depl1Fait = false;
         bool att1Fait = false;
-        bool act1Fait = false;
+        bool act1Fait = false;*/
         bool fenetre = true;
         
         Scene scene(hauteurFenetre,largeurFenetre);
 
+        scene.setState(&engine.getState());
+        scene.setCaseActuelle(sf::Vector2f(2,1));
+        scene.setMenus(menus);
+        scene.setTerrains(terrains);
+        scene.chargerFenetre();
+        fenetre = scene.afficherFenetre(); 
+
         while(fenetre){
             
-            sf::Time actuEngine = clkEngine.getElapsedTime();
+            /*sf::Time actuEngine = clkEngine.getElapsedTime();
 
             if(actuEngine >= sf::seconds(5) && !depl1Fait){
                 cout<<"depl"<<endl;
@@ -159,7 +232,7 @@ int main(int argc,char* argv[])
                 cout<<"act"<<endl;
                 engine.executerCommande(act1);
                 act1Fait = true;
-            }
+            }*/
 
             scene.setState(engine.getState());
             scene.setCaseActuelle(sf::Vector2f(2,1));
@@ -172,33 +245,41 @@ int main(int argc,char* argv[])
     {
         State stateTest;
         Heros herosTest("Diana", ARCHER);
-        herosTest.setPositionX(1);
-        herosTest.setPositionY(1);
+        herosTest.setPositionX(0);
+        herosTest.setPositionY(0);
         Ennemi ennemiTest("Paparazzi", ORC);
-        ennemiTest.setPositionX(2);
-        ennemiTest.setPositionY(1);
-        Ennemi ennemiTest2("Alma", ORC);
         ennemiTest.setPositionX(12);
-        ennemiTest.setPositionY(1);
-        stateTest.setEntites({&herosTest, &ennemiTest, &ennemiTest2});
+        ennemiTest.setPositionY(3);
+        Heros herosTest2("Charles", ARCHER);
+        herosTest2.setPositionX(12);
+        herosTest2.setPositionY(2);
+        Ennemi ennemiTest2("Alma", ORC);
+        ennemiTest2.setPositionX(11);
+        ennemiTest2.setPositionY(2);
+        stateTest.setEntites({&herosTest, &ennemiTest, &ennemiTest2, &herosTest2});
 
         std::vector<TypeTerrain> mapTest = //maximum 18 de largeur et 9 de hauteur
           {
-            MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
-            PORT, SOL , SOL , SOL , SOL , SOL , SOL , SOL , OBST, SOL , SOL , SOL , SECR,
-            MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
-            MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
+            SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL ,
+            SOL, SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL, SOL , SOL , SOL , SOL,
+            SOL , SOL , SOL , SOL , SOL , SOL , SOL, SOL , SOL , SOL , SOL , SOL, SOL ,
+            SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL , SOL 
           };
         int nbLargeur = 13;
         Decor decorTest(nbLargeur, 4, mapTest);
         stateTest.setDecor(decorTest);
-        stateTest.setOrdreTour({&herosTest, &ennemiTest, &ennemiTest2});
+        stateTest.setOrdreTour({&herosTest, &ennemiTest, &ennemiTest2, &herosTest2});
 
         Engine engineTest(&stateTest);
 
-        RandomAI randomAItest(stateTest);
+        // Tests de l'IA aléatoire
+        //RandomAI randomAItest(stateTest);
+        //randomAItest.run(stateTest, engineTest);
 
-        randomAItest.run(stateTest, engineTest);
+
+        // Test de l'IA heuristique
+        HeuristiqueAI HeuristiqueAItest(stateTest);
+        HeuristiqueAItest.run(stateTest, engineTest);
     }
     else
     {

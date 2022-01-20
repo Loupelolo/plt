@@ -174,6 +174,8 @@ Pour la conception logiciel, nous avons décidé de fonctionner par couche, avec
 
 L'organisation et l'affichage est géré par un objet Scene, qui va répertorier à la fois l'état de jeu, l'état du joueur, pour permettre l'affichage dans les couches. Ainsi les couches en elles-mêmes n'ont aucune information sur l'état de jeu et se contente d'afficher les informations issues de la scène. Pour permettre l'affiche, nous utilisons les classe sf::Transformable et sf::Drawable comme interface pour les couches.
 
+Concernant l'affichage dynamique de l'état de jeu, nous avons une fenêtre qui reste affichée tant qu'elle n'est pas fermé et vérifie l'état de jeu toutes les seize millisecondes (60Hz), pour afficher l'état actuel. Plus tard, nous pourrons implémenter une fonction qui n'affiche l'état actuel qui si celui-ci a changé, réduisant ainsi les appels.
+
 \begin{figure}[hbt!]
     \centering
     \includegraphics[width =.8\paperwidth, angle=0]{images/render.png}
@@ -194,10 +196,10 @@ L'organisation et l'affichage est géré par un objet Scene, qui va répertorier
 \section{Règles de changement d'états et moteur de jeu}
 
 \subsection{Règles}
-
+Nous allons commencer par des règles simples. Un personnage ne peut se déplacer que du nombre de cases indiqué par sa statistique de portée et ne peut attaquer ou utiliser une action supplémentaire qu'une seule fois par tour. Une fois ces actions effectuées, le joueur choisi quand laisser son tour se finir (lui laissant ainsi le loisir de lâcher un équipement par exemple). Concernant le déplacement, une entité peut se déplacer au maximum de sa statistique de déplacement sans traverser ni les murs ni les personnages et ne peut donc pas s'y arrêter. Il en va de même pour la portée des attaques ou des autres actions avec la statistique de portée. Les actions supplémentaires défensives soignent des Points de Vie (PV), dans la limite des PV maximum de l'entité (définis dans les statistiques de chaque entité.
 
 \subsection{Conception logiciel}
-
+Pour la conception logiciel, nous avons créé une classe Engine, qui stocke l'état actuel ainsi qu'un attribut json qui nous permettra à terme d'enregistrer les données du jeu. Cette classe Engine utilise des éléments de la classe Commande avec la méthode "addCommande". Cette dernière permet de vérifier si l'action lié à la commande est valide et si il l'est elle actualise l'état. De la classe abstraite Commande héritent trois classes : CommandeDeplacement, CommandeAttaque et CommandeActionSupplementaire. Elles permettent respectivement de créer une commande qui permet d'effectuer un déplacement, une attaque ou bien une action supplémentaire (comme un sort). Chacune de ses classes possède des méthodes handle (qui sont aussi virtuelle dans la classe Commande) qui permettent de vérifier les différentes règles liés à l'action.
 
 %\begin{landscape}
 %\begin{figure}[p]
@@ -209,11 +211,27 @@ L'organisation et l'affichage est géré par un objet Scene, qui va répertorier
 \clearpage
 \section{Intelligence Artificielle}
 
-\subsection{Stratégies}
 
+\subsection{Stratégies}
+L'intelligence artificielle aléatoire a accès aux différentes commandes du moteur de jeu. Lorsqu'elle agit, elle choisit une de ces commandes au hasard. Les paramètres associés sont aussi choisis de manière aléatoire, tels qu'ils donnent lieu à une commande valide.
+
+L'intelligence artificielle peut déplacer l'entité dont c'est le tour sur une case du plateau accessible par cette entité. Cette case est choisie de façon aléatoire.
+
+Elle peut aussi essayer d'attaquer une entité choisie au hasard. Si aucune entité n'est à portée, elle passe son tour.
 
 \subsection{Conception logiciel}
+Le diagramme des classes pour l'intelligence artificielle est présenté en Figure 9.
 
+La classe AI donnera lieu à des classes héritées implémentant différentes intelligences artificielles plus ou moins poussées.
+
+La classe RandomAI implémente une intelligence artificielle dont les actions sont dictées par l'aléatoire. Sa donnée membre m\_mt est un générateur de nombres aléatoires.
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width =.8\paperwidth, angle=0]{images/ai.png}
+    \caption{Diagramme de classes d'ai}
+    \label{fig:randomai}
+\end{figure}
 
 %\begin{landscape}
 %\begin{figure}[p]

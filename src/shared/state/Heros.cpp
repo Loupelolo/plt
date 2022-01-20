@@ -8,6 +8,7 @@ namespace state {
 
     Heros::Heros () {
         m_nom = "Jane Doe";
+        m_estVivant = true;
         m_classe = ARCHER;
         m_type = 0;
         m_niveau = 1;
@@ -23,8 +24,9 @@ namespace state {
 
     Heros::Heros (std::string nom, Classe classe){
         m_nom = nom;
+        m_estVivant = true;
         m_classe = classe;
-        m_type = 0;
+        m_type = classe;
         m_niveau = 1;
         m_positionX = 0;
         m_positionY = 0;
@@ -40,6 +42,7 @@ namespace state {
 
     Heros::Heros (std::string nom, Classe classe, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp*> autresActions){
         m_nom = nom;
+        m_estVivant = true;
         m_type = classe;
         m_niveau = niveau;
         m_positionX = positionX;
@@ -59,6 +62,7 @@ namespace state {
 
     Heros::Heros (const Heros &p){
         m_nom = p.m_nom;
+        m_estVivant = p.m_estVivant;
         m_type = p.m_type;
         m_niveau = p.m_niveau;
         m_positionX = p.m_positionX;
@@ -74,7 +78,7 @@ namespace state {
     }
 
     Heros::~Heros () {
-
+        
     }
 
 
@@ -100,19 +104,19 @@ namespace state {
             m_stats = {40, 40, 30, 25, 60, 30, 10, 30, 8};
             break;
         case ASSASSIN:
-            m_stats = {30, 50, 40, 30, 70, 20, 2, 20, 11};
+            m_stats = {30, 50, 40, 30, 70, 20, 2, 20, 7};
             break;
         case DRUIDE:
             m_stats = {50, 40, 10, 10, 90, 60, 3, 6, 6};
             break;
         case GUERRIER:
-            m_stats = {75, 60, 5, 5, 110, 10, 1, 5, 5};
+            m_stats = {75, 60, 5, 5, 110, 10, 1, 4, 5};
             break;
         case MAGE:
             m_stats = {70, 30, 10, 10, 90, 50, 2, 8, 5};
             break;
         case PRETRE:
-            m_stats = {30, 40, 10, 10, 100, 70, 5, 5, 6};
+            m_stats = {30, 40, 10, 10, 100, 70, 5, 4, 6};
             break;
         default:
             break;
