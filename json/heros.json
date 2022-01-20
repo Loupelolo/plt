@@ -1,4 +1,4 @@
-[{
+{"HEROS" : [{
     "nom" : "Diana",
     "classe" : "MAGE",
     "niveau" : 1,
@@ -6,7 +6,7 @@
     "positionY" : 8,
     "equipement" :[
         {
-            "nom" : "Epée",
+            "nom" : "Epee",
             "statut": "SNONE",
             "stat": [30,0,0,10,0,0,3,0,0]
         },{
@@ -82,3 +82,4 @@
     ]
 }
 ]
+}

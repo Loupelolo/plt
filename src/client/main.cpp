@@ -27,6 +27,70 @@ using namespace engine;
 using namespace ai;
 
 
+void exportationPerso(string fichierJson, string type, vector<Heros>& herosJeu, vector<Ennemi>& ennemiJeu, vector<ActionSuppDef>& actionSuppDefs, vector<ActionSuppOff>& actionSuppOffs){
+    static std::unordered_map<std::string,Classe> const nomsClasse = { {"ARCHER",Classe::ARCHER}, {"ASSASSIN",Classe::ASSASSIN}, {"DRUIDE",Classe::DRUIDE}, {"GUERRIER",Classe::GUERRIER}, {"MAGE",Classe::MAGE}, {"PRETRE",Classe::PRETRE} };
+    static std::unordered_map<std::string,Race> const nomsRace = { {"ORC",Race::ORC}, {"ARAIGNEE",Race::ARAIGNEE}, {"SQUELETTE",Race::SQUELETTE}, {"FANTOME",Race::FANTOME}, {"ZOMBIE",Race::ZOMBIE}, {"SERPENT",Race::SERPENT} };
+    static std::unordered_map<std::string,Statut> const nomsStatut = { {"SNONE",Statut::SNONE}, {"CONFUS",Statut::CONFUS}, {"EMPOISONNE",Statut::EMPOISONNE}, {"GLACE",Statut::GLACE}, {"PARALYSE",Statut::PARALYSE}, {"BRULE",Statut::BRULE}};
+    
+    ifstream jPerso(fichierJson);
+    Json::Reader readerPerso;
+    Json::Value obj;
+    readerPerso.parse(jPerso, obj);
+
+    Json::Value& objPerso = obj[type];
+
+    for(unsigned int indPerso = 0; indPerso<objPerso.size();indPerso++){
+        string nom = objPerso[indPerso]["nom"].asString();
+        int positionX = objPerso[indPerso]["positionX"].asUInt();
+        int positionY = objPerso[indPerso]["positionY"].asUInt();
+
+        const Json::Value& equipement = objPerso[indPerso]["equipement"];
+        vector<Equipement> equipementsPerso;
+        // vector<Equipement*> equipements(equipement.size());
+        for (unsigned int indEquip = 0; indEquip < equipement.size(); indEquip++){
+            string nomEquip = equipement[indEquip]["nom"].asString();
+            Statut statutEquip = nomsStatut.find(equipement[indEquip]["statut"].asString())->second;
+            vector<int> statEquip(9);
+            for(unsigned int indStat = 0; indStat<9;indStat++) statEquip[indStat] = equipement[indEquip]["stat"][indStat].asUInt();
+            Equipement equip(nomEquip, statutEquip, statEquip);
+            equipementsPerso.push_back(equip);
+        }
+
+        const Json::Value& actionSupp = objPerso[indPerso]["actionSupp"];
+        vector<ActionSupp*> actionSupps(actionSupp.size());
+        for (unsigned int indActionSupp = 0; indActionSupp < actionSupp.size(); indActionSupp++){
+            if(actionSupp[indActionSupp]["type"].asString() == "Def"){
+                string nomActionSupp = actionSupp[indActionSupp]["nom"].asString();
+                int statActionSupp = actionSupp[indActionSupp]["stat"].asUInt();
+                int porteeActionSupp = actionSupp[indActionSupp]["portee"].asUInt();
+                bool statutActionSupp = actionSupp[indActionSupp]["statut"].asBool();
+                ActionSuppDef actionSupp(nomActionSupp, statActionSupp, porteeActionSupp, statutActionSupp);
+                actionSuppDefs.push_back(actionSupp);
+                actionSupps[indActionSupp] = &actionSuppDefs[actionSuppDefs.size()-1];
+            } else {
+                string nomActionSupp = actionSupp[indActionSupp]["nom"].asString();
+                int statActionSupp = actionSupp[indActionSupp]["stat"].asUInt();
+                int porteeActionSupp = actionSupp[indActionSupp]["portee"].asUInt();
+                Statut statutActionSupp = nomsStatut.find(actionSupp[indActionSupp]["statut"].asString())->second;
+                ActionSuppOff actionSupp(nomActionSupp, statActionSupp, porteeActionSupp, statutActionSupp);
+                actionSuppOffs.push_back(actionSupp);
+                actionSupps[indActionSupp] = &actionSuppOffs[actionSuppOffs.size()-1];
+            }
+        }
+
+        if(type == "HEROS"){
+            Classe classe = nomsClasse.find(objPerso[indPerso]["classe"].asString())->second;
+            Heros herosAct(nom, classe, 1, positionX, positionY, equipementsPerso, actionSupps);
+            herosJeu.push_back(herosAct);
+        } else {
+            Race race = nomsRace.find(objPerso[indPerso]["race"].asString())->second;
+            Ennemi ennemiAct(nom, race, 1, positionX, positionY, equipementsPerso, actionSupps);
+            ennemiJeu.push_back(ennemiAct);
+        }
+    }
+}
+
+
 int main(int argc,char* argv[])
 {
     if(strcmp(argv[1],"hello")==0)
@@ -41,69 +105,20 @@ int main(int argc,char* argv[])
     {
         State state;
 
-        static std::unordered_map<std::string,Classe> const nomsClasse = { {"ARCHER",Classe::ARCHER}, {"ASSASSIN",Classe::ASSASSIN}, {"DRUIDE",Classe::DRUIDE}, {"GUERRIER",Classe::GUERRIER}, {"MAGE",Classe::MAGE}, {"PRETRE",Classe::PRETRE} };
-        static std::unordered_map<std::string,Statut> const nomsStatut = { {"SNONE",Statut::SNONE}, {"CONFUS",Statut::CONFUS}, {"EMPOISONNE",Statut::EMPOISONNE}, {"GLACE",Statut::GLACE}, {"PARALYSE",Statut::PARALYSE}, {"BRULE",Statut::BRULE}};
-        
-
         // Informations modifiables pour changer l'état
         //création des personnages
 
         vector<Entite*> persoJeu;
-        vector<Heros> herosJeu(6);
-        vector<vector<Equipement>> equipementsHeros(6);
-        vector<ActionSuppDef> actionSuppDefsHeros;
-        vector<ActionSuppOff> actionSuppOffsHeros;
+        vector<Heros> herosJeu;
+        vector<Ennemi> ennemiJeu;
+        //vector<vector<Equipement>> equipementsHeros(6);
+        vector<ActionSuppDef> actionSuppDefs;
+        vector<ActionSuppOff> actionSuppOffs;
 
-        ifstream jHeros("json/heros.json");
-        Json::Reader readerHeros;
-        Json::Value objHeros;
-        readerHeros.parse(jHeros, objHeros);
-
-        for(unsigned int indHeros; indHeros<6;indHeros++){
-            string nom = objHeros[indHeros]["nom"].asString();
-            Classe classe = nomsClasse.find(objHeros[indHeros]["classe"].asString())->second;
-            int positionX = objHeros[indHeros]["positionX"].asUInt();
-            int positionY = objHeros[indHeros]["positionY"].asUInt();
-
-            const Json::Value& equipement = objHeros[indHeros]["equipement"];
-            equipementsHeros[indHeros].resize(equipement.size());
-           // vector<Equipement*> equipements(equipement.size());
-            for (unsigned int indEquip = 0; indEquip < equipement.size(); indEquip++){
-                string nomEquip = equipement[indEquip]["nom"].asString();
-                Statut statutEquip = nomsStatut.find(equipement[indEquip]["statut"].asString())->second;
-                vector<int> statEquip(9);
-                for(unsigned int indStat = 0; indStat<9;indStat++) statEquip[indStat] = equipement[indEquip]["stat"][indStat].asUInt();
-                Equipement equip(nomEquip, statutEquip, statEquip);
-                equipementsHeros[indHeros][indEquip] =equip;
-                //equipements[indEquip] = &equipementsHeros[indHeros][indEquip];
-            }
-
-            const Json::Value& actionSupp = objHeros[indHeros]["actionSupp"];
-            vector<ActionSupp*> actionSupps(actionSupp.size());
-            for (unsigned int indActionSupp = 0; indActionSupp < actionSupp.size(); indActionSupp++){
-                if(actionSupp[indActionSupp]["type"].asString() == "Def"){
-                    string nomActionSupp = actionSupp[indActionSupp]["nom"].asString();
-                    int statActionSupp = actionSupp[indActionSupp]["stat"].asUInt();
-                    int porteeActionSupp = actionSupp[indActionSupp]["portee"].asUInt();
-                    bool statutActionSupp = actionSupp[indActionSupp]["statut"].asBool();
-                    ActionSuppDef actionSupp(nomActionSupp, statActionSupp, porteeActionSupp, statutActionSupp);
-                    actionSuppDefsHeros.push_back(actionSupp);
-                    actionSupps[indActionSupp] = &actionSuppDefsHeros[actionSuppDefsHeros.size()-1];
-                } else {
-                    string nomActionSupp = actionSupp[indActionSupp]["nom"].asString();
-                    int statActionSupp = actionSupp[indActionSupp]["stat"].asUInt();
-                    int porteeActionSupp = actionSupp[indActionSupp]["portee"].asUInt();
-                    Statut statutActionSupp = nomsStatut.find(actionSupp[indActionSupp]["statut"].asString())->second;
-                    ActionSuppOff actionSupp(nomActionSupp, statActionSupp, porteeActionSupp, statutActionSupp);
-                    actionSuppOffsHeros.push_back(actionSupp);
-                    actionSupps[indActionSupp] = &actionSuppOffsHeros[actionSuppOffsHeros.size()-1];
-                }
-            }
-
-            Heros herosAct(nom, classe, 1, positionX, positionY, equipementsHeros[indHeros], actionSupps);
-            herosJeu[indHeros] = herosAct;
-            persoJeu.push_back(&herosJeu[indHeros]);
-        }
+        exportationPerso("json/heros.json", "HEROS", herosJeu, ennemiJeu, actionSuppDefs,actionSuppOffs);
+        for(unsigned int i = 0; i<herosJeu.size();i++) persoJeu.push_back(&herosJeu[i]);
+        exportationPerso("json/ennemis.json", "ENNEMIS", herosJeu, ennemiJeu, actionSuppDefs,actionSuppOffs);
+        for(unsigned int i = 0; i<ennemiJeu.size();i++) persoJeu.push_back(&ennemiJeu[i]);
 
 
         //exportation de la carte depuis le json
@@ -144,7 +159,7 @@ int main(int argc,char* argv[])
         //implémentation dans le state
         state.setDecor(decor);
         state.setDe(6);
-        state.setEntites({persoJeu.begin(), persoJeu.begin()+6});
+        state.setEntites(persoJeu);
         state.nouveauTour();
       
         //définition de l'affichage des menus
@@ -178,6 +193,7 @@ int main(int argc,char* argv[])
 
         //engine
         Engine engine(state);
+
 
         //CommandeDeplacement dep1(3,1);
         //CommandeAttaque att1(&entite2);

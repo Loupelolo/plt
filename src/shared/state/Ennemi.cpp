@@ -6,7 +6,8 @@ namespace state {
 
     Ennemi::Ennemi () {
         m_nom = "John Doe";
-        m_type = 0;
+        m_estVivant = true;
+        m_type = 6;
         m_niveau = 1;
         m_positionX = 0;
         m_positionY = 0;
@@ -25,7 +26,8 @@ namespace state {
 
     Ennemi::Ennemi (std::string nom, Race race) {
         m_nom = nom;
-        m_type = 0;
+        m_estVivant = true;
+        m_type = 6 + race;
         m_niveau = 1;
         m_positionX = 0;
         m_positionY = 0;
@@ -44,7 +46,8 @@ namespace state {
 
     Ennemi::Ennemi (std::string nom, Race race, int niveau, int positionX, int positionY, std::vector<Equipement> equipement, std::vector<ActionSupp*> autresActions) {
         m_nom = nom;
-        m_type = 0;
+        m_estVivant = true;
+        m_type = 6 + race;
         m_niveau = niveau;
         m_positionX = positionX;
         m_positionY = positionY;
@@ -63,6 +66,7 @@ namespace state {
 
     Ennemi::Ennemi (const Ennemi &p) {
         m_nom = p.m_nom;
+        m_estVivant = p.m_estVivant;
         m_type = p.m_type;
         m_niveau = p.m_niveau;
         m_positionX = p.m_positionX;
@@ -111,6 +115,30 @@ namespace state {
     }
 
     void Ennemi::initialisation() {
-
+        switch (m_race)
+        {
+        case SQUELETTE:
+            m_stats = {40, 40, 30, 25, 60, 30, 10, 35, 8};
+            break;
+        case SERPENT:
+            m_stats = {30, 50, 40, 30, 70, 20, 2, 25, 7};
+            break;
+        case ARAIGNEE:
+            m_stats = {50, 40, 10, 10, 90, 60, 3, 7, 6};
+            break;
+        case ORC:
+            m_stats = {75, 60, 5, 5, 110, 10, 1, 5, 5};
+            break;
+        case FANTOME:
+            m_stats = {70, 30, 10, 10, 90, 50, 2, 3, 5};
+            break;
+        case ZOMBIE:
+            m_stats = {30, 40, 10, 10, 100, 70, 5, 1, 6};
+            break;
+        default:
+            break;
+        }
+        m_PV = m_stats[PVMAX];
+        m_PM = m_stats[PMMAX];
     }
 }

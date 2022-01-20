@@ -98,8 +98,8 @@ bool Scene::chargerFenetre(){
         return false;
     }
 
-    m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor()); //préparation affichage des décors
-    m_terrains[1].loadPerso("./res/roguelikecreatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
+    m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(),0,true); //préparation affichage des décors
+    m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
     return true;
 }
 
@@ -120,8 +120,10 @@ bool Scene::afficherFenetre(){
                 if (!m_menus[i].load()) //actualisation affichage des m_menus
                 return false;
             }*/
-            m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor()); //préparation affichage des décors
-            m_terrains[1].loadPerso("./res/roguelikecreatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
+            //std::cout<<"tagada"<<m_state->getEntites().size()<<std::endl;
+            m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(), 0, true); //préparation affichage des décors
+            m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
+            //std::cout<<"tsointsoin"<<std::endl;
             clock.restart();
             if(elapsed2 >= sf::seconds(1)){
                 clock2.restart();
@@ -236,6 +238,7 @@ bool Scene::afficherFenetre(){
                 }
             }
         }
+        //std::cout<<"prout"<<std::endl;
 
         // on dessine le niveau
         m_window.clear();
@@ -249,11 +252,13 @@ bool Scene::afficherFenetre(){
             for(unsigned int j =0; j<m_menus[i].getTexts().size(); j++ ){
                 m_window.draw(m_menus[i].getTexts()[j]); //affichage des textes des m_menus
             }
+            //std::cout<<"super"<<std::endl;
         }
 
         afficherSelection();
 
         m_window.draw(m_terrains[1]); //affichage des perso
+        //std::cout<<"hum"<<std::endl;
 
 
         int largeur = m_terrains[0].getLargeur();

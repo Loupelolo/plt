@@ -1,0 +1,63 @@
+{"ENNEMIS":[{
+    "nom" : "Orc",
+    "race" : "ORC",
+    "niveau" : 1,
+    "positionX" : 2,
+    "positionY" : 2,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Araignee",
+    "race" : "ARAIGNEE",
+    "niveau" : 1,
+    "positionX" : 6,
+    "positionY" : 4,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Squelette",
+    "race" : "SQUELETTE",
+    "niveau" : 1,
+    "positionX" : 8,
+    "positionY" : 2,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Fantome",
+    "race" : "FANTOME",
+    "niveau" : 1,
+    "positionX" : 10,
+    "positionY" : 4,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Zombie",
+    "race" : "ZOMBIE",
+    "niveau" : 1,
+    "positionX" : 12,
+    "positionY" : 2,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Serpent",
+    "race" : "SERPENT",
+    "niveau" : 1,
+    "positionX" : 4,
+    "positionY" : 4,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+}
+]
+}

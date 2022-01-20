@@ -10,6 +10,8 @@ namespace state {
 
     State::State () {
         m_nbTour = 0;
+        m_niveau = 1;
+        m_niveauFini=false;
         std::srand(std::time(nullptr)); // use current time as seed for random generator
         
     }
@@ -28,6 +30,22 @@ namespace state {
 
     void State::setNbTour (int nbTour){
         m_nbTour = nbTour;
+    }
+
+    int State::getNiveau (){
+        return m_niveau;
+    }
+
+    void State::setNiveau (int niveau){
+        m_niveau = niveau;
+    }
+
+    bool State::getNiveauFini (){
+        return m_niveauFini;
+    }
+
+    void State::setNiveauFini (bool niveauFini){
+        m_niveauFini = niveauFini;
     }
 
     Decor State::getDecor (){
@@ -85,7 +103,9 @@ namespace state {
     void State::nouveauTour (){
         //suppression des morts dans entites
         for(unsigned int i = 0; i<m_entites.size();i++){
+            std::cout<<m_entites[i]->getEstVivant()<<std::endl;
             if(!m_entites[i]->getEstVivant()){
+                std::cout<<m_entites[i]->getNom()<<std::endl;
                 m_entites.erase(m_entites.begin()+i);
             }
         }
@@ -97,11 +117,12 @@ namespace state {
         for(unsigned int indiceOrdre = 0; indiceOrdre<taille; indiceOrdre++){
             int indiceEnt = 0;
             int max = tampon[indiceEnt]->getStat(INITIATIVE);
-            for(unsigned int indiceRecherche; indiceRecherche < taille-indiceOrdre; indiceRecherche++ ){
-                int stat = tampon[indiceEnt]->getStat(INITIATIVE);
+            for(unsigned int indiceRecherche=0; indiceRecherche < taille-indiceOrdre; indiceRecherche++ ){
+                int stat = tampon[indiceRecherche]->getStat(INITIATIVE);
                 if(stat>max){
                     indiceEnt = indiceRecherche;
                     max = stat;
+                    std::cout<<max<<std::endl;
                 }
             }
             m_ordreTour[indiceOrdre] = tampon[indiceEnt];
