@@ -36,36 +36,35 @@ namespace engine {
 
         for (int a=0; a<5; a++){    
             for(int abs=0;abs<=mvt;abs++){
-                for(int ord=0;ord<=mvt;ord++){
-                    if(abs+ord <=mvt){
-                        for(int t=0; t<4; t++){
-                            switch(t){
-                                case 0 :
-                                    posTemp = posInit+abs+ord*largeur;
-                                    if((posTemp>=(total-largeur)) || (posTemp%largeur==(largeur-1))) {posTemp=posInit;}
-                                    break;   
-                                case 1 :
-                                    posTemp = posInit+abs-ord*largeur;
-                                    if((posTemp<largeur) || (posTemp%largeur==(largeur-1))) {posTemp=posInit;}
-                                    break;
-                                case 2 :
-                                    posTemp = posInit-abs+ord*largeur;
-                                    if((posTemp>=(total-largeur)) || (posTemp%largeur==0)) {posTemp=posInit;}
-                                    break;
-                                case 3 :
-                                    posTemp = posInit-abs-ord*largeur;
-                                    if((posTemp<largeur) || (posTemp%largeur==0)) {posTemp=posInit;}
-                                    break;
-                                
+                for(int ord=0;ord<=mvt-abs;ord++){
+                    for(int t=0; t<4; t++){
+                        switch(t){
+                            case 0 :
+                                posTemp = posInit+abs+ord*largeur;
+                                if((posTemp>=total) || (posTemp%largeur==0)) {posTemp=posInit;}
+                                break;   
+                            case 1 :
+                                posTemp = posInit+abs-ord*largeur;
+                                if((posTemp<0) || (posTemp%largeur==0)) {posTemp=posInit;}
+                                break;
+                            case 2 :
+                                posTemp = posInit-abs+ord*largeur;
+                                if((posTemp>=total) || (posTemp%largeur==(largeur-1))) {posTemp=posInit;}
+                                break;
+                            case 3 :
+                                posTemp = posInit-abs-ord*largeur;
+                                if((posTemp<0) || (posTemp%largeur==(largeur-1))) {posTemp=posInit;}
+                                break;  
+                            default :
+                                break;
+                        }
+                        if(mapLib[posTemp-1] || mapLib[posTemp-largeur] || mapLib[posTemp+1] || mapLib[posTemp+largeur]){
+                            if (etat->getDecor().getMap()[posTemp]==state::SOL || etat->getDecor().getMap()[posTemp]==state::TRES || etat->getDecor().getMap()[posTemp]==state::SECR){
+                                mapLib[posTemp] = true;
                             }
-                            if(mapLib[posTemp-1] || mapLib[posTemp-largeur] || mapLib[posTemp+1] || mapLib[posTemp+largeur]){
-                                if (etat->getDecor().getMap()[posTemp]==state::SOL || etat->getDecor().getMap()[posTemp]==state::TRES || etat->getDecor().getMap()[posTemp]==state::SECR){
-                                    mapLib[posTemp] = true;
-                                }
-                                for (size_t j = 1; j < etat->getEntites().size() ; j++){
-                                    if ((etat->getEntites()[j]->getPositionX() == posTemp%largeur) && (etat->getEntites()[j]->getPositionY() == posTemp/largeur)){
-                                        mapLib[posTemp] = false;
-                                    }
+                            for (size_t j = 1; j < etat->getEntites().size() ; j++){
+                                if ((etat->getEntites()[j]->getPositionX() == posTemp%largeur) && (etat->getEntites()[j]->getPositionY() == posTemp/largeur)){
+                                    mapLib[posTemp] = false;
                                 }
                             }
                         }

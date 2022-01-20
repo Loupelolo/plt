@@ -80,7 +80,7 @@ namespace engine {
                 break;
 
             case ActionSupplementaire :
-                if(cmd.handleActionSupplementaire(*m_currentState->getOrdreTour()[0])){
+                if(cmd.handleActionSupplementaire(m_currentState)){
                     cmd.execute(this->getState());
                     return true;
                 }

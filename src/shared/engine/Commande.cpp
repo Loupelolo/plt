@@ -29,8 +29,12 @@ namespace engine {
         return false;
     }
 
-    bool Commande::handleActionSupplementaire (state::Entite perso){
+    bool Commande::handleActionSupplementaire (state::State* etat){
         return false;
+    }
+
+    void Commande::ActuMapLib (state::State* etat){
+        
     }
 
     bool Commande::execute (state::State* state){
