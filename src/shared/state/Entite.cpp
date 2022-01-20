@@ -187,10 +187,7 @@ namespace state {
 
     void Entite::degats (int degatsSubis, int statutsSubis){
         //infliger des degats
-        std::cout<<"je suis dans degats"<<std::endl;
-        std::cout<<m_PV<<std::endl;
         m_PV = m_PV - degatsSubis;
-        std::cout<<m_PV<<std::endl;
         if(statutsSubis != 0) m_statutsSubis[statutsSubis] = true;
         if(m_PV <= 0) this->mort();
     }

@@ -186,7 +186,7 @@ int main(int argc,char* argv[])
         std::vector<CoucheTerrain> terrains = {coucheDecor, couchePerso};
 
         //engine
-        Engine engine(state);
+        Engine engine(&state);
 
 
         //CommandeDeplacement dep1(3,1);
@@ -206,6 +206,7 @@ int main(int argc,char* argv[])
         scene.setMenus(menus);
         scene.setTerrains(terrains);
         scene.chargerFenetre();
+        HeuristiqueAI heuristiqueAI(engine.getState());
         fenetre = scene.afficherFenetre(); 
 
         while(fenetre){
@@ -230,11 +231,12 @@ int main(int argc,char* argv[])
                 act1Fait = true;
             }*/
 
-            scene.setState(&engine.getState());
+            /*scene.setState(&engine.getState());
             scene.setCaseActuelle(sf::Vector2f(2,1));
             scene.setMenus(menus);
-            scene.setTerrains(terrains);
+            scene.setTerrains(terrains);*/
             fenetre = scene.afficherFenetre(); 
+            heuristiqueAI.run(*engine.getState(), engine);
         }
     }
     else if (strcmp(argv[1],"testRandomAi")==0)
@@ -266,7 +268,7 @@ int main(int argc,char* argv[])
         stateTest.setDecor(decorTest);
         stateTest.setOrdreTour({&herosTest, &ennemiTest, &ennemiTest2, &herosTest2});
 
-        Engine engineTest(stateTest);
+        Engine engineTest(&stateTest);
 
         // Tests de l'IA aléatoire
         //RandomAI randomAItest(stateTest);

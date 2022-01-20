@@ -135,6 +135,7 @@ namespace state {
     }
 
     void State::joueurSuivant (){
+        std::cout<<"nb "<<m_ordreTour.size()<<std::endl;
         //suppression des morts dans ordreTour
         for(unsigned int i = 0; i<m_ordreTour.size();i++){
             if(!m_ordreTour[i]->getEstVivant()){

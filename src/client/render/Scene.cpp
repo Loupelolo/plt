@@ -107,6 +107,10 @@ bool Scene::afficherFenetre(){
     sf::Clock clock;
     sf::Clock clock2;
     engine::Commande* commande = NULL;
+    bool herosReste = false;
+    for (unsigned int i=0; i<m_state->getEntites().size();i++) {        
+        if(m_state->getEntites()[i]->getType()<6 && m_state->getEntites()[i]->getEstVivant()) herosReste = true;
+    }
 
     actualiserCasesAccessibles();
 
@@ -130,7 +134,8 @@ bool Scene::afficherFenetre(){
                 //std::cout<<"ping"<<std::endl;
                 //return true;
             }
-        }        
+        }    
+        m_window.clear();    
 
         // on gère les évènements
         sf::Event event;
@@ -139,107 +144,107 @@ bool Scene::afficherFenetre(){
             if(event.type == sf::Event::Closed)
                 m_window.close();
 
-            if (event.type == sf::Event::MouseButtonPressed) {
-                if (event.mouseButton.button == sf::Mouse::Left)
-                {
-                    int mouseX = event.mouseButton.x*900/m_window.getSize().x;
-                    int mouseY = event.mouseButton.y*450/m_window.getSize().y;
-                    if (mouseX >= m_menus[2].getPosX() && mouseX<= m_menus[2].getPosX() + m_menus[2].getLargeur()){
-                    //l'utilisateur a cliquée dans la partie du milieu
-                       if(mouseY >= m_menus[0].getHauteur() ){
-                            //l'utilisateur a cliquée dans la partie menu
-                            int actSel = selectAction(mouseX, mouseY);
-                            if( actSel != -1) {
-                                if(actSel == m_actionSelectionnee){
-                                    //un menu a été désélectionné
-                                    m_actionSelectionnee = 0;
-                                } else {
-                                    //le menu a été selectionné
-                                    m_actionSelectionnee = actSel;
-                                }
-                                //on crée la commande associée à l'action choisie
-                                switch(m_actionSelectionnee){
-                                    case 1:
-                                        {
-                                        engine::CommandeDeplacement comDep;
-                                        commande = &comDep;
-                                        }
-                                        break;
-                                    case 2 :
-                                        {
-                                        engine::CommandeAttaque comAtt;
-                                        commande = &comAtt;
-                                        }
-                                        break;
-                                    case 4:
-                                    case 5:
-                                        {
-                                        engine::CommandeActionSupplementaire comAct;
-                                        commande = &comAct;
-                                        }
-                                        break;
-                                    default :
-                                        commande = NULL;
-                                        break;
-                                }
-                                actualiserCasesAccessibles();
-                            }
-                        } else {
-                            //l'utilisateur a cliquée dans la partie plateau
-                            m_caseActuelle = selectCase(mouseX, mouseY);
-                        }
-                    }
-
-                    //l'utilisateur a cliqué sur le bouton executer
-                    int largeur = m_terrains[0].getLargeur();
-                    if(m_state->getDecor().getMap()[m_caseActuelle.x +m_caseActuelle.y*largeur] == 5 && m_state->getNiveauFini()){
-                        m_state->niveauSuivant();
-                    }
-                    if ((commande!=NULL && m_casesAccessibles[m_caseActuelle.x +m_caseActuelle.y*largeur])||m_actionSelectionnee ==3){
-                        if (mouseX >= m_menus[3].getPosX()+20 && mouseX<= m_menus[3].getPosX() + 120){
-                            if(mouseY>= m_menus[4].getPosY()-80 && mouseY<= m_menus[4].getPosY()-50){
-                                //l'utilisateur souhaite effectuer un deplacement
-                                if(m_actionSelectionnee == 1 && !m_state->getABouge()){
-                                    std::cout<<"ici"<<std::endl;
-                                    engine::CommandeDeplacement comDep(m_caseActuelle.x, m_caseActuelle.y);
-                                    commande = &comDep;
-                                    if(m_state->effectuerAction(m_actionSelectionnee)){
-                                        std::cout<<"la"<<std::endl;
-                                        commande->execute(m_state);
-                                    } 
-                                } else if(m_actionSelectionnee ==2 && !m_state->getAAttaque()){
-                                    //l'utilisateur souhaite effectuer une attaque
-                                    std::vector<state::Entite*> entites = m_state->getEntites();
-                                    for(unsigned int i = 0;i<entites.size() ;i++){
-                                        sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
-                                        if (m_caseActuelle == posEntite){
-                                            engine::CommandeAttaque comAtt(entites[i]);
+            if(m_state->getOrdreTour()[0]->getType()<6){
+                if (event.type == sf::Event::MouseButtonPressed) {
+                    if (event.mouseButton.button == sf::Mouse::Left)
+                    {
+                        int mouseX = event.mouseButton.x*900/m_window.getSize().x;
+                        int mouseY = event.mouseButton.y*450/m_window.getSize().y;
+                        if (mouseX >= m_menus[2].getPosX() && mouseX<= m_menus[2].getPosX() + m_menus[2].getLargeur()){
+                        //l'utilisateur a cliquée dans la partie du milieu
+                        if(mouseY >= m_menus[0].getHauteur() ){
+                                //l'utilisateur a cliquée dans la partie menu
+                                int actSel = selectAction(mouseX, mouseY);
+                                if( actSel != -1) {
+                                    if(actSel == m_actionSelectionnee){
+                                        //un menu a été désélectionné
+                                        m_actionSelectionnee = 0;
+                                    } else {
+                                        //le menu a été selectionné
+                                        m_actionSelectionnee = actSel;
+                                    }
+                                    //on crée la commande associée à l'action choisie
+                                    switch(m_actionSelectionnee){
+                                        case 1:
+                                            {
+                                            engine::CommandeDeplacement comDep;
+                                            commande = &comDep;
+                                            }
+                                            break;
+                                        case 2 :
+                                            {
+                                            engine::CommandeAttaque comAtt;
                                             commande = &comAtt;
-                                            if(m_state->effectuerAction(m_actionSelectionnee)) commande->execute(m_state);
-                                        }
+                                            }
+                                            break;
+                                        case 4:
+                                        case 5:
+                                            {
+                                            engine::CommandeActionSupplementaire comAct;
+                                            commande = &comAct;
+                                            }
+                                            break;
+                                        default :
+                                            commande = NULL;
+                                            break;
                                     }
-                                } else if(m_actionSelectionnee==3){
-                                    //l'utilisateur souhaite passer son tour
-                                    m_state->joueurSuivant();
-                                    m_caseActuelle.x = m_state->getOrdreTour()[0]->getPositionX();
-                                    m_caseActuelle.y = m_state->getOrdreTour()[0]->getPositionY();
-                                } else if(m_actionSelectionnee>3 && !m_state->getAAttaque()) {
-                                    std::vector<state::Entite*> entites = m_state->getEntites();
-                                    for(unsigned int i = 0;i<entites.size() ;i++){
-                                        sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
-                                        if (m_caseActuelle == posEntite){
-                                                engine::CommandeActionSupplementaire comAct(entites[i], m_state->getOrdreTour()[0]->getAutresActions()[m_actionSelectionnee-4]);
-                                                commande = &comAct;
-                                                if(m_state->effectuerAction(m_actionSelectionnee)) commande->execute(m_state);
-                                        }
-                                    }
+                                    actualiserCasesAccessibles();
                                 }
-                                m_actionSelectionnee = 0;
+                            } else {
+                                //l'utilisateur a cliquée dans la partie plateau
+                                m_caseActuelle = selectCase(mouseX, mouseY);
+                            }
+                        }
+
+                        //l'utilisateur a cliqué sur le bouton executer
+                        int largeur = m_terrains[0].getLargeur();
+                        if(m_state->getDecor().getMap()[m_caseActuelle.x +m_caseActuelle.y*largeur] == 5 && m_state->getNiveauFini()){
+                            m_state->niveauSuivant();
+                        }
+                        if ((commande!=NULL && m_casesAccessibles[m_caseActuelle.x +m_caseActuelle.y*largeur])||m_actionSelectionnee ==3){
+                            if (mouseX >= m_menus[3].getPosX()+20 && mouseX<= m_menus[3].getPosX() + 120){
+                                if(mouseY>= m_menus[4].getPosY()-80 && mouseY<= m_menus[4].getPosY()-50){
+                                    //l'utilisateur souhaite effectuer un deplacement
+                                    if(m_actionSelectionnee == 1 && !m_state->getABouge()){
+                                        engine::CommandeDeplacement comDep(m_caseActuelle.x, m_caseActuelle.y);
+                                        commande = &comDep;
+                                        if(m_state->effectuerAction(m_actionSelectionnee)){
+                                            commande->execute(m_state);
+                                        } 
+                                    } else if(m_actionSelectionnee ==2 && !m_state->getAAttaque()){
+                                        //l'utilisateur souhaite effectuer une attaque
+                                        std::vector<state::Entite*> entites = m_state->getEntites();
+                                        for(unsigned int i = 0;i<entites.size() ;i++){
+                                            sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
+                                            if (m_caseActuelle == posEntite){
+                                                engine::CommandeAttaque comAtt(entites[i]);
+                                                commande = &comAtt;
+                                                if(m_state->effectuerAction(m_actionSelectionnee)) commande->execute(m_state);
+                                            }
+                                        }
+                                    } else if(m_actionSelectionnee==3){
+                                        //l'utilisateur souhaite passer son tour
+                                        m_state->joueurSuivant();
+                                        m_caseActuelle.x = m_state->getOrdreTour()[0]->getPositionX();
+                                        m_caseActuelle.y = m_state->getOrdreTour()[0]->getPositionY();
+                                    } else if(m_actionSelectionnee>3 && !m_state->getAAttaque()) {
+                                        std::vector<state::Entite*> entites = m_state->getEntites();
+                                        for(unsigned int i = 0;i<entites.size() ;i++){
+                                            sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
+                                            if (m_caseActuelle == posEntite){
+                                                    engine::CommandeActionSupplementaire comAct(entites[i], m_state->getOrdreTour()[0]->getAutresActions()[m_actionSelectionnee-4]);
+                                                    commande = &comAct;
+                                                    if(m_state->effectuerAction(m_actionSelectionnee)) commande->execute(m_state);
+                                            }
+                                        }
+                                    }
+                                    m_actionSelectionnee = 0;
+                                }
                             }
                         }
                     }
                 }
-            }
+            } else if(herosReste) return true;
         }
         //std::cout<<"prout"<<std::endl;
 
@@ -296,6 +301,32 @@ bool Scene::afficherFenetre(){
             police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
             text.setFont(police); 
             text.setString("Bravo");
+            text.setCharacterSize(80); 
+            text.setFillColor(sf::Color::Black);
+            m_window.draw(text);
+        }
+        
+        //verifie s'il reste des héros en vie
+        for (unsigned int i=0; i<m_state->getEntites().size();i++) {        
+            if(m_state->getEntites()[i]->getType()<6 && m_state->getEntites()[i]->getEstVivant()) herosReste = true;
+        }
+        if(!herosReste){
+            m_window.clear();
+            sf::Texture texture;
+            texture.loadFromFile("./res/parchemin.png");
+            sf::Sprite sprite;
+            sprite.setTexture(texture);
+            sprite.setScale(sf::Vector2f(1.f, 0.3f));
+            sprite.setPosition(sf::Vector2f(250.f, 120.f));
+
+            m_window.draw(sprite);
+
+            sf::Text text;
+            text.setPosition(280, 150); 
+            sf::Font police;
+            police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
+            text.setFont(police); 
+            text.setString("Game Over");
             text.setCharacterSize(80); 
             text.setFillColor(sf::Color::Black);
             m_window.draw(text);
