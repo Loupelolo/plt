@@ -1,0 +1,85 @@
+{"HEROS" : [{
+    "nom" : "Diana",
+    "classe" : "MAGE",
+    "niveau" : 1,
+    "positionX" : 4,
+    "positionY" : 8,
+    "equipement" :[
+        {
+            "nom" : "Epee",
+            "statut": "SNONE",
+            "stat": [30,0,0,10,0,0,3,0,0]
+        },{
+            "nom" : "Bouclier",
+            "statut": "SNONE",
+            "stat": [0,40,0,0,0,0,0,0,0]
+        }
+    ],
+    "actionSupp" :[
+        {
+            "type" : "Off",
+            "nom" : "Boule de Feu",
+            "stat": 50,
+            "portee": 5,
+            "statut": "BRULE"
+        },{
+            "type" : "Def",
+            "nom" : "Soin",
+            "stat": 20,
+            "portee": 10,
+            "statut": false
+        }
+    ]
+},{
+    "nom" : "Charles",
+    "classe" : "GUERRIER",
+    "niveau" : 1,
+    "positionX" : 2,
+    "positionY" : 7,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Elisabeth",
+    "classe" : "PRETRE",
+    "niveau" : 1,
+    "positionX" : 12,
+    "positionY" : 8,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "William",
+    "classe" : "ARCHER",
+    "niveau" : 1,
+    "positionX" : 10,
+    "positionY" : 6,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Harry",
+    "classe" : "ASSASSIN",
+    "niveau" : 1,
+    "positionX" : 8,
+    "positionY" : 8,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Philip",
+    "classe" : "DRUIDE",
+    "niveau" : 1,
+    "positionX" : 6,
+    "positionY" : 6,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+}
+]
+}

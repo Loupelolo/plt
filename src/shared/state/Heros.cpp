@@ -26,7 +26,7 @@ namespace state {
         m_nom = nom;
         m_estVivant = true;
         m_classe = classe;
-        m_type = 0;
+        m_type = classe;
         m_niveau = 1;
         m_positionX = 0;
         m_positionY = 0;
@@ -78,19 +78,7 @@ namespace state {
     }
 
     Heros::~Heros () {
-        /*delete &m_nom;
-        delete &m_type;
-        delete &m_niveau;
-        delete &m_positionX;
-        delete &m_positionY;
-        delete &m_PV;
-        delete &m_PM;
-        delete [] &m_equipement;
-        delete [] &m_autresActions;
-        delete [] &m_stats;
-        delete [] &m_statutsSubis;
-
-        delete &m_classe;*/
+        
     }
 
 
@@ -122,13 +110,13 @@ namespace state {
             m_stats = {50, 40, 10, 10, 90, 60, 3, 6, 6};
             break;
         case GUERRIER:
-            m_stats = {75, 60, 5, 5, 110, 10, 1, 5, 5};
+            m_stats = {75, 60, 5, 5, 110, 10, 1, 4, 5};
             break;
         case MAGE:
             m_stats = {70, 30, 10, 10, 90, 50, 2, 8, 5};
             break;
         case PRETRE:
-            m_stats = {30, 40, 10, 10, 100, 70, 5, 5, 6};
+            m_stats = {30, 40, 10, 10, 100, 70, 5, 4, 6};
             break;
         default:
             break;

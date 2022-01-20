@@ -98,8 +98,8 @@ bool Scene::chargerFenetre(){
         return false;
     }
 
-    m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor()); //préparation affichage des décors
-    m_terrains[1].loadPerso("./res/roguelikecreatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
+    m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(),m_state->getNiveauFini()); //préparation affichage des décors
+    m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites(), m_state->getNiveau()); //préparation affichage des perso
     return true;
 }
 
@@ -120,8 +120,10 @@ bool Scene::afficherFenetre(){
                 if (!m_menus[i].load()) //actualisation affichage des m_menus
                 return false;
             }*/
-            m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor()); //préparation affichage des décors
-            m_terrains[1].loadPerso("./res/roguelikecreatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
+            //std::cout<<"tagada"<<m_state->getEntites().size()<<std::endl;
+            m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(), m_state->getNiveauFini()); //préparation affichage des décors
+            m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites(), m_state->getNiveau()); //préparation affichage des perso
+            //std::cout<<"tsointsoin"<<std::endl;
             clock.restart();
             if(elapsed2 >= sf::seconds(1)){
                 clock2.restart();
@@ -140,8 +142,8 @@ bool Scene::afficherFenetre(){
             if (event.type == sf::Event::MouseButtonPressed) {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    int mouseX = event.mouseButton.x;
-                    int mouseY = event.mouseButton.y;
+                    int mouseX = event.mouseButton.x*900/m_window.getSize().x;
+                    int mouseY = event.mouseButton.y*450/m_window.getSize().y;
                     if (mouseX >= m_menus[2].getPosX() && mouseX<= m_menus[2].getPosX() + m_menus[2].getLargeur()){
                     //l'utilisateur a cliquée dans la partie du milieu
                        if(mouseY >= m_menus[0].getHauteur() ){
@@ -190,6 +192,9 @@ bool Scene::afficherFenetre(){
 
                     //l'utilisateur a cliqué sur le bouton executer
                     int largeur = m_terrains[0].getLargeur();
+                    if(m_state->getDecor().getMap()[m_caseActuelle.x +m_caseActuelle.y*largeur] == 5 && m_state->getNiveauFini()){
+                        m_state->niveauSuivant();
+                    }
                     if ((commande!=NULL && m_casesAccessibles[m_caseActuelle.x +m_caseActuelle.y*largeur])||m_actionSelectionnee ==3){
                         if (mouseX >= m_menus[3].getPosX()+20 && mouseX<= m_menus[3].getPosX() + 120){
                             if(mouseY>= m_menus[4].getPosY()-80 && mouseY<= m_menus[4].getPosY()-50){
@@ -236,6 +241,7 @@ bool Scene::afficherFenetre(){
                 }
             }
         }
+        //std::cout<<"prout"<<std::endl;
 
         // on dessine le niveau
         m_window.clear();
@@ -249,11 +255,13 @@ bool Scene::afficherFenetre(){
             for(unsigned int j =0; j<m_menus[i].getTexts().size(); j++ ){
                 m_window.draw(m_menus[i].getTexts()[j]); //affichage des textes des m_menus
             }
+            //std::cout<<"super"<<std::endl;
         }
 
         afficherSelection();
 
         m_window.draw(m_terrains[1]); //affichage des perso
+        //std::cout<<"hum"<<std::endl;
 
 
         int largeur = m_terrains[0].getLargeur();
@@ -269,6 +277,28 @@ bool Scene::afficherFenetre(){
                 afficherExecuter("Attaquer");
             }
             
+        }
+
+        if(m_state->getNiveau()==3 && m_state->getNiveauFini()){
+            m_window.clear();
+            sf::Texture texture;
+            texture.loadFromFile("./res/parchemin.png");
+            sf::Sprite sprite;
+            sprite.setTexture(texture);
+            sprite.setScale(sf::Vector2f(1.f, 0.3f));
+            sprite.setPosition(sf::Vector2f(250.f, 120.f));
+
+            m_window.draw(sprite);
+
+            sf::Text text;
+            text.setPosition(350, 150); 
+            sf::Font police;
+            police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
+            text.setFont(police); 
+            text.setString("Bravo");
+            text.setCharacterSize(80); 
+            text.setFillColor(sf::Color::Black);
+            m_window.draw(text);
         }
 
         m_window.display();
@@ -292,7 +322,6 @@ int Scene::selectAction (int x, int y) {
 
     return action;
 }
-
 
 sf::Vector2f Scene::selectCase (int x, int y) {
     int largeur = m_terrains[0].getLargeur();
