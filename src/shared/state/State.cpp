@@ -102,11 +102,12 @@ namespace state {
 
     void State::nouveauTour (){
         //suppression des morts dans entites
-        for(unsigned int i = 0; i<m_entites.size();i++){
-            std::cout<<m_entites[i]->getEstVivant()<<std::endl;
+        std::cout<<"Bonjour "<<m_entites.size()<<std::endl;
+
+        for(int i =  m_entites.size()-1; i>=0;i--){
+            std::cout<<i<<std::endl;
             if(!m_entites[i]->getEstVivant()){
-                std::cout<<m_entites[i]->getNom()<<std::endl;
-                m_entites.erase(m_entites.begin()+i);
+                m_entites.erase(m_entites.begin() + i);
             }
         }
         //initialisation d'un nouveau tour
@@ -122,7 +123,6 @@ namespace state {
                 if(stat>max){
                     indiceEnt = indiceRecherche;
                     max = stat;
-                    std::cout<<max<<std::endl;
                 }
             }
             m_ordreTour[indiceOrdre] = tampon[indiceEnt];
@@ -146,6 +146,14 @@ namespace state {
         }
         m_aAttaque = false;
         m_aBouge = false;
+
+        //verifie si le niveau est fini
+        bool ennemisReste = false;
+        for (unsigned int i=0; i<m_entites.size();i++) {
+            if(m_entites[i]->getType()>=6 && m_entites[i]->getEstVivant()) ennemisReste = true;
+        }
+        if(!ennemisReste) m_niveauFini = true;
+        std::cout<<"etat"<<m_niveauFini<<std::endl;
     }
 
     bool State::effectuerAction(int commandeAEffectuer){
@@ -164,6 +172,11 @@ namespace state {
             }            
         }
         return false;
+    }
+
+    void State::niveauSuivant(){
+        m_niveau++;
+        std::cout<<"niveau suivant"<<std::endl;
     }
 
 }

@@ -142,19 +142,9 @@ int main(int argc,char* argv[])
         }
 
         //création de la map
-        /*std::vector<TypeTerrain> map = //maximum 18 de largeur et 9 de hauteur
-          {
-            MUR , MUR , MUR , MUR , MUR , MUR , MUR , SOL , MUR , MUR , MUR , MUR , MUR ,
-            PORT, SOL , SOL , SOL , SOL , SOL , SOL , SOL , OBST, SOL , SOL , SOL , SECR,
-            MUR , EAU , SOL , SOL , SOL , SOL , PIEG, SOL , SOL , SOL , SOL , TRES, MUR ,
-            MUR , EAU , SOL , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU , EAU 
-          };
-        int nbLargeur = 13;
-        int nbLongueur = 4;*/
 
         //informations non-modifiables
         Decor decor(nbLargeur, nbLongueur, map);
-        //decor.action(6, 2, &entite1);
         
         //implémentation dans le state
         state.setDecor(decor);

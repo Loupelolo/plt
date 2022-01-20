@@ -98,7 +98,7 @@ bool Scene::chargerFenetre(){
         return false;
     }
 
-    m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(),0,true); //préparation affichage des décors
+    m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(),0,m_state->getNiveauFini()); //préparation affichage des décors
     m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
     return true;
 }
@@ -121,7 +121,7 @@ bool Scene::afficherFenetre(){
                 return false;
             }*/
             //std::cout<<"tagada"<<m_state->getEntites().size()<<std::endl;
-            m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(), 0, true); //préparation affichage des décors
+            m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(), 0, m_state->getNiveauFini()); //préparation affichage des décors
             m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
             //std::cout<<"tsointsoin"<<std::endl;
             clock.restart();
@@ -192,6 +192,9 @@ bool Scene::afficherFenetre(){
 
                     //l'utilisateur a cliqué sur le bouton executer
                     int largeur = m_terrains[0].getLargeur();
+                    if(m_state->getDecor().getMap()[m_caseActuelle.x +m_caseActuelle.y*largeur] == 5 && m_state->getNiveauFini()){
+                        m_state->niveauSuivant();
+                    }
                     if ((commande!=NULL && m_casesAccessibles[m_caseActuelle.x +m_caseActuelle.y*largeur])||m_actionSelectionnee ==3){
                         if (mouseX >= m_menus[3].getPosX()+20 && mouseX<= m_menus[3].getPosX() + 120){
                             if(mouseY>= m_menus[4].getPosY()-80 && mouseY<= m_menus[4].getPosY()-50){
@@ -297,7 +300,6 @@ int Scene::selectAction (int x, int y) {
 
     return action;
 }
-
 
 sf::Vector2f Scene::selectCase (int x, int y) {
     int largeur = m_terrains[0].getLargeur();
