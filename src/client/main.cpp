@@ -203,7 +203,7 @@ int main(int argc,char* argv[])
         
         Scene scene(hauteurFenetre,largeurFenetre);
 
-        scene.setState(&engine.getState());
+        scene.setState(engine.getState());
         scene.setCaseActuelle(sf::Vector2f(2,1));
         scene.setMenus(menus);
         scene.setTerrains(terrains);
