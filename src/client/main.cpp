@@ -195,7 +195,6 @@ int main(int argc,char* argv[])
         //CommandeAttaque att1(&entite2);
         //CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
 
-        att1.ActuMapLib(&state);
 
         sf::Clock clkEngine;
         /*bool depl1Fait = false;
@@ -205,7 +204,7 @@ int main(int argc,char* argv[])
         
         Scene scene(hauteurFenetre,largeurFenetre);
 
-        scene.setState(&engine.getState());
+        scene.setState(engine.getState());
         scene.setCaseActuelle(sf::Vector2f(2,1));
         scene.setMenus(menus);
         scene.setTerrains(terrains);
