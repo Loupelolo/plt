@@ -195,7 +195,6 @@ int main(int argc,char* argv[])
         //CommandeAttaque att1(&entite2);
         //CommandeActionSupplementaire act1(&entite2, entite1.getAutresActions()[1]);
 
-        att1.ActuMapLib(&state);
 
         sf::Clock clkEngine;
         /*bool depl1Fait = false;
