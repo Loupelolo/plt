@@ -43,6 +43,7 @@ void exportationPerso(string fichierJson, string type, vector<Heros>& herosJeu, 
         string nom = objPerso[indPerso]["nom"].asString();
         int positionX = objPerso[indPerso]["positionX"].asUInt();
         int positionY = objPerso[indPerso]["positionY"].asUInt();
+        int niveau = objPerso[indPerso]["niveau"].asUInt();
 
         const Json::Value& equipement = objPerso[indPerso]["equipement"];
         vector<Equipement> equipementsPerso;
@@ -80,11 +81,11 @@ void exportationPerso(string fichierJson, string type, vector<Heros>& herosJeu, 
 
         if(type == "HEROS"){
             Classe classe = nomsClasse.find(objPerso[indPerso]["classe"].asString())->second;
-            Heros herosAct(nom, classe, 1, positionX, positionY, equipementsPerso, actionSupps);
+            Heros herosAct(nom, classe, niveau, positionX, positionY, equipementsPerso, actionSupps);
             herosJeu.push_back(herosAct);
         } else {
             Race race = nomsRace.find(objPerso[indPerso]["race"].asString())->second;
-            Ennemi ennemiAct(nom, race, 1, positionX, positionY, equipementsPerso, actionSupps);
+            Ennemi ennemiAct(nom, race, niveau, positionX, positionY, equipementsPerso, actionSupps);
             ennemiJeu.push_back(ennemiAct);
         }
     }
@@ -122,7 +123,10 @@ int main(int argc,char* argv[])
 
 
         //exportation de la carte depuis le json
-        ifstream jMap("json/map.json");
+        state.chargerMap("json/map.json");
+        int nbLargeur = state.getDecor().getLargeur();
+        int nbHauteur = state.getDecor().getHauteur();
+        /*ifstream jMap("json/map.json");
         Json::Reader reader;
         Json::Value obj;
         reader.parse(jMap, obj);
@@ -139,15 +143,15 @@ int main(int argc,char* argv[])
         std::vector<TypeTerrain> map(tailleMap);
         for (unsigned int i = 0; i < data.size(); i++){
             map[i] = static_cast<TypeTerrain>(data[i].asUInt());
-        }
+        }*/
 
         //création de la map
 
         //informations non-modifiables
-        Decor decor(nbLargeur, nbLongueur, map);
+        //Decor decor(nbLargeur, nbLongueur, map);
         
         //implémentation dans le state
-        state.setDecor(decor);
+        //state.setDecor(decor);
         state.setDe(6);
         state.setEntites(persoJeu);
         state.nouveauTour();
@@ -175,8 +179,8 @@ int main(int argc,char* argv[])
         menuDes.setTitre({"Des :"},15);
 
         //définition de l'affichage du terrain
-        CoucheTerrain coucheDecor(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
-        CoucheTerrain couchePerso(largeurColonne1, 0, map.size()/nbLargeur, nbLargeur, 32);
+        CoucheTerrain coucheDecor(largeurColonne1, 0, nbHauteur, nbLargeur, 30);
+        CoucheTerrain couchePerso(largeurColonne1, 0, nbHauteur, nbLargeur, 30);
 
         std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};  
         std::vector<CoucheTerrain> terrains = {coucheDecor, couchePerso};

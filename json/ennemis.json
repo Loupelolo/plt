@@ -31,7 +31,7 @@
 },{
     "nom" : "Fantome",
     "race" : "FANTOME",
-    "niveau" : 1,
+    "niveau" : 2,
     "positionX" : 10,
     "positionY" : 4,
     "equipement" :[
@@ -41,7 +41,7 @@
 },{
     "nom" : "Zombie",
     "race" : "ZOMBIE",
-    "niveau" : 1,
+    "niveau" : 2,
     "positionX" : 12,
     "positionY" : 2,
     "equipement" :[
@@ -51,9 +51,19 @@
 },{
     "nom" : "Serpent",
     "race" : "SERPENT",
-    "niveau" : 1,
-    "positionX" : 4,
-    "positionY" : 4,
+    "niveau" : 2,
+    "positionX" : 10,
+    "positionY" : 2,
+    "equipement" :[
+    ],
+    "actionSupp" :[
+    ]
+},{
+    "nom" : "Alma",
+    "race" : "SERPENT",
+    "niveau" : 3,
+    "positionX" : 7,
+    "positionY" : 2,
     "equipement" :[
     ],
     "actionSupp" :[

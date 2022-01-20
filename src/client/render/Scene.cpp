@@ -98,8 +98,8 @@ bool Scene::chargerFenetre(){
         return false;
     }
 
-    m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(),0,m_state->getNiveauFini()); //préparation affichage des décors
-    m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
+    m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(),m_state->getNiveauFini()); //préparation affichage des décors
+    m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites(), m_state->getNiveau()); //préparation affichage des perso
     return true;
 }
 
@@ -121,8 +121,8 @@ bool Scene::afficherFenetre(){
                 return false;
             }*/
             //std::cout<<"tagada"<<m_state->getEntites().size()<<std::endl;
-            m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(), 0, m_state->getNiveauFini()); //préparation affichage des décors
-            m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites()); //préparation affichage des perso
+            m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(), m_state->getNiveauFini()); //préparation affichage des décors
+            m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites(), m_state->getNiveau()); //préparation affichage des perso
             //std::cout<<"tsointsoin"<<std::endl;
             clock.restart();
             if(elapsed2 >= sf::seconds(1)){
@@ -277,6 +277,28 @@ bool Scene::afficherFenetre(){
                 afficherExecuter("Attaquer");
             }
             
+        }
+
+        if(m_state->getNiveau()==3 && m_state->getNiveauFini()){
+            m_window.clear();
+            sf::Texture texture;
+            texture.loadFromFile("./res/parchemin.png");
+            sf::Sprite sprite;
+            sprite.setTexture(texture);
+            sprite.setScale(sf::Vector2f(1.f, 0.3f));
+            sprite.setPosition(sf::Vector2f(250.f, 120.f));
+
+            m_window.draw(sprite);
+
+            sf::Text text;
+            text.setPosition(350, 150); 
+            sf::Font police;
+            police.loadFromFile("./res/alagard_by_pix3m-d6awiwp.ttf");
+            text.setFont(police); 
+            text.setString("Bravo");
+            text.setCharacterSize(80); 
+            text.setFillColor(sf::Color::Black);
+            m_window.draw(text);
         }
 
         m_window.display();

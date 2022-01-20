@@ -41,7 +41,7 @@ void CoucheTerrain::setTailleTuile (int tailleTuile){
 
 //Méthodes
 
-bool CoucheTerrain::loadDecor(const std::string& tileset, sf::Vector2u tileSize, state::Decor decor, int ligne, bool porteOuverte){
+bool CoucheTerrain::loadDecor(const std::string& tileset, sf::Vector2u tileSize, state::Decor decor, bool porteOuverte){
     int decalX = m_posX + 12 + m_tailleTuile*(18-m_largeur)/2; //décallage vertical pour centrer
     std::vector<state::TypeTerrain> map = decor.getMap();
 
@@ -53,7 +53,7 @@ bool CoucheTerrain::loadDecor(const std::string& tileset, sf::Vector2u tileSize,
     m_vertices.setPrimitiveType(sf::Quads);
     m_vertices.resize(map.size() * 4);
 
-    int tv = ligne;
+    int tv = decor.getType();
 
     for(int i=0; i<m_largeur;i++){
         for(int j=0; j<m_hauteur;j++){
@@ -76,14 +76,14 @@ bool CoucheTerrain::loadDecor(const std::string& tileset, sf::Vector2u tileSize,
             quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
             quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
             quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
-            tv = ligne;
+            tv = decor.getType();
         }
     }
     
     return true;
 }
 
-bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize, std::vector<state::Entite*> entites){
+bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize, std::vector<state::Entite*> entites, int niveau){
     unsigned int taille = entites.size();
     int decalX = m_posX + 12 + m_tailleTuile*(18-m_largeur)/2; //décallage vertical pour centrer
 
@@ -98,24 +98,26 @@ bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize,
     int tv = 0;
 
     for(unsigned int i=0; i<taille;i++){
-        sf::Vertex* quad = &m_vertices[(i) * 4];
+        if(entites[i]->getNiveau()==niveau){
+            sf::Vertex* quad = &m_vertices[(i) * 4];
 
-        int posX = entites[i]->getPositionX();
-        int posY = entites[i]->getPositionY();
-        int tu = 0;
-        if(entites[i]->getEstVivant()) tu = entites[i]->getType();      
-        else tu = 12;   
+            int posX = entites[i]->getPositionX();
+            int posY = entites[i]->getPositionY();
+            int tu = 0;
+            if(entites[i]->getEstVivant()) tu = entites[i]->getType();      
+            else tu = 12;   
 
-        quad[0].position = sf::Vector2f(posX * m_tailleTuile +decalX, posY * m_tailleTuile+m_posY);
-        quad[1].position = sf::Vector2f((posX + 1) * m_tailleTuile+decalX, posY * m_tailleTuile+m_posY);
-        quad[2].position = sf::Vector2f((posX + 1) * m_tailleTuile+decalX, (posY + 1) * m_tailleTuile+m_posY);
-        quad[3].position = sf::Vector2f(posX * m_tailleTuile+decalX, (posY + 1) * m_tailleTuile+m_posY);
-        // on définit ses quatre coordonnées de texture
+            quad[0].position = sf::Vector2f(posX * m_tailleTuile +decalX, posY * m_tailleTuile+m_posY);
+            quad[1].position = sf::Vector2f((posX + 1) * m_tailleTuile+decalX, posY * m_tailleTuile+m_posY);
+            quad[2].position = sf::Vector2f((posX + 1) * m_tailleTuile+decalX, (posY + 1) * m_tailleTuile+m_posY);
+            quad[3].position = sf::Vector2f(posX * m_tailleTuile+decalX, (posY + 1) * m_tailleTuile+m_posY);
+            // on définit ses quatre coordonnées de texture
 
-        quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
-        quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
-        quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
-        quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+            quad[0].texCoords = sf::Vector2f(tu * tileSize.x, tv * tileSize.y);
+            quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
+            quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
+            quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+        }
     }
 
     return true;

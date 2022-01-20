@@ -16,12 +16,14 @@ namespace state {
     Decor::Decor (int largeur, int hauteur, std::vector<TypeTerrain> map) {
         m_hauteur = hauteur;
         m_largeur = largeur;
+        m_type = 0;
         m_map = map;
     }
 
     Decor::Decor (int largeur, int hauteur, std::vector<TypeTerrain> map, std::vector<int> meteo, std::vector<int> lumiere) {
         m_hauteur = hauteur;
         m_largeur = largeur;
+        m_type = 0;
         m_map = map;
         m_meteo = meteo;
         m_lumiere = lumiere;
@@ -30,6 +32,7 @@ namespace state {
     Decor::Decor (const Decor &p) {
         m_hauteur = p.m_hauteur;
         m_largeur = p.m_largeur;
+        m_type = p.m_type;
         m_map = p.m_map;
         m_meteo = p.m_meteo;
         m_lumiere = p.m_lumiere;
@@ -57,6 +60,14 @@ namespace state {
 
     void Decor::setHauteur (int hauteur) {
         m_hauteur = hauteur;
+    }
+    
+    int Decor::getType () {
+        return m_type;
+    }
+
+    void Decor::setType (int type) {
+        m_type = type;
     }
 
     std::vector<TypeTerrain> Decor::getMap () {

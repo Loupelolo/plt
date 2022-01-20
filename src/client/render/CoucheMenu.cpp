@@ -104,7 +104,7 @@ std::vector<sf::Text> CoucheMenu::update(state::State* state, sf::Vector2f caseA
     {
         case 0: //ordre
             int max;
-            if(ordreEntite.size()<10) max = ordreEntite.size();
+            if(ordreEntite.size()<14) max = ordreEntite.size();
             else max=10;
             m_texts.resize(max+1);
             for(int i = 0; i<max; i++){
