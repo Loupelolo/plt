@@ -64,7 +64,7 @@ namespace engine {
         int cX = 0;
         int cY = 0;
 
-        for (size_t j = 1; j < etat->getEntites().size() ; j++){
+        for (size_t j = 0; j < etat->getEntites().size() ; j++){
             if(etat->getEntites()[j]->getEstVivant() && etat->getNiveau() == etat->getEntites()[j]->getNiveau()){
                 cX = etat->getEntites()[j]->getPositionX();
                 cY = etat->getEntites()[j]->getPositionY();

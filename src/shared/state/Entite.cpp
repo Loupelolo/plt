@@ -207,8 +207,6 @@ namespace state {
     void Entite::mort (){
         // mort de l'entite
         m_estVivant = false;
-        std::cout<<m_nom<<" est mort"<<std::endl;
-
     }
 
 

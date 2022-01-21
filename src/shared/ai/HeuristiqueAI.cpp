@@ -19,7 +19,7 @@ namespace ai {
         // D'abord, l'IA recherche quelle entité du camp adverse (Heros) est la plus proche
         std::vector<state::Entite*> listeEntites;
         for(unsigned int i=0; i<state.getEntites().size();i++){
-            if(state.getEntites()[i]->getType()<6 && state.getEntites()[i]->getEstVivant()) listeEntites.push_back(state.getEntites()[i]);
+            if(state.getEntites()[i]->getType()/6!=state.getOrdreTour()[0]->getType()/6 && state.getEntites()[i]->getNiveau()==state.getNiveau() && state.getEntites()[i]->getEstVivant()) listeEntites.push_back(state.getEntites()[i]);
         }
         if(listeEntites.size()>0){
             state::Entite* plusProcheEntite = listeEntites[0];
@@ -27,7 +27,7 @@ namespace ai {
             int positionYEntite = state.getOrdreTour()[0]->getPositionY();
             int plusPetiteDistance = abs(listeEntites[0]->getPositionX() - positionXEntite) + abs(listeEntites[0]->getPositionY() - positionYEntite);
 
-            for (unsigned int i = 1; i < listeEntites.size(); i++) 
+            for (unsigned int i = 0; i < listeEntites.size(); i++) 
             {
                 int distanceEntite = abs(listeEntites[i]->getPositionX() - positionXEntite) + abs(listeEntites[i]->getPositionY() - positionYEntite);
                 if (distanceEntite < plusPetiteDistance)

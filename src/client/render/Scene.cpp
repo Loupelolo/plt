@@ -103,7 +103,7 @@ bool Scene::chargerFenetre(){
     return true;
 }
 
-bool Scene::afficherFenetre(){
+bool Scene::afficherFenetre(int conditionArret){
     sf::Clock clock;
     sf::Clock clock2;
     engine::Commande* commande = NULL;
@@ -126,10 +126,10 @@ bool Scene::afficherFenetre(){
             m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(), m_state->getNiveauFini()); //préparation affichage des décors
             m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites(), m_state->getNiveau()); //préparation affichage des perso
             clock.restart();
-            if(elapsed2 >= sf::seconds(1)){
+            /*if(elapsed2 >= sf::seconds(1)){
                 clock2.restart();
                 //return true;
-            }
+            }*/
         }    
         m_window.clear();    
 
@@ -247,7 +247,7 @@ bool Scene::afficherFenetre(){
                         }
                     }
                 }
-            } else if(herosReste) return true;
+            } //else if(herosReste) return true;
         }
 
         // on dessine le niveau
@@ -333,6 +333,8 @@ bool Scene::afficherFenetre(){
         }
 
         m_window.display();
+        if(conditionArret == 1 && elapsed2 >= sf::milliseconds(100)) return true;
+        if(conditionArret == 0 && m_state->getOrdreTour()[0]->getType()>=6 && herosReste) return true;
     }
     return false;
 }
@@ -443,65 +445,6 @@ void Scene::actualiserCasesAccessibles(){
     for(unsigned int i=0; i<m_casesAccessibles.size();i++){
         m_casesAccessibles[i]=false;
     }
-/*
-    state::Entite* entite = m_state->getOrdreTour()[0];
-    int depl = entite->getStat(state::DEPLACEMENT);
-    int portee = entite->getStat(state::PORTEE);
-    int porteeA = 0;
-    int posX = entite->getPositionX();
-    int posY = entite->getPositionY();
-    std::vector<state::TypeTerrain> map = m_state->getDecor().getMap();
-
-    switch(m_actionSelectionnee) 
-    {
-        case 1:
-            for(int i = 0; i < largeur; i++){
-                for(int j=0; j < hauteur; j++){
-                    m_casesAccessibles[i+j*largeur] = false;
-                    if (abs(i-posX)+abs(j-posY)<=depl){
-                        if (map[i+j*largeur]==state::SOL || map[i+j*largeur]==state::TRES || map[i+j*largeur]==state::SECR){
-                            m_casesAccessibles[i+j*largeur] = true;
-                        }
-                    }
-                }
-            }
-            break;
-
-        case 2:
-            for(int i = 0; i < largeur; i++){
-                for(int j=0; j < hauteur; j++){
-                    m_casesAccessibles[i+j*largeur] = false;
-                    if (abs(i-posX)+abs(j-posY)<=portee){
-                        if (map[i+j*largeur]==state::SOL || map[i+j*largeur]==state::TRES || map[i+j*largeur]==state::SECR){
-                            m_casesAccessibles[i+j*largeur] = true;
-                        }
-                    }
-                }
-            }
-            break;
-
-        case 4:
-        case 5:
-            porteeA = entite->getAutresActions()[m_actionSelectionnee-4]->getPortee();
-            for(int i = 0; i < largeur; i++){
-                for(int j=0; j < hauteur; j++){
-                    m_casesAccessibles[i+j*largeur] = false;
-                    if (abs(i-posX)+abs(j-posY)<=porteeA){
-                        if (map[i+j*largeur]==state::SOL || map[i+j*largeur]==state::TRES || map[i+j*largeur]==state::SECR){
-                            m_casesAccessibles[i+j*largeur] = true;
-                        }
-                    }
-                }
-            }
-            break;
-        default :
-            for(int i = 0; i < largeur; i++){
-                for(int j=0; j < hauteur; j++){
-                    m_casesAccessibles[i+j*largeur] = false;
-                }
-            }
-            break;
-    }*/
 }
 
 void Scene::afficherExecuter(sf::String texte){

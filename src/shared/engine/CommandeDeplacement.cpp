@@ -73,7 +73,7 @@ namespace engine {
             }
         }
 
-        for (unsigned int i = 1; i < etat->getEntites().size() ; i++){
+        for (unsigned int i = 0; i < etat->getEntites().size() ; i++){
             mapLib[etat->getEntites()[i]->getPositionX() + etat->getEntites()[i]->getPositionY()* largeur] = false;
         }
 

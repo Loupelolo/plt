@@ -33,8 +33,8 @@ namespace ai {
                 // Instanciation de générateurs de nombres aléatoires
                 int deplacementXMax = state.getDecor().getLargeur();
                 int deplacementYMax = state.getDecor().getHauteur();
-                std::uniform_real_distribution<double> deplacementX (-deplacementXMax, deplacementXMax);
-                std::uniform_real_distribution<double> deplacementY (-deplacementYMax, deplacementYMax);
+                std::uniform_real_distribution<double> deplacementX (0, deplacementXMax);
+                std::uniform_real_distribution<double> deplacementY (0, deplacementYMax);
 
                 // Tentative de deplacement jusqu'à ce que l'IA y parvienne
                 bool deplacementReussi = false;
@@ -48,7 +48,6 @@ namespace ai {
             case(1): // Attaque
             {
                 std::vector<state::Entite*> entitesDispo = state.getEntites();
-
                 // Tentatives d'attaque
                 bool attaqueReusie = false;
                 int nbCiblesPossibles = entitesDispo.size();
@@ -68,5 +67,7 @@ namespace ai {
                 std::cout << "Je n'ai pas de chance" << std::endl;
                 break;
         }
+        
+        state.joueurSuivant();    
     }
 }

@@ -85,7 +85,7 @@ bool CoucheTerrain::loadDecor(const std::string& tileset, sf::Vector2u tileSize,
 }
 
 bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize, std::vector<state::Entite*> entites, int niveau){
-    unsigned int taille = entites.size();
+    unsigned int taille = 0;
     int decalX = m_posX + 12 + m_tailleTuile*(18-m_largeur)/2; //décallage vertical pour centrer
 
     // on charge la texture du tileset
@@ -94,13 +94,13 @@ bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize,
 
     // on redimensionne le tableau de vertex pour qu'il puisse contenir tout le niveau
     m_vertices.setPrimitiveType(sf::Quads);
-    m_vertices.resize(taille * 4);
+    m_vertices.resize(entites.size() * 4);
 
     int tv = 0;
 
-    for(unsigned int i=0; i<taille;i++){
+    for(unsigned int i=0; i<entites.size();i++){
         if(entites[i]->getNiveau()==niveau){
-            sf::Vertex* quad = &m_vertices[(i) * 4];
+            sf::Vertex* quad = &m_vertices[taille * 4];
 
             int posX = entites[i]->getPositionX();
             int posY = entites[i]->getPositionY();
@@ -118,8 +118,11 @@ bool CoucheTerrain::loadPerso(const std::string& tileset, sf::Vector2u tileSize,
             quad[1].texCoords = sf::Vector2f((tu + 1) * tileSize.x, tv * tileSize.y);
             quad[2].texCoords = sf::Vector2f((tu + 1) * tileSize.x, (tv + 1) * tileSize.y);
             quad[3].texCoords = sf::Vector2f(tu * tileSize.x, (tv + 1) * tileSize.y);
+            taille++;
         }
     }
+    m_vertices.resize(taille * 4);
+
 
     return true;
 }
