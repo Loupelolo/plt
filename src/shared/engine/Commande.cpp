@@ -1,5 +1,6 @@
 #include <engine.h>
 #include <state.h>
+#include <iostream>
 
 namespace engine {
 
@@ -17,6 +18,10 @@ namespace engine {
 
     state::Entite* Commande::getCible() {
 
+    }
+
+    std::vector<bool> Commande::getMapLib(){
+        return m_mapLib;
     }
 
 

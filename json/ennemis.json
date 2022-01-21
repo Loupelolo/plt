@@ -49,16 +49,6 @@
     "actionSupp" :[
     ]
 },{
-    "nom" : "Serpent",
-    "race" : "SERPENT",
-    "niveau" : 2,
-    "positionX" : 10,
-    "positionY" : 2,
-    "equipement" :[
-    ],
-    "actionSupp" :[
-    ]
-},{
     "nom" : "Alma",
     "race" : "SERPENT",
     "niveau" : 3,

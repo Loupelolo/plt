@@ -176,7 +176,6 @@ namespace state {
 
     void Entite::attaque (Entite* cible){
         //attaque basique d'une autre entite
-        std::cout<<m_stats[0]<<std::endl;
         cible->degats(m_stats[0], 0);
     }
 
@@ -189,7 +188,10 @@ namespace state {
         //infliger des degats
         m_PV = m_PV - degatsSubis;
         if(statutsSubis != 0) m_statutsSubis[statutsSubis] = true;
-        if(m_PV <= 0) this->mort();
+        if(m_PV <= 0){
+            m_PV = 0; 
+            this->mort();
+        }
     }
 
     void Entite::soin (int pvRecup, bool soigneStatuts){

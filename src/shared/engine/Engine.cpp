@@ -62,7 +62,6 @@ namespace engine {
         //     }
         // }
 
-
         switch(cmd.getCommandeTypeId()){
             case Deplacement :
                 //if (cmd.handleDeplacement(*m_currentState.getOrdreTour()[0], m_currentState.getDecor().getMap(), m_currentState.getDecor().getLargeur()) && cmd.handleCollision(m_currentState.getEntites())){
@@ -89,7 +88,6 @@ namespace engine {
                 return false;
                 break;
         }
-
 
 
         return false;

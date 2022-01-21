@@ -111,7 +111,6 @@ bool Scene::afficherFenetre(){
     for (unsigned int i=0; i<m_state->getEntites().size();i++) {        
         if(m_state->getEntites()[i]->getType()<6 && m_state->getEntites()[i]->getEstVivant()) herosReste = true;
     }
-
     actualiserCasesAccessibles();
 
     while (m_window.isOpen())
@@ -124,14 +123,11 @@ bool Scene::afficherFenetre(){
                 if (!m_menus[i].load()) //actualisation affichage des m_menus
                 return false;
             }*/
-            //std::cout<<"tagada"<<m_state->getEntites().size()<<std::endl;
             m_terrains[0].loadDecor("./res/terrainTilesetTest.png", sf::Vector2u(32, 32), m_state->getDecor(), m_state->getNiveauFini()); //préparation affichage des décors
             m_terrains[1].loadPerso("./res/creatures.png", sf::Vector2u(16, 16), m_state->getEntites(), m_state->getNiveau()); //préparation affichage des perso
-            //std::cout<<"tsointsoin"<<std::endl;
             clock.restart();
             if(elapsed2 >= sf::seconds(1)){
                 clock2.restart();
-                //std::cout<<"ping"<<std::endl;
                 //return true;
             }
         }    
@@ -168,27 +164,34 @@ bool Scene::afficherFenetre(){
                                         case 1:
                                             {
                                             engine::CommandeDeplacement comDep;
-                                            commande = &comDep;
+                                            comDep.ActuMapLib(m_state);
+                                            m_casesAccessibles = comDep.getMapLib();
+                                            commande=&comDep;
                                             }
                                             break;
                                         case 2 :
                                             {
                                             engine::CommandeAttaque comAtt;
-                                            commande = &comAtt;
+                                            comAtt.ActuMapLib(m_state);
+                                            m_casesAccessibles = comAtt.getMapLib();
+                                            commande=&comAtt;
                                             }
                                             break;
                                         case 4:
                                         case 5:
                                             {
                                             engine::CommandeActionSupplementaire comAct;
-                                            commande = &comAct;
+                                            comAct.setAction(m_state->getOrdreTour()[0]->getAutresActions()[m_actionSelectionnee-4]);
+                                            comAct.ActuMapLib(m_state);
+                                            m_casesAccessibles = comAct.getMapLib();
+                                            commande=&comAct;
                                             }
                                             break;
                                         default :
                                             commande = NULL;
+                                            actualiserCasesAccessibles();
                                             break;
                                     }
-                                    actualiserCasesAccessibles();
                                 }
                             } else {
                                 //l'utilisateur a cliquée dans la partie plateau
@@ -246,7 +249,6 @@ bool Scene::afficherFenetre(){
                 }
             } else if(herosReste) return true;
         }
-        //std::cout<<"prout"<<std::endl;
 
         // on dessine le niveau
         m_window.clear();
@@ -260,13 +262,11 @@ bool Scene::afficherFenetre(){
             for(unsigned int j =0; j<m_menus[i].getTexts().size(); j++ ){
                 m_window.draw(m_menus[i].getTexts()[j]); //affichage des textes des m_menus
             }
-            //std::cout<<"super"<<std::endl;
         }
 
         afficherSelection();
 
         m_window.draw(m_terrains[1]); //affichage des perso
-        //std::cout<<"hum"<<std::endl;
 
 
         int largeur = m_terrains[0].getLargeur();
@@ -344,7 +344,6 @@ int Scene::selectAction (int x, int y) {
         int finX = debutX + 200;
         int debutY = m_menus[2].getPosY() + 50 + (i/3) * 40;
         int finY = debutY + 30;
-        //std::cout<<debutX<<","<<debutY<<"->"<<finX<<","<<finY<<std::endl;
 
         if(x >= debutX && x <= finX && y >= debutY && y <= finY){
             action = i+1;
@@ -441,7 +440,10 @@ void Scene::actualiserCasesAccessibles(){
     int hauteur = m_terrains[0].getHauteur();
 
     m_casesAccessibles.resize(hauteur*largeur);
-
+    for(unsigned int i=0; i<m_casesAccessibles.size();i++){
+        m_casesAccessibles[i]=false;
+    }
+/*
     state::Entite* entite = m_state->getOrdreTour()[0];
     int depl = entite->getStat(state::DEPLACEMENT);
     int portee = entite->getStat(state::PORTEE);
@@ -449,8 +451,6 @@ void Scene::actualiserCasesAccessibles(){
     int posX = entite->getPositionX();
     int posY = entite->getPositionY();
     std::vector<state::TypeTerrain> map = m_state->getDecor().getMap();
-
-    //std::cout<<m_actionSelectionnee<<std::endl;
 
     switch(m_actionSelectionnee) 
     {
@@ -501,7 +501,7 @@ void Scene::actualiserCasesAccessibles(){
                 }
             }
             break;
-    }
+    }*/
 }
 
 void Scene::afficherExecuter(sf::String texte){

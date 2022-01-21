@@ -22,7 +22,7 @@ namespace engine {
         //init
         int largeur = etat->getDecor().getLargeur();
         int total = etat->getDecor().getMap().size();
-        std::vector<int> mapLib(total,false);
+        std::vector<bool> mapLib(total,false);
         
 
         int mvt = etat->getOrdreTour()[0]->getStat(state::DEPLACEMENT);
@@ -58,7 +58,7 @@ namespace engine {
                             default :
                                 break;
                         }
-                        if(mapLib[posTemp-1] || mapLib[posTemp-largeur] || mapLib[posTemp+1] || mapLib[posTemp+largeur]){
+                        if(posTemp-largeur>0 && posTemp+largeur<total &&(mapLib[posTemp-1] || mapLib[posTemp-largeur] || mapLib[posTemp+1] || mapLib[posTemp+largeur])){
                             if (etat->getDecor().getMap()[posTemp]==state::SOL || etat->getDecor().getMap()[posTemp]==state::TRES || etat->getDecor().getMap()[posTemp]==state::SECR){
                                 mapLib[posTemp] = true;
                             }
@@ -73,13 +73,17 @@ namespace engine {
             }
         }
 
+        for (unsigned int i = 1; i < etat->getEntites().size() ; i++){
+            mapLib[etat->getEntites()[i]->getPositionX() + etat->getEntites()[i]->getPositionY()* largeur] = false;
+        }
+
         mapLib[posInit] = false;
        
 
-    //    for(int i = 0; i < total; i++){
-    //         std::cout << mapLib[i] << " // ";
-    //     }
-
+        /*for(int i = 0; i < total; i++){
+            std::cout << mapLib[i] << " // ";
+        }*/
+    
         m_mapLib = mapLib;
     }
 

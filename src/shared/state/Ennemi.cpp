@@ -118,22 +118,22 @@ namespace state {
         switch (m_race)
         {
         case SQUELETTE:
-            m_stats = {40, 40, 30, 25, 6, 30, 10, 35, 8};
+            m_stats = {40, 40, 30, 25, 60, 30, 10, 35, 8};
             break;
         case SERPENT:
-            m_stats = {30, 50, 40, 30, 7, 20, 2, 25, 7};
+            m_stats = {30, 50, 40, 30, 70, 20, 2, 25, 7};
             break;
         case ARAIGNEE:
-            m_stats = {50, 40, 10, 10, 9, 60, 3, 7, 6};
+            m_stats = {50, 40, 10, 10, 90, 60, 3, 7, 6};
             break;
         case ORC:
-            m_stats = {75, 60, 5, 5, 11, 10, 1, 5, 5};
+            m_stats = {75, 60, 5, 5, 110, 10, 1, 5, 5};
             break;
         case FANTOME:
-            m_stats = {70, 30, 10, 10, 9, 50, 2, 3, 5};
+            m_stats = {70, 30, 10, 10, 90, 50, 2, 3, 5};
             break;
         case ZOMBIE:
-            m_stats = {30, 40, 10, 10, 10, 70, 5, 1, 6};
+            m_stats = {30, 40, 10, 10, 100, 70, 5, 1, 6};
             break;
         default:
             break;
