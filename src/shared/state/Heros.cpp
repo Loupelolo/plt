@@ -104,16 +104,16 @@ namespace state {
             m_stats = {40, 40, 30, 25, 60, 30, 10, 30, 8};
             break;
         case ASSASSIN:
-            m_stats = {30, 50, 40, 30, 70, 20, 2, 20, 7};
+            m_stats = {30, 50, 40, 30, 70, 20, 3, 20, 7};
             break;
         case DRUIDE:
             m_stats = {50, 40, 10, 10, 90, 60, 3, 6, 6};
             break;
         case GUERRIER:
-            m_stats = {75, 60, 5, 5, 110, 10, 1, 4, 5};
+            m_stats = {75, 60, 5, 5, 110, 10, 2, 4, 5};
             break;
         case MAGE:
-            m_stats = {70, 30, 10, 10, 90, 50, 2, 8, 5};
+            m_stats = {70, 30, 10, 10, 90, 50, 3, 8, 5};
             break;
         case PRETRE:
             m_stats = {30, 40, 10, 10, 100, 70, 5, 4, 6};

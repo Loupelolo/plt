@@ -213,18 +213,28 @@ Pour la conception logiciel, nous avons créé une classe Engine, qui stocke l'�
 
 
 \subsection{Stratégies}
+\subsubsection{I.A. Aléatoire}
 L'intelligence artificielle aléatoire a accès aux différentes commandes du moteur de jeu. Lorsqu'elle agit, elle choisit une de ces commandes au hasard. Les paramètres associés sont aussi choisis de manière aléatoire, tels qu'ils donnent lieu à une commande valide.
 
 L'intelligence artificielle peut déplacer l'entité dont c'est le tour sur une case du plateau accessible par cette entité. Cette case est choisie de façon aléatoire.
 
 Elle peut aussi essayer d'attaquer une entité choisie au hasard. Si aucune entité n'est à portée, elle passe son tour.
 
+Il est important de noter que tous les coups réalisés par l'I.A. aléatoire sont légaux.
+
+\subsubsection{I.A. Heuristique}
+L'intelligence artificielle heuristique a un comportement différent. Elle commence par déterminer quel ennemi est le plus proche. Pour cela elle regarde la différence (absolue) du nombre de cases entre sa position et celles des ennemis sur les deux axes.
+
+Une fois cela fait, l'I.A. heuristique essaie d'effectuer une attaque sur l'ennemi le plus proche. Si l'attaque est possible, elle le fait et finit son tour. Si elle ne peut pas attaquer (si l'ennemi le plus proche n'est pas à portée par exemple), elle se déplace vers l'ennemi le plus proche (sur un axe seulement, l'axe sur lequel il y a le plus de cases de différence) puis réessaie d'effectuer son action. Si l'action ne peut pas avoir lieu, son tour prend fin.
+
 \subsection{Conception logiciel}
-Le diagramme des classes pour l'intelligence artificielle est présenté en Figure 9.
+Le diagramme des classes pour l'intelligence artificielle est présenté en Figure \ref{fig:randomai}.
 
 La classe AI donnera lieu à des classes héritées implémentant différentes intelligences artificielles plus ou moins poussées.
 
 La classe RandomAI implémente une intelligence artificielle dont les actions sont dictées par l'aléatoire. Sa donnée membre m\_mt est un générateur de nombres aléatoires.
+
+La classe HeuristiqueAI implémente une intelligence artificielle qui se comporte selon des règles simples.
 
 \begin{figure}[hbt!]
     \centering
@@ -232,6 +242,9 @@ La classe RandomAI implémente une intelligence artificielle dont les actions so
     \caption{Diagramme de classes d'ai}
     \label{fig:randomai}
 \end{figure}
+
+\subsection{Exécution et comparaison}
+Il nous est possible d'observer le comportement de ces différentes IA. En effet en effectuant la commande "./bin/client render" permet de jouer contre une IA heuristique, La commande "./bin/client heuristic\_ia" nous permet de voir deux IA s'affronter et la commande "./bin/client randomVSheur" permet de voir s'affronter une IA random (qui contrôle les ennemis) et un IA heuristique (qui contrôle les héros). Nous avons grâce à cela remarqué que l'IA heuristique gagnait quasi systématiquement (a toujours gagné sur plus de 10 essais). Il est à noter que pour passer au niveau suivant il faut systématiquement appuyer sur la porte.
 
 %\begin{landscape}
 %\begin{figure}[p]

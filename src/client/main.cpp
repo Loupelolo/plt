@@ -368,6 +368,88 @@ int main(int argc,char* argv[])
         // Test de l'IA heuristique
         HeuristiqueAI HeuristiqueAItest(stateTest);
         HeuristiqueAItest.run(stateTest, engineTest);
+
+    }else if (strcmp(argv[1],"heuristic_ai")==0){
+        State state;
+
+        // Informations modifiables pour changer l'état
+        //création des personnages
+
+        vector<Entite*> persoJeu;
+        vector<Heros> herosJeu;
+        vector<Ennemi> ennemiJeu;
+        //vector<vector<Equipement>> equipementsHeros(6);
+        vector<ActionSuppDef> actionSuppDefs;
+        vector<ActionSuppOff> actionSuppOffs;
+
+        exportationPerso("json/heros.json", "HEROS", herosJeu, ennemiJeu, actionSuppDefs,actionSuppOffs);
+        for(unsigned int i = 0; i<herosJeu.size();i++) persoJeu.push_back(&herosJeu[i]);
+        exportationPerso("json/ennemis.json", "ENNEMIS", herosJeu, ennemiJeu, actionSuppDefs,actionSuppOffs);
+        for(unsigned int i = 0; i<ennemiJeu.size();i++) persoJeu.push_back(&ennemiJeu[i]);
+
+
+        //exportation de la carte depuis le json
+        state.chargerMap("json/map.json");
+        int nbLargeur = state.getDecor().getLargeur();
+        int nbHauteur = state.getDecor().getHauteur();
+    
+        //création de la map
+
+        state.setDe(6);
+        state.setEntites(persoJeu);
+        state.nouveauTour();
+      
+        //définition de l'affichage des menus
+        int largeurColonne1 = 150;
+        int largeurColonne2 = 600;
+        int largeurColonne3 = 150;
+        int largeurFenetre = largeurColonne1+largeurColonne2+largeurColonne3;
+
+        int hauteurLigne1 = 300;
+        int hauteurLigne2 = 150;
+        int hauteurFenetre = hauteurLigne1+hauteurLigne2;
+
+
+        CoucheMenu menuOrdre(0,0,0,hauteurLigne1,largeurColonne1);
+        menuOrdre.setTitre({"Ordre :"},15);
+        CoucheMenu menuPerso(1,0,hauteurLigne1,hauteurLigne2,largeurColonne1);
+        menuPerso.setTitre({"Personnage :"},15);
+        CoucheMenu menuAction(2,largeurColonne1,hauteurLigne1,hauteurLigne2,largeurColonne2);
+        menuAction.setTitre({"Actions possibles :"},15);
+        CoucheMenu menuCaseActuelle(3,largeurColonne1+largeurColonne2,0,hauteurLigne1,largeurColonne3);
+        menuCaseActuelle.setTitre({"Case actuelle :"},15);
+        CoucheMenu menuDes(4,largeurColonne1+largeurColonne2,hauteurLigne1,hauteurLigne2,largeurColonne3);
+        menuDes.setTitre({"Des :"},15);
+
+        //définition de l'affichage du terrain
+        CoucheTerrain coucheDecor(largeurColonne1, 0, nbHauteur, nbLargeur, 30);
+        CoucheTerrain couchePerso(largeurColonne1, 0, nbHauteur, nbLargeur, 30);
+
+        std::vector<CoucheMenu> menus = {menuOrdre,menuPerso,menuAction,menuCaseActuelle,menuDes};  
+        std::vector<CoucheTerrain> terrains = {coucheDecor, couchePerso};
+
+        //engine
+        Engine engine(&state);
+
+
+        sf::Clock clkEngine;
+        bool fenetre = true;
+        
+        Scene scene(hauteurFenetre,largeurFenetre);
+
+        scene.setState(engine.getState());
+        scene.setCaseActuelle(sf::Vector2f(2,1));
+        scene.setMenus(menus);
+        scene.setTerrains(terrains);
+        scene.chargerFenetre();
+        HeuristiqueAI heuristiqueAI(*engine.getState());
+        fenetre = scene.afficherFenetre(1); 
+
+        while(fenetre){
+            
+            fenetre = scene.afficherFenetre(1); 
+            heuristiqueAI.run(*engine.getState(), engine);
+        }
     }
     else
     {
