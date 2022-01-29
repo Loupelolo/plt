@@ -1,6 +1,9 @@
 #include <engine.h>
 #include <state.h>
 #include <iostream>
+#include <fstream>
+
+#include <json/json.h>
 
 namespace engine {
 
@@ -11,12 +14,12 @@ namespace engine {
 
     Engine::Engine (state::State* currentState) {
         m_currentState = currentState;
+        m_record["Commandes effectuees"] = "";
     }
 
     Engine::~Engine () {
         
     }
-
 
     void Engine::init (){
         
@@ -91,6 +94,18 @@ namespace engine {
 
 
         return false;
+    }
+
+    void Engine::actualiser(){
+        std::ifstream jCommande("json/commande.json");
+        Json::Reader readerCommande;
+        Json::Value obj;
+        readerCommande.parse(jCommande, obj);
+
+        if(m_record.size()<obj.size()){
+            
+        }
+        this->actualiser();
     }
 
 }

@@ -1,6 +1,9 @@
 #include "Scene.h"
 #include "state.h"
 #include <iostream>
+#include <json/json.h>
+#include <fstream>
+
 
 namespace render {
 
@@ -343,6 +346,12 @@ bool Scene::afficherFenetrePara(){
     sf::Clock clock;
     sf::Clock clock2;
     bool herosReste = false;
+
+    std::ifstream jCommande("json/commande.json");
+    Json::Reader readerCommande;
+    Json::Value commandeJsonValue;
+    readerCommande.parse(jCommande, commandeJsonValue);
+
     for (unsigned int i=0; i<m_state->getEntites().size();i++) {        
         if(m_state->getEntites()[i]->getType()<6 && m_state->getEntites()[i]->getEstVivant()) herosReste = true;
     }
@@ -413,6 +422,9 @@ bool Scene::afficherFenetrePara(){
                                     if(m_actionSelectionnee == 1 && !m_state->getABouge()){
                                         if(m_state->effectuerAction(m_actionSelectionnee)){
                                             //ecrire dans json depl, x, y
+                                            commandeJsonValue[m_state->getIndiceCommande()]["TypeId"] = "Deplacement";
+                                            commandeJsonValue[m_state->getIndiceCommande()]["x"] = m_caseActuelle.x;
+                                            commandeJsonValue[m_state->getIndiceCommande()]["y"] = m_caseActuelle.y;
                                         } 
                                     } else if(m_actionSelectionnee ==2 && !m_state->getAAttaque()){
                                         //l'utilisateur souhaite effectuer une attaque
@@ -420,7 +432,12 @@ bool Scene::afficherFenetrePara(){
                                         for(unsigned int i = 0;i<entites.size() ;i++){
                                             sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
                                             if (m_caseActuelle == posEntite){
-                                                if(m_state->effectuerAction(m_actionSelectionnee)) //ecrire dans json att, cible
+                                                if(m_state->effectuerAction(m_actionSelectionnee)) 
+                                                {
+                                                     //ecrire dans json att, cible
+                                                    commandeJsonValue[m_state->getIndiceCommande()]["TypeId"] = "Attaque";
+                                                    commandeJsonValue[m_state->getIndiceCommande()]["Cible"] = entites[i]->getNom();
+                                                }
                                             }
                                         }
                                     } else if(m_actionSelectionnee==3){
@@ -428,15 +445,32 @@ bool Scene::afficherFenetrePara(){
                                         m_state->joueurSuivant();
                                         m_caseActuelle.x = m_state->getOrdreTour()[0]->getPositionX();
                                         m_caseActuelle.y = m_state->getOrdreTour()[0]->getPositionY();
+                                        commandeJsonValue[m_state->getIndiceCommande()]["TypeId"] = "Passer";
                                     } else if(m_actionSelectionnee>3 && !m_state->getAAttaque()) {
                                         std::vector<state::Entite*> entites = m_state->getEntites();
                                         for(unsigned int i = 0;i<entites.size() ;i++){
                                             sf::Vector2f posEntite = sf::Vector2f(entites[i]->getPositionX(),entites[i]->getPositionY());
                                             if (m_caseActuelle == posEntite){
-                                                    if(m_state->effectuerAction(m_actionSelectionnee))  //ecrire dans json att, cible, actSup
+                                                if(m_state->effectuerAction(m_actionSelectionnee)) {
+                                                    //ecrire dans json att, cible, actSup
+                                                    commandeJsonValue[m_state->getIndiceCommande()]["TypeId"] = "Attaque";
+                                                    commandeJsonValue[m_state->getIndiceCommande()]["Cible"] = entites[i]->getNom();
+                                                    commandeJsonValue[m_state->getIndiceCommande()]["Action"] = m_state->getOrdreTour()[0]->getAutresActions()[m_actionSelectionnee-4]->getNom();
+                                                }
                                             }
                                         }
                                     }
+
+                                    //ecriture dans le fichier json
+                                    Json::StreamWriterBuilder builder;
+                                    builder["commentStyle"] = "None";
+                                    builder["indentation"] = "   ";
+                                    std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+                                    std::ofstream outputFileStream("json/commande.json");
+                                    writer -> write(commandeJsonValue, &outputFileStream);
+
+                                    m_state->setIndiceCommande(m_state->getIndiceCommande() +1);
+
                                     m_actionSelectionnee = 0;
                                 }
                             }
@@ -445,7 +479,7 @@ bool Scene::afficherFenetrePara(){
                 }
             } //else if(herosReste) return true;
         }
-
+        
         // on dessine le niveau
         m_window.clear();
 
@@ -529,8 +563,11 @@ bool Scene::afficherFenetrePara(){
         }
 
         m_window.display();
-        if(conditionArret == 1 && elapsed2 >= sf::milliseconds(100)) return true;
-        if(conditionArret == 0 && m_state->getOrdreTour()[0]->getType()>=6 && herosReste) return true;
+        if(m_state->getOrdreTour()[0]->getType()>=6 && herosReste){
+            m_caseActuelle.x = 1;
+            m_caseActuelle.y = 1;
+            return true;
+        } 
     }
     return false;
 }

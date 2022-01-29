@@ -13,6 +13,7 @@ namespace state {
 
     State::State () {
         m_nbTour = 0;
+        m_indiceCommande = 0;
         m_niveau = 1;
         m_niveauFini=false;
         std::srand(std::time(nullptr)); // use current time as seed for random generator
@@ -33,6 +34,14 @@ namespace state {
 
     void State::setNbTour (int nbTour){
         m_nbTour = nbTour;
+    }
+
+    int State::getIndiceCommande (){
+        return m_indiceCommande;
+    }
+
+    void State::setIndiceCommande (int indiceCommande){
+        m_indiceCommande = indiceCommande;
     }
 
     int State::getNiveau (){
