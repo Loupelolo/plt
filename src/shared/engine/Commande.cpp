@@ -16,10 +16,6 @@ namespace engine {
         return m_commandeTypeId;
     }
 
-    state::Entite* Commande::getCible() {
-
-    }
-
     std::vector<bool> Commande::getMapLib(){
         return m_mapLib;
     }

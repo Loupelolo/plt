@@ -58,8 +58,8 @@ namespace engine {
 
         int portee = m_action->getPortee();
 
-        int posInit = posX+largeur*posY;
-        int posTemp = posInit;
+        //int posInit = posX+largeur*posY;
+        //int posTemp = posInit;
 
         int cX = 0;
         int cY = 0;

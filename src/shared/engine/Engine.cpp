@@ -14,7 +14,7 @@ namespace engine {
 
     Engine::Engine (state::State* currentState) {
         m_currentState = currentState;
-        m_record["Commandes effectuees"] = "";
+        m_indiceCommande = 0;
     }
 
     Engine::~Engine () {
@@ -42,32 +42,9 @@ namespace engine {
     }
 
     bool Engine::executerCommande (Commande& cmd){
-        // if (cmd.getCommandeTypeId() == Deplacement)
-        // {
-        //     if (cmd.handleDeplacement(*m_currentState.getOrdreTour()[0], m_currentState.getDecor().getMap(), m_currentState.getDecor().getLargeur()) && cmd.handleCollision(m_currentState.getEntites()))
-        //     {
-        //         cmd.execute(&this->getState());
-        //         return true;
-        //     } 
-        // }
-        // else if(cmd.getCommandeTypeId() == Attaque)
-        // {
-        //     if(cmd.handleAttaque(*m_currentState.getOrdreTour()[0]))
-        //     {
-        //         cmd.execute(&this->getState());
-        //         return true;
-        //     }
-        // }
-        // else if(cmd.getCommandeTypeId() == ActionSupplementaire){
-        //     if(cmd.handleActionSupplementaire(*m_currentState.getOrdreTour()[0])){
-        //         cmd.execute(&this->getState());
-        //         return true;
-        //     }
-        // }
 
         switch(cmd.getCommandeTypeId()){
             case Deplacement :
-                //if (cmd.handleDeplacement(*m_currentState.getOrdreTour()[0], m_currentState.getDecor().getMap(), m_currentState.getDecor().getLargeur()) && cmd.handleCollision(m_currentState.getEntites())){
                 if (cmd.handleDeplacement(m_currentState)){
                     cmd.execute(this->getState());
                     return true;
@@ -102,10 +79,57 @@ namespace engine {
         Json::Value obj;
         readerCommande.parse(jCommande, obj);
 
-        if(m_record.size()<obj.size()){
-            
+        if(m_indiceCommande<m_currentState->getIndiceCommande()){
+            Json::Value& commandeActuelle = obj[m_indiceCommande];
+            std::string idCommandeActuelle = commandeActuelle["TypeId"].asString();
+
+            if(idCommandeActuelle == "Deplacement"){
+                int x = commandeActuelle["x"].asInt();
+                int y = commandeActuelle["y"].asInt();
+                CommandeDeplacement depl(x,y);
+                this->executerCommande(depl);
+
+            } else if(idCommandeActuelle == "Attaque"){
+                std::string nomCible = commandeActuelle["Cible"].asString();
+                state::Entite* cible;
+                for (size_t i = 0; i < m_currentState->getEntites().size() ; i++){
+                    if(m_currentState->getEntites()[i]->getNom() == nomCible){
+                        cible = m_currentState->getEntites()[i];
+                    }
+                }
+                CommandeAttaque att(cible);
+                this->executerCommande(att);
+
+            } else if(idCommandeActuelle == "Action Supp"){
+                std::string nomCible = commandeActuelle["Cible"].asString();
+                std::string nomActionSupp = commandeActuelle["Action"].asString();
+                state::Entite* cible;
+                state::ActionSupp* actionSupp;
+
+                for (size_t i = 0; i < m_currentState->getEntites().size() ; i++){
+                    if(m_currentState->getEntites()[i]->getNom() == nomCible){
+                        cible = m_currentState->getEntites()[i];
+                    }
+                }
+
+                for(long unsigned int i = 0; i < m_currentState->getOrdreTour()[0]->getAutresActions().size(); i++){
+                    if (m_currentState->getOrdreTour()[0]->getAutresActions()[i]->getNom() == nomActionSupp){
+                        actionSupp = m_currentState->getOrdreTour()[0]->getAutresActions()[i];
+                    }
+                }
+                CommandeActionSupplementaire act(cible,actionSupp);
+                this->executerCommande(act);
+
+            } else if(idCommandeActuelle == "Passer"){
+                m_currentState->joueurSuivant();
+
+            } else {
+                this->actualiser();
+            }
+            m_record[m_indiceCommande] = obj;
+            m_indiceCommande++;
         }
-        this->actualiser();
+        //this->actualiser();
     }
 
 }

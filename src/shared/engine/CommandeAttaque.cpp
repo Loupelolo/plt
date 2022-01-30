@@ -46,8 +46,8 @@ namespace engine {
         int posX = etat->getOrdreTour()[0]->getPositionX();
         int posY = etat->getOrdreTour()[0]->getPositionY();
 
-        int posInit = posX+largeur*posY;
-        int posTemp = posInit;
+        //int posInit = posX+largeur*posY;
+        //int posTemp = posInit;
 
         int cX = 0;
         int cY = 0;
