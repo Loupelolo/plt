@@ -38,30 +38,23 @@ Le but du joueur est de réaliser la quête définie en début de partie. Pour c
 
 \begin{figure}[hbt!]
     \centering
-    \includegraphics[scale=0.9, angle=0]{images/texture_persos1.png}
+    \includegraphics[scale=2, angle=0]{images/creatures.png}
     \caption{Textures des personnages}
     \label{fig:textPerso}
 \end{figure}
 
 \begin{figure}[hbt!]
     \centering
-    \includegraphics[scale=0.3, angle=0]{images/fonts.png}
-    \caption{Police d'écriture}
-    \label{fig:fonts}
-\end{figure}
-
-\begin{figure}[hbt!]
-    \centering
-    \includegraphics[scale=2, angle=0]{images/texture_monstres1.png}
-    \caption{Textures des ennemies}
-    \label{fig:textEnnemis}
-\end{figure}
-
-\begin{figure}[hbt!]
-    \centering
-    \includegraphics[scale=1.5, angle=0]{images/texture_decor1.png}
+    \includegraphics[scale=2, angle=0]{images/terrain.png}
     \caption{Textures des décors}
     \label{fig:textDecor}
+\end{figure}
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[scale=0.5, angle=0]{images/fonts.jpg}
+    \caption{Police d'écriture}
+    \label{fig:fonts}
 \end{figure}
 
 
@@ -69,7 +62,7 @@ Le but du joueur est de réaliser la quête définie en début de partie. Pour c
 \section{Description et conception des états}
 
 \subsection{Description des états}
-Un état de jeu est constitué d'un décor (tableaux d'éléments représentant la grille du jeu donc les murs, le sol...) et un autre tableau avec les personnages (appelé entité, qui peuvent à la fois être des héros ou des ennemis). On note aussi dans l'état de jeu le nombre de tour déjà joué, ainsi que l'ordre de jeu des entités et le résultat de dé de l'action effectuée.
+Un état de jeu est constitué d'un décor (tableaux d'éléments représentant la grille du jeu donc les murs, le sol...) et un autre tableau avec les personnages (appelé entité, qui peuvent à la fois être des héros ou des ennemis). Ce tableau est utilisé pour générer un tableau d'ordre de jeu des entités. On note aussi dans cet état à quel niveau les joueurs sont, si le niveau est fini, si le joueur actuel s'est déjà déplacé et/ou a attaqué ainsi que le résultat de dé de l'action effectuée.
 
 \subsubsection{Éléments fixes}
 
@@ -101,7 +94,7 @@ Les entités sont les personnages du jeu, qu'ils soient héros (personnages inte
     \item les actions supplémentaires qu'il peut effectuer en plus de ses actions de base comme les sorts
 \end{itemize}
 
-L'ordre de jeu des entités est définie selon leur statistique d'initiative. Elle peut, durant son tour, se déplacer (selon sa statistique de déplacement) ou attaquer (selon sa statistique d'attaque). Une action supplémentaire remplace l'attaque dans son tour. Lorsque l'entité est attaqué elle se défend (selon sa statistique de défense) puis subit des dégâts et obtient possiblement un statut. Nous avons également une méthode correspondant à la mort de l'entité.
+L'ordre de jeu des entités est définie selon leur statistique d'initiative. Elle peut, durant son tour, se déplacer (selon sa statistique de déplacement) et/ou attaquer (selon sa statistique d'attaque) une seule fois. Une action supplémentaire remplace l'attaque dans son tour. Lorsque l'entité est attaqué elle se défend (selon sa statistique de défense) puis subit des dégâts et obtient possiblement un statut. Nous avons également une méthode correspondant à la mort de l'entité. Lorsqu'une entité meurt elle continue d'exister jusqu'à la fin du tour puis disparaît. Elle ne peut évidemment plus jouer à partir du moment où elle est morte.
 
 Du côté des différences entre ennemis et héros, les héros ont, en plus de ces caractéristiques, une classe (qui définit leurs statistiques de base et leur texture) et la possibilité de récupérer de l'équipement ou apprendre des actions supplémentaires comme des sorts. Les ennemis ont une race, équivalente à la classe, qui définit donc leur statistiques de base et leur textures. Pour éviter que, pendant un tour, un ennemi soit pris en compte alors qu'il n'est pas dans la même salle que les joueurs et donc pas accessible, on lui rajoute un attribut "actif" qui définit si les ennemis sont en jeu ou non. Cet attribut passe de inactif à actif lorsque le ou les joueurs sont suffisamment proche de lui.
 
@@ -125,13 +118,7 @@ Sur la figure \ref{fig:diaClasseEtat}, nous avons donc en gris la classe qui con
     \label{fig:diaClasseEtat}
 \end{figure}
 
-
-%\begin{landscape}
-%\begin{figure}[p]
-%\includegraphics[width=0.9\paperheight]{state.pdf}
-%\caption{\label{uml:state}Diagramme des classes d'état.} 
-%\end{figure}
-%\end{landscape}
+Les différents éléments contenu dans le state en début de partie sont répertorié dans un fichier json, lu en début de partie et qui permet d'initialiser le state en entier (à la fois le terrain et les différentes entités)
 
 \clearpage
 \section{Rendu: Stratégie et Conception}
@@ -157,7 +144,7 @@ Pour obtenir un rendu d'état convenable et simple à implémenter nous avons d�
 
 Il sera nécessaire de gérer le nombre d'éléments maximum affichage (pour les actions ou le terrain par exemple) pour éviter qu'une case ne dépasse sur une autre ou des conflits entre les menus et les sélections du joueur.
 
-De plus il nous faudra gérer plusieurs mode différents : le mode de jeu que nous avons défini ici, le mode menu, le mode nouvelle partie, etc.
+De plus il nous faudra gérer plusieurs modes différents : le mode de jeu que nous avons défini ici, le mode menu, le mode nouvelle partie, etc.
 
 Pour l'exemple, nous générons un état avec trois entités (Diana, Charles et Elisabeth) avec chacun une position et quelques statistiques, ainsi que des actions supplémentaires et voilà un rendu provisoire de ce à quoi le menu jeu pourra ressembler dans ce cas :
 \begin{figure}[hbt!]
@@ -168,6 +155,17 @@ Pour l'exemple, nous générons un état avec trois entités (Diana, Charles et 
 \end{figure}
 \newpage
 
+
+C'est également cette fenêtre qui récupère les instructions du joueur et en déduit les actions à effectuer. Selon l'action sélectionnée, le terrain aura en surbrillance les cases ou entités accessibles selon la portée ou le nombre de déplacement de l'entités en train de joueur ainsi qu'en plus foncé la case sélectionnée par le joueur. Pour valider une action, il suffit que le joueur appuis sur le bouton d'exécution à droite.
+
+\begin{figure}[hbt!]
+    \centering
+    \includegraphics[width =.8\paperwidth, angle=0]{images/renduFinal.png}
+    \caption{Rendu de l'affichage}
+    \label{fig:renduF}
+\end{figure}
+\newpage
+
 \subsection{Conception logiciel}
 
 Pour la conception logiciel, nous avons décidé de fonctionner par couche, avec deux types de couches : les couches menus, qui afficherons majoritairement du texte avec un agencement précis, et les couches de terrain qui se chargerons d'afficher l'état du jeu donc le terrain en lui-même, les personnages et la portée de l'action sélectionnée. Nous avons donc deux classes qui héritent d'une classe couche globale qui nous permet de gérer plus facilement leur affichage.
@@ -175,6 +173,7 @@ Pour la conception logiciel, nous avons décidé de fonctionner par couche, avec
 L'organisation et l'affichage est géré par un objet Scene, qui va répertorier à la fois l'état de jeu, l'état du joueur, pour permettre l'affichage dans les couches. Ainsi les couches en elles-mêmes n'ont aucune information sur l'état de jeu et se contente d'afficher les informations issues de la scène. Pour permettre l'affiche, nous utilisons les classe sf::Transformable et sf::Drawable comme interface pour les couches.
 
 Concernant l'affichage dynamique de l'état de jeu, nous avons une fenêtre qui reste affichée tant qu'elle n'est pas fermé et vérifie l'état de jeu toutes les seize millisecondes (60Hz), pour afficher l'état actuel. Plus tard, nous pourrons implémenter une fonction qui n'affiche l'état actuel qui si celui-ci a changé, réduisant ainsi les appels.
+
 
 \begin{figure}[hbt!]
     \centering
@@ -244,7 +243,7 @@ La classe HeuristiqueAI implémente une intelligence artificielle qui se comport
 \end{figure}
 
 \subsection{Exécution et comparaison}
-Il nous est possible d'observer le comportement de ces différentes IA. En effet en effectuant la commande "./bin/client render" permet de jouer contre une IA heuristique, La commande "./bin/client heuristic\_ia" nous permet de voir deux IA s'affronter et la commande "./bin/client randomVSheur" permet de voir s'affronter une IA random (qui contrôle les ennemis) et un IA heuristique (qui contrôle les héros). Nous avons grâce à cela remarqué que l'IA heuristique gagnait quasi systématiquement (a toujours gagné sur plus de 10 essais). Il est à noter que pour passer au niveau suivant il faut systématiquement appuyer sur la porte.
+Il nous est possible d'observer le comportement de ces différentes IA. En effet en effectuant la commande \texttt{./bin/client render} permet de jouer contre une IA heuristique. Il est à noter que pour passer au niveau suivant il faut systématiquement appuyer sur la porte. La commande \texttt{./bin/client heuristic\_ia} nous permet de voir deux IA s'affronter et la commande \texttt{./bin/client randomVSheur} permet de voir s'affronter une IA random (qui contrôle les ennemis) et un IA heuristique (qui contrôle les héros). Nous avons grâce à cela remarqué que l'IA heuristique gagnait quasi systématiquement (a toujours gagné sur plus de 10 essais). 
 
 %\begin{landscape}
 %\begin{figure}[p]
@@ -258,10 +257,27 @@ Il nous est possible d'observer le comportement de ces différentes IA. En effet
 \label{sec:module}
 
 \subsection{Organisation des modules}
+Pour la modularisation nous avons choisi de ne pas recréer de nouvelles classes mais de créer des méthodes en plus dans les classes existantes. Ainsi nous avons créer la méthode Scene::afficherScenePara, qui fonctionne comme son homologue mais ici les actions sélectionnés ne sont plus directement effectuées mais stockées dans un fichier "commande.json" qui sera lu et exécutés par le moteur de jeu. De la même façon nous avons créé une fonction heuristiqueAI::runPara qui procède de la même façon. Pour stocker ces commandes nous utilisons un format simple comportant le type d'action à effectuer, la position dans le cas d'un déplacement, la cible dans le cas d'une attaque ou action et l'action supplémentaire concernée dans le cas d'une action. Enfin lorsque l'action voulue est de passer son tour, il ne contiendra que l'information "Passer". Le document pourra par exemple contenir ces informations :
 
+\begin{lstlisting}
+    {
+      "Cible" : "Araignee",
+      "TypeId" : "Attaque"
+   },
+   {
+      "TypeId" : "Passer"
+   },
+   {
+      "TypeId" : "Deplacement",
+      "x" : 8,
+      "y" : 4
+   }
+\end{lstlisting}
 
 \subsection{Conception logiciel}
+Contrairement aux versions sans parallélisation, ici nous lançons dans un thread à part dans le main, la fonction Engine::actualiser et ce toutes les 10 millisecondes. Cette fonction vérifie que le moteur de jeu est à jour par rapport au state (c'est à dire que l'attribut Engine::m\_indiceCommande est égal à State::m\_indiceCommande) et si ce n'est pas le cas il effectue la commande suivante sur la liste. Le moteur actualise ainsi le state et celui-ci sera visible par le joueur à la prochaine actualisation du render.
 
+Dans notre programme, la commande \texttt{./bin/client para} permet de joueur en utilisant la parallélisation, ainsi que de sauvegarder la partie. \texttt{./bin/client thread} permet de voir s'affronter deux Ia heuristiques de la même façon, c'est à dire en utilisant un thread séparé pour le moteur et en sauvegardant la partie. \texttt{./bin/client replay} permet de revoir la dernière partie jouée.
 
 %
 %\begin{landscape}
